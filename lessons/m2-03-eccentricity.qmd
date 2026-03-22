@@ -334,6 +334,62 @@ $$\boxed{e = \frac{\sqrt{7}}{4}}$$
 
 A. $\dfrac{2\sqrt{3}}{3}$ 　B. $\sqrt{2}$ 　C. $\sqrt{3}$ 　D. $\sqrt{6}$
 
+```{=html}
+<div class="d3-container" id="gaokao_m2_03_q1"></div>
+<script>
+(function() {
+  const W = 360, H = 200;
+  const svg = d3.select("#gaokao_m2_03_q1").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%");
+  const cx = W / 2, cy = H / 2 + 5;
+  const sc = 35;
+
+  // Axes
+  svg.append("line").attr("x1", 15).attr("y1", cy).attr("x2", W - 15).attr("y2", cy)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+  svg.append("line").attr("x1", cx).attr("y1", 8).attr("x2", cx).attr("y2", H - 8)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+
+  // C₂: x²/4 + y² = 1 → a₂=2, b₂=1, e₂=√3/2
+  const a2 = 2 * sc, b2 = 1 * sc;
+  const c2 = Math.sqrt(3) * sc;
+  const pts2 = d3.range(0, 2 * Math.PI + 0.05, 0.05).map(t =>
+    [cx + a2 * Math.cos(t), cy - b2 * Math.sin(t)]);
+  svg.append("path").attr("d", d3.line()(pts2))
+    .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+  svg.append("text").attr("x", cx + a2 + 4).attr("y", cy - 4)
+    .attr("font-size", "10px").attr("fill", "#2d70b3").text("C₂");
+
+  // C₁: a=2√3/3≈1.155, b=1 → answer ellipse
+  const a1Val = 2 * Math.sqrt(3) / 3;
+  const a1 = a1Val * sc, b1 = 1 * sc;
+  const c1 = Math.sqrt(a1Val * a1Val - 1) * sc;
+  const pts1 = d3.range(0, 2 * Math.PI + 0.05, 0.05).map(t =>
+    [cx + a1 * Math.cos(t), cy - b1 * Math.sin(t)]);
+  svg.append("path").attr("d", d3.line()(pts1))
+    .attr("fill", "none").attr("stroke", "#fa7e19").attr("stroke-width", 2).attr("stroke-dasharray", "6,3");
+  svg.append("text").attr("x", cx + a1 + 4).attr("y", cy + 16)
+    .attr("font-size", "10px").attr("fill", "#fa7e19").text("C₁");
+
+  // Foci of C₂
+  svg.append("circle").attr("cx", cx - c2).attr("cy", cy).attr("r", 3.5).attr("fill", "#c74440");
+  svg.append("circle").attr("cx", cx + c2).attr("cy", cy).attr("r", 3.5).attr("fill", "#c74440");
+
+  // Foci of C₁
+  svg.append("circle").attr("cx", cx - c1).attr("cy", cy).attr("r", 3).attr("fill", "#c74440").attr("opacity", 0.6);
+  svg.append("circle").attr("cx", cx + c1).attr("cy", cy).attr("r", 3).attr("fill", "#c74440").attr("opacity", 0.6);
+
+  // Eccentricity labels
+  svg.append("text").attr("x", 12).attr("y", 20)
+    .attr("font-size", "10px").attr("fill", "#fa7e19").text("e₁ = 1/2");
+  svg.append("text").attr("x", 12).attr("y", 36)
+    .attr("font-size", "10px").attr("fill", "#2d70b3").text("e₂ = √3/2");
+  svg.append("text").attr("x", 12).attr("y", 52)
+    .attr("font-size", "10px").attr("fill", "#555").text("e₂ = √3·e₁");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -359,6 +415,86 @@ $\dfrac{1}{a^2}=\dfrac{3}{4}$，$a^2=\dfrac{4}{3}$，$a=\dfrac{2\sqrt{3}}{3}$。
 ## 高考真题：2023年 全国卷 第15题（填空题）
 
 已知双曲线 $C:\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=1\ (a>0,b>0)$ 的左、右焦点分别为 $F_1,F_2$。点 $A$ 在 $C$ 上，点 $B$ 在 $y$ 轴上，$\overrightarrow{F_1A}\perp\overrightarrow{F_1B}$，$\overrightarrow{F_2A}=-\dfrac{2}{3}\overrightarrow{F_2B}$，则 $C$ 的离心率为____。
+
+```{=html}
+<div class="d3-container" id="gaokao_m2_03_q2"></div>
+<script>
+(function() {
+  const W = 360, H = 200;
+  const svg = d3.select("#gaokao_m2_03_q2").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%");
+  const cx = W / 2, cy = H / 2;
+
+  // Hyperbola with e = 3√5/5 ≈ 1.342
+  // Use a=1.5, e=1.342 → c=2.01, b=√(c²-a²)=√(4.04-2.25)≈1.34
+  const sc = 30;
+  const aH = 1.5, eH = 3 * Math.sqrt(5) / 5;
+  const cH = aH * eH, bH = Math.sqrt(cH * cH - aH * aH);
+
+  // Axes
+  svg.append("line").attr("x1", 10).attr("y1", cy).attr("x2", W - 10).attr("y2", cy)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+  svg.append("line").attr("x1", cx).attr("y1", 5).attr("x2", cx).attr("y2", H - 5)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+
+  // Hyperbola branches
+  const pts1 = d3.range(-1.5, 1.51, 0.05).map(t =>
+    [cx + aH * sc * Math.cosh(t), cy - bH * sc * Math.sinh(t)]);
+  const pts2 = d3.range(-1.5, 1.51, 0.05).map(t =>
+    [cx - aH * sc * Math.cosh(t), cy - bH * sc * Math.sinh(t)]);
+  svg.append("path").attr("d", d3.line().curve(d3.curveBasis)(pts1))
+    .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+  svg.append("path").attr("d", d3.line().curve(d3.curveBasis)(pts2))
+    .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // Foci
+  svg.append("circle").attr("cx", cx - cH * sc).attr("cy", cy).attr("r", 4).attr("fill", "#c74440");
+  svg.append("circle").attr("cx", cx + cH * sc).attr("cy", cy).attr("r", 4).attr("fill", "#c74440");
+  svg.append("text").attr("x", cx - cH * sc).attr("y", cy + 15).attr("text-anchor", "middle")
+    .attr("font-size", "9px").attr("fill", "#c74440").text("F₁");
+  svg.append("text").attr("x", cx + cH * sc).attr("y", cy + 15).attr("text-anchor", "middle")
+    .attr("font-size", "9px").attr("fill", "#c74440").text("F₂");
+
+  // Point A on right branch: x_A = 5c/3
+  const xA = 5 * cH / 3, yA = 4 * cH / 3; // from solution y_A²=16c²/9
+  const pxA = cx + xA * sc, pyA = cy - yA * sc;
+  svg.append("circle").attr("cx", pxA).attr("cy", pyA).attr("r", 4).attr("fill", "#388c46");
+  svg.append("text").attr("x", pxA + 6).attr("y", pyA - 4)
+    .attr("font-size", "10px").attr("fill", "#388c46").attr("font-weight", "bold").text("A");
+
+  // Point B on y-axis: B(0, y_B), y_B = -3y_A/2
+  const yB = -3 * yA / 2;
+  const pxB = cx, pyB = cy - yB * sc;
+  svg.append("circle").attr("cx", pxB).attr("cy", pyB).attr("r", 4).attr("fill", "#fa7e19");
+  svg.append("text").attr("x", pxB + 6).attr("y", pyB + 4)
+    .attr("font-size", "10px").attr("fill", "#fa7e19").attr("font-weight", "bold").text("B");
+
+  // Vector F₁A (with perpendicular indicator)
+  svg.append("line").attr("x1", cx - cH * sc).attr("y1", cy).attr("x2", pxA).attr("y2", pyA)
+    .attr("stroke", "#388c46").attr("stroke-width", 1.2).attr("stroke-dasharray", "4,3");
+  // Vector F₁B
+  svg.append("line").attr("x1", cx - cH * sc).attr("y1", cy).attr("x2", pxB).attr("y2", pyB)
+    .attr("stroke", "#fa7e19").attr("stroke-width", 1.2).attr("stroke-dasharray", "4,3");
+
+  // Perpendicular mark at F₁
+  const f1x = cx - cH * sc;
+  svg.append("rect").attr("x", f1x + 4).attr("y", cy - 8).attr("width", 6).attr("height", 6)
+    .attr("fill", "none").attr("stroke", "#999").attr("stroke-width", 0.8);
+
+  // Vector F₂A and F₂B
+  svg.append("line").attr("x1", cx + cH * sc).attr("y1", cy).attr("x2", pxA).attr("y2", pyA)
+    .attr("stroke", "#c74440").attr("stroke-width", 1.2).attr("stroke-dasharray", "3,2");
+  svg.append("line").attr("x1", cx + cH * sc).attr("y1", cy).attr("x2", pxB).attr("y2", pyB)
+    .attr("stroke", "#c74440").attr("stroke-width", 1.2).attr("stroke-dasharray", "3,2");
+
+  // Labels
+  svg.append("text").attr("x", 8).attr("y", 16)
+    .attr("font-size", "9px").attr("fill", "#555").text("F₁A ⊥ F₁B");
+  svg.append("text").attr("x", 8).attr("y", 30)
+    .attr("font-size", "9px").attr("fill", "#555").text("F₂A = -⅔ F₂B");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

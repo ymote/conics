@@ -322,6 +322,34 @@ $$\boxed{\frac{x^2}{2} - \frac{y^2}{2} = 1}$$
 
 已知椭圆经过点 $(2,0)$, 且长轴长是短轴长的两倍. 求椭圆的标准方程.
 
+```{=html}
+<div class="d3-container" id="gaokao_m3_02_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m3_02_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=35;
+  // axes
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // ellipse case 1: a=2,b=1 (x-axis)
+  const e1=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+2*sc*Math.cos(t),cy-1*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(e1)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // ellipse case 2: a=4,b=2 (y-axis): x²/4+y²/16=1
+  const e2=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+2*sc*Math.cos(t),cy-4*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(e2)+"Z").attr("fill","none").attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","5,3");
+  // point (2,0)
+  svg.append("circle").attr("cx",cx+2*sc).attr("cy",cy).attr("r",5).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+2*sc+5).attr("y",cy-8).attr("font-size","12px").attr("fill","#388c46").text("(2,0)");
+  // labels
+  svg.append("text").attr("x",cx+2*sc+5).attr("y",cy+1*sc+14).attr("font-size","11px").attr("fill","#2d70b3").text("x\u00b2/4+y\u00b2=1");
+  svg.append("text").attr("x",cx+2*sc+5).attr("y",cy-3*sc).attr("font-size","11px").attr("fill","#9b59b6").text("x\u00b2/4+y\u00b2/16=1");
+  // a=2b annotation
+  svg.append("text").attr("x",30).attr("y",20).attr("font-size","12px").attr("fill","#e67e22").text("2a=2\u00b72b \u21d2 a=2b");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -347,6 +375,44 @@ $$\boxed{\frac{x^2}{4}+y^2=1 \quad \text{或} \quad \frac{x^2}{4}+\frac{y^2}{16}
 ## 高考真题：焦点坐标与弦长求方程
 
 已知椭圆 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$ 的焦点为 $F_1,F_2$, 过 $F_1$ 的直线交椭圆于 $A,B$ 两点, 且 $|AB|=3$, $|AF_2|+|BF_2|=5$. 求椭圆方程.
+
+```{=html}
+<div class="d3-container" id="gaokao_m3_02_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m3_02_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=40;
+  const a=2,b=Math.sqrt(3),c=1;
+  // axes
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // ellipse
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // foci
+  svg.append("circle").attr("cx",cx-c*sc).attr("cy",cy).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx-c*sc-5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("F\u2081");
+  svg.append("circle").attr("cx",cx+c*sc).attr("cy",cy).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+c*sc-5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("F\u2082");
+  // chord through F1
+  const ax=-c-0.8,ay=b*Math.sqrt(1-((ax+0)*(ax+0))/(a*a))||0.9;
+  const bx=-c+1.2,by=-b*Math.sqrt(1-((bx)*(bx))/(a*a))||-0.7;
+  svg.append("line").attr("x1",cx+(-1.8)*sc).attr("y1",cy-1.2*sc).attr("x2",cx+0.5*sc).attr("y2",cy+1.0*sc).attr("stroke","#388c46").attr("stroke-width",1.5);
+  // points A, B
+  svg.append("circle").attr("cx",cx+(-1.8)*sc).attr("cy",cy-1.2*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+(-1.8)*sc-12).attr("y",cy-1.2*sc-5).attr("font-size","11px").attr("fill","#388c46").text("A");
+  svg.append("circle").attr("cx",cx+0.5*sc).attr("cy",cy+1.0*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+0.5*sc+5).attr("y",cy+1.0*sc+4).attr("font-size","11px").attr("fill","#388c46").text("B");
+  // |AB|=3 label
+  svg.append("text").attr("x",cx-1.2*sc).attr("y",cy+1.2*sc+10).attr("font-size","11px").attr("fill","#e67e22").text("|AB|=3");
+  // distances to F2 (dashed)
+  svg.append("line").attr("x1",cx+(-1.8)*sc).attr("y1",cy-1.2*sc).attr("x2",cx+c*sc).attr("y2",cy).attr("stroke","#e67e22").attr("stroke-width",1).attr("stroke-dasharray","4,3");
+  svg.append("line").attr("x1",cx+0.5*sc).attr("y1",cy+1.0*sc).attr("x2",cx+c*sc).attr("y2",cy).attr("stroke","#e67e22").attr("stroke-width",1).attr("stroke-dasharray","4,3");
+  svg.append("text").attr("x",cx+1.8*sc).attr("y",cy-0.6*sc).attr("font-size","11px").attr("fill","#e67e22").text("|AF\u2082|+|BF\u2082|=5");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

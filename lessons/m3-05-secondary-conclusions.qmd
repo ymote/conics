@@ -374,6 +374,38 @@ $k_{OM} = \dfrac{1-0}{1-0} = $ ______
 
 已知椭圆 $C: \dfrac{x^2}{4}+\dfrac{y^2}{3}=1$，$A_1, A_2$ 分别是椭圆的左、右顶点，$P$ 是椭圆上异于 $A_1, A_2$ 的一点，记直线 $PA_1, PA_2$ 的斜率分别为 $k_1, k_2$，则 $k_1\cdot k_2=$____。
 
+```{=html}
+<div class="d3-container" id="gaokao_m3_05_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m3_05_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=40;
+  const a=2,b=Math.sqrt(3);
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // ellipse
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // A1, A2
+  svg.append("circle").attr("cx",cx-a*sc).attr("cy",cy).attr("r",5).attr("fill","#333");
+  svg.append("text").attr("x",cx-a*sc-5).attr("y",cy+16).attr("font-size","11px").text("A\u2081");
+  svg.append("circle").attr("cx",cx+a*sc).attr("cy",cy).attr("r",5).attr("fill","#333");
+  svg.append("text").attr("x",cx+a*sc-5).attr("y",cy+16).attr("font-size","11px").text("A\u2082");
+  // P on ellipse (theta=60deg)
+  const th=Math.PI/3;
+  const px=a*Math.cos(th),py=b*Math.sin(th);
+  svg.append("circle").attr("cx",cx+px*sc).attr("cy",cy-py*sc).attr("r",5).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+px*sc+6).attr("y",cy-py*sc-5).attr("font-size","11px").attr("fill","#388c46").text("P");
+  // lines PA1 PA2
+  svg.append("line").attr("x1",cx-a*sc).attr("y1",cy).attr("x2",cx+px*sc).attr("y2",cy-py*sc).attr("stroke","#388c46").attr("stroke-width",1.5);
+  svg.append("line").attr("x1",cx+a*sc).attr("y1",cy).attr("x2",cx+px*sc).attr("y2",cy-py*sc).attr("stroke","#9b59b6").attr("stroke-width",1.5);
+  // k1*k2 label
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","12px").attr("fill","#c74440").text("k\u2081\u00b7k\u2082 = -b\u00b2/a\u00b2 = -3/4");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -399,6 +431,37 @@ $$k_1\cdot k_2=\frac{3(4-x_0^2)/4}{x_0^2-4}=\frac{3}{4}\cdot\frac{-(x_0^2-4)}{x_
 ## 高考模拟题：2024年 新高考模拟 椭圆焦点弦
 
 已知椭圆 $\dfrac{x^2}{9}+\dfrac{y^2}{5}=1$ 的左焦点为 $F_1$，过 $F_1$ 的直线交椭圆于 $A, B$ 两点。若 $|AF_1|=2$，求 $|BF_1|$。
+
+```{=html}
+<div class="d3-container" id="gaokao_m3_05_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m3_05_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=25;
+  const a=3,b=Math.sqrt(5),c=2;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // ellipse
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // F1
+  svg.append("circle").attr("cx",cx-c*sc).attr("cy",cy).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx-c*sc-5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("F\u2081");
+  // chord through F1
+  svg.append("line").attr("x1",cx-c*sc-1.5*sc).attr("y1",cy-1.4*sc).attr("x2",cx-c*sc+2.2*sc).attr("y2",cy+1.5*sc).attr("stroke","#388c46").attr("stroke-width",1.5);
+  // A, B
+  svg.append("circle").attr("cx",cx-c*sc-1.0*sc).attr("cy",cy-0.95*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-c*sc-1.0*sc-12).attr("y",cy-0.95*sc-4).attr("font-size","11px").attr("fill","#388c46").text("A");
+  svg.append("circle").attr("cx",cx-c*sc+1.8*sc).attr("cy",cy+1.2*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-c*sc+1.8*sc+5).attr("y",cy+1.2*sc+4).attr("font-size","11px").attr("fill","#388c46").text("B");
+  // distance labels
+  svg.append("text").attr("x",cx-c*sc-1.8*sc).attr("y",cy-0.2*sc).attr("font-size","10px").attr("fill","#e67e22").text("|AF\u2081|=2");
+  svg.append("text").attr("x",cx-c*sc+0.5*sc).attr("y",cy+1.8*sc).attr("font-size","10px").attr("fill","#e67e22").text("|BF\u2081|=?");
+  svg.append("text").attr("x",W-130).attr("y",18).attr("font-size","11px").attr("fill","#333").text("1/r\u2081+1/r\u2082=2a/b\u00b2");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

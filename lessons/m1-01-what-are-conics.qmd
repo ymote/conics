@@ -1223,6 +1223,60 @@ GPS定位的数学原理与双曲线密切相关。接收器测量来自不同�
 
 A. $\dfrac{x^2}{4}+y^2=1$ 　B. $\dfrac{x^2}{3}+y^2=1$ 　C. $\dfrac{x^2}{2}-y^2=1$ 　D. $x^2-\dfrac{y^2}{3}=1$
 
+```{=html}
+<div class="d3-container" id="gaokao_m1_01_q1"></div>
+<script>
+(function() {
+  const W = 700, H = 200, margin = {top: 15, right: 15, bottom: 25, left: 15};
+  const w = W - margin.left - margin.right, h = H - margin.top - margin.bottom;
+  const svg = d3.select("#gaokao_m1_01_q1").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const panels = [
+    {label:"A 椭圆", a:2, b:1, type:"ellipse", e:"0.87"},
+    {label:"B 椭圆", a:Math.sqrt(3), b:1, type:"ellipse", e:"0.82"},
+    {label:"C 双曲线", a:Math.sqrt(2), b:1, type:"hyperbola", e:"1.22"},
+    {label:"D 双曲线", a:1, b:Math.sqrt(3), type:"hyperbola", e:"2.00"}
+  ];
+  const pw = w / 4, scale = 32;
+
+  panels.forEach((p, idx) => {
+    const g = svg.append("g").attr("transform", `translate(${idx * pw + pw/2}, ${h/2})`);
+    // axes
+    g.append("line").attr("x1", -pw/2+5).attr("y1", 0).attr("x2", pw/2-5).attr("y2", 0)
+      .attr("stroke", "#ddd").attr("stroke-width", 0.5);
+    g.append("line").attr("x1", 0).attr("y1", -h/2+5).attr("x2", 0).attr("y2", h/2-5)
+      .attr("stroke", "#ddd").attr("stroke-width", 0.5);
+
+    if (p.type === "ellipse") {
+      const pts = d3.range(0, 2*Math.PI+0.05, 0.05).map(t =>
+        [p.a * scale * Math.cos(t), p.b * scale * Math.sin(t)]);
+      g.append("path").attr("d", d3.line()(pts)+"Z")
+        .attr("fill", "rgba(45,112,179,0.08)").attr("stroke", "#2d70b3").attr("stroke-width", 1.5);
+      const c = Math.sqrt(p.a*p.a - p.b*p.b);
+      g.append("circle").attr("cx", -c*scale).attr("cy", 0).attr("r", 3).attr("fill", "#c74440");
+      g.append("circle").attr("cx", c*scale).attr("cy", 0).attr("r", 3).attr("fill", "#c74440");
+    } else {
+      [-1, 1].forEach(sign => {
+        const pts = d3.range(-1.5, 1.51, 0.05).map(t =>
+          [sign * p.a * Math.cosh(t) * scale, p.b * Math.sinh(t) * scale]);
+        g.append("path").attr("d", d3.line().curve(d3.curveBasis)(pts))
+          .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 1.5);
+      });
+      const c = Math.sqrt(p.a*p.a + p.b*p.b);
+      g.append("circle").attr("cx", -c*scale).attr("cy", 0).attr("r", 3).attr("fill", "#c74440");
+      g.append("circle").attr("cx", c*scale).attr("cy", 0).attr("r", 3).attr("fill", "#c74440");
+    }
+    g.append("text").attr("x", 0).attr("y", -h/2+12).attr("text-anchor", "middle")
+      .attr("font-size", "11px").attr("fill", "#333").attr("font-weight", "bold").text(p.label);
+    g.append("text").attr("x", 0).attr("y", h/2-2).attr("text-anchor", "middle")
+      .attr("font-size", "11px").attr("fill", idx===3?"#c74440":"#666").text("e = "+p.e);
+  });
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -1245,6 +1299,63 @@ A. $\dfrac{x^2}{4}+y^2=1$ 　B. $\dfrac{x^2}{3}+y^2=1$ 　C. $\dfrac{x^2}{2}-y^2
 已知 $F$ 是抛物线 $C: y^2=8x$ 的焦点，$P$ 是 $C$ 上一点，$|PF|=4$，则点 $P$ 的纵坐标为（　　）
 
 A. $\pm 2$ 　B. $\pm 2\sqrt{2}$ 　C. $\pm 2\sqrt{3}$ 　D. $\pm 4$
+
+```{=html}
+<div class="d3-container" id="gaokao_m1_01_q2"></div>
+<script>
+(function() {
+  const W = 700, H = 200, margin = {top: 15, right: 30, bottom: 25, left: 50};
+  const w = W - margin.left - margin.right, h = H - margin.top - margin.bottom;
+  const svg = d3.select("#gaokao_m1_01_q2").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // Parabola y²=8x: 2p=8, p=4, focus F(2,0), directrix x=-2
+  // Scale: 1 unit = 30px
+  const s = 30, cx = 80, cy = h/2;
+  // axes
+  svg.append("line").attr("x1", 0).attr("y1", cy).attr("x2", w).attr("y2", cy)
+    .attr("stroke", "#ddd").attr("stroke-width", 1);
+  svg.append("line").attr("x1", cx).attr("y1", 0).attr("x2", cx).attr("y2", h)
+    .attr("stroke", "#ddd").attr("stroke-width", 1);
+
+  // Directrix x=-2
+  const dirX = cx + (-2)*s;
+  svg.append("line").attr("x1", dirX).attr("y1", 0).attr("x2", dirX).attr("y2", h)
+    .attr("stroke", "#9b59b6").attr("stroke-width", 1.5).attr("stroke-dasharray", "5,3");
+  svg.append("text").attr("x", dirX-4).attr("y", 14).attr("text-anchor", "end")
+    .attr("font-size", "10px").attr("fill", "#9b59b6").text("x=−2");
+
+  // Parabola curve
+  const pts = d3.range(-5.5, 5.51, 0.1).map(t => {
+    const y = t, x = t*t/8; // y²=8x → x=y²/8
+    return [cx + x*s, cy - y*s];
+  }).filter(p => p[1]>-5 && p[1]<h+5);
+  svg.append("path").attr("d", d3.line().curve(d3.curveBasis)(pts))
+    .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // Focus F(2,0)
+  const fx = cx + 2*s, fy = cy;
+  svg.append("circle").attr("cx", fx).attr("cy", fy).attr("r", 5).attr("fill", "#c74440");
+  svg.append("text").attr("x", fx+8).attr("y", fy-8).attr("font-size", "12px")
+    .attr("fill", "#c74440").attr("font-weight", "bold").text("F(2,0)");
+
+  // Point P(2, ±4): |PF|=4, x₀=2, y=±4
+  const px = cx + 2*s, py1 = cy - 4*s, py2 = cy + 4*s;
+  [py1, py2].forEach((py, i) => {
+    svg.append("circle").attr("cx", px).attr("cy", py).attr("r", 4).attr("fill", "#2d70b3");
+    svg.append("text").attr("x", px+10).attr("y", py+4).attr("font-size", "11px")
+      .attr("fill", "#2d70b3").attr("font-weight", "bold").text(i===0?"P(2,4)":"P(2,−4)");
+    // line PF
+    svg.append("line").attr("x1", px).attr("y1", py).attr("x2", fx).attr("y2", fy)
+      .attr("stroke", "#e67e22").attr("stroke-width", 1.5).attr("stroke-dasharray", "4,3");
+    // label |PF|=4
+    svg.append("text").attr("x", (px+fx)/2-15).attr("y", (py+fy)/2+(i===0?-6:12))
+      .attr("font-size", "10px").attr("fill", "#e67e22").text("|PF|=4");
+  });
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

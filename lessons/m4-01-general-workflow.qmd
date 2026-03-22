@@ -459,6 +459,49 @@ $\Delta$ 的表达式往往很长。除非题目问"是否有两个交点"，否
 
 （2）证明：直线 $CD$ 过定点。
 
+```{=html}
+<div class="d3-container" id="gaokao_m4_01_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=440,H=200;
+  const svg=d3.select("#gaokao_m4_01_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=160,cy=H/2,sc=22;
+  const a=3,b=1,c=Math.sqrt(8);
+  svg.append("line").attr("x1",10).attr("y1",cy).attr("x2",W-10).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // ellipse x^2/9+y^2=1
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // A,B,G vertices
+  svg.append("circle").attr("cx",cx-a*sc).attr("cy",cy).attr("r",4).attr("fill","#333");
+  svg.append("text").attr("x",cx-a*sc-4).attr("y",cy+14).attr("font-size","10px").text("A(-3,0)");
+  svg.append("circle").attr("cx",cx+a*sc).attr("cy",cy).attr("r",4).attr("fill","#333");
+  svg.append("text").attr("x",cx+a*sc-4).attr("y",cy+14).attr("font-size","10px").text("B(3,0)");
+  svg.append("circle").attr("cx",cx).attr("cy",cy-b*sc).attr("r",3).attr("fill","#333");
+  svg.append("text").attr("x",cx+4).attr("y",cy-b*sc-3).attr("font-size","10px").text("G");
+  // x=6 line
+  const x6=cx+6*sc;
+  svg.append("line").attr("x1",x6).attr("y1",10).attr("x2",x6).attr("y2",H-10).attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","5,3");
+  svg.append("text").attr("x",x6+3).attr("y",18).attr("font-size","10px").attr("fill","#9b59b6").text("x=6");
+  // P on x=6
+  const pY=cy-2*sc;
+  svg.append("circle").attr("cx",x6).attr("cy",pY).attr("r",4).attr("fill","#9b59b6");
+  svg.append("text").attr("x",x6+5).attr("y",pY-3).attr("font-size","10px").attr("fill","#9b59b6").text("P");
+  // lines PA, PB
+  svg.append("line").attr("x1",cx-a*sc).attr("y1",cy).attr("x2",x6).attr("y2",pY).attr("stroke","#388c46").attr("stroke-width",1).attr("opacity",0.6);
+  svg.append("line").attr("x1",cx+a*sc).attr("y1",cy).attr("x2",x6).attr("y2",pY).attr("stroke","#e67e22").attr("stroke-width",1).attr("opacity",0.6);
+  // C, D labels on ellipse
+  svg.append("circle").attr("cx",cx+1.5*sc).attr("cy",cy-0.85*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+1.5*sc+4).attr("y",cy-0.85*sc-3).attr("font-size","10px").attr("fill","#388c46").text("C");
+  svg.append("circle").attr("cx",cx+2.2*sc).attr("cy",cy+0.7*sc).attr("r",3).attr("fill","#e67e22");
+  svg.append("text").attr("x",cx+2.2*sc+4).attr("y",cy+0.7*sc+4).attr("font-size","10px").attr("fill","#e67e22").text("D");
+  // CD through fixed point (3/2,0)
+  svg.append("circle").attr("cx",cx+1.5*sc).attr("cy",cy).attr("r",3).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+1.5*sc-3).attr("y",cy+14).attr("font-size","10px").attr("fill","#c74440").text("(3/2,0)?");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -496,6 +539,41 @@ $\overrightarrow{AG}\cdot\overrightarrow{GB}=a^2-b^2=8$，即 $c^2=8$，但还�
 ## 高考真题：2024年 新高考I卷 第21题（第1问）
 
 已知椭圆 $C: \dfrac{x^2}{4}+\dfrac{y^2}{3}=1$，$F_1, F_2$ 分别为左、右焦点。直线 $l$ 过 $F_1$ 且与椭圆交于 $M, N$ 两点。求弦 $MN$ 的长度范围。
+
+```{=html}
+<div class="d3-container" id="gaokao_m4_01_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m4_01_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=40;
+  const a=2,b=Math.sqrt(3),c=1;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // ellipse
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // F1, F2
+  svg.append("circle").attr("cx",cx-c*sc).attr("cy",cy).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx-c*sc-5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("F\u2081");
+  svg.append("circle").attr("cx",cx+c*sc).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+c*sc-5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("F\u2082");
+  // chord through F1 (vertical = shortest)
+  svg.append("line").attr("x1",cx-c*sc).attr("y1",cy-b*sc*0.95).attr("x2",cx-c*sc).attr("y2",cy+b*sc*0.95).attr("stroke","#e67e22").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  // chord through F1 (horizontal = longest)
+  svg.append("line").attr("x1",cx-a*sc).attr("y1",cy).attr("x2",cx+a*sc).attr("y2",cy).attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  // M, N on vertical chord
+  svg.append("circle").attr("cx",cx-c*sc).attr("cy",cy-b*0.85*sc).attr("r",3).attr("fill","#e67e22");
+  svg.append("text").attr("x",cx-c*sc+5).attr("y",cy-b*0.85*sc).attr("font-size","10px").attr("fill","#e67e22").text("M");
+  svg.append("circle").attr("cx",cx-c*sc).attr("cy",cy+b*0.85*sc).attr("r",3).attr("fill","#e67e22");
+  svg.append("text").attr("x",cx-c*sc+5).attr("y",cy+b*0.85*sc+4).attr("font-size","10px").attr("fill","#e67e22").text("N");
+  // range label
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","12px").attr("fill","#333").text("|MN| \u2208 [3, 4)");
+  svg.append("text").attr("x",W-120).attr("y",18).attr("font-size","10px").attr("fill","#e67e22").text("min=\u901a\u5f84=3");
+  svg.append("text").attr("x",W-120).attr("y",32).attr("font-size","10px").attr("fill","#388c46").text("max\u21924 (\u957f\u8f74)");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

@@ -308,6 +308,34 @@ $k = \dfrac{3}{4}$，$l: y = \dfrac{3}{4}x + \dfrac{1}{4}$。
 
 椭圆 $\dfrac{x^2}{16}+\dfrac{y^2}{4}=1$ 内一点 $M(2,1)$, 以 $M$ 为中点的弦所在直线的方程是什么？
 
+```{=html}
+<div class="d3-container" id="gaokao_m4_05_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m4_05_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=22;
+  const a=4,b=2;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // M(2,1)
+  svg.append("circle").attr("cx",cx+2*sc).attr("cy",cy-1*sc).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+2*sc+6).attr("y",cy-1*sc-4).attr("font-size","11px").attr("fill","#c74440").text("M(2,1)");
+  // chord through M with k=-1/2
+  const k=-0.5;
+  svg.append("line").attr("x1",cx+(2-3)*sc).attr("y1",cy-(1+1.5)*sc).attr("x2",cx+(2+3)*sc).attr("y2",cy-(1-1.5)*sc).attr("stroke","#e67e22").attr("stroke-width",2);
+  // endpoints A,B
+  svg.append("circle").attr("cx",cx-0.6*sc).attr("cy",cy-2.3*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-0.6*sc-10).attr("y",cy-2.3*sc-4).attr("font-size","10px").attr("fill","#388c46").text("A");
+  svg.append("circle").attr("cx",cx+4.6*sc).attr("cy",cy+0.3*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+4.6*sc+4).attr("y",cy+0.3*sc+4).attr("font-size","10px").attr("fill","#388c46").text("B");
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","12px").attr("fill","#e67e22").text("k = -b\u00b2x\u2080/(a\u00b2y\u2080) = -1/2");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -329,6 +357,36 @@ $$\boxed{x+2y-4=0}$$
 ## 高考真题：双曲线中点弦
 
 双曲线 $\dfrac{x^2}{4}-\dfrac{y^2}{2}=1$, 过点 $M(1,1)$ 的弦以 $M$ 为中点. 求该弦所在直线的方程.
+
+```{=html}
+<div class="d3-container" id="gaokao_m4_05_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m4_05_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=30;
+  const a=2,b=Math.sqrt(2);
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // asymptotes
+  const sl=b/a;
+  svg.append("line").attr("x1",cx-4*sc).attr("y1",cy+4*sl*sc).attr("x2",cx+4*sc).attr("y2",cy-4*sl*sc).attr("stroke","#999").attr("stroke-width",1).attr("stroke-dasharray","4,3");
+  svg.append("line").attr("x1",cx-4*sc).attr("y1",cy-4*sl*sc).attr("x2",cx+4*sc).attr("y2",cy+4*sl*sc).attr("stroke","#999").attr("stroke-width",1).attr("stroke-dasharray","4,3");
+  // hyperbola
+  const rp=d3.range(-1.5,1.51,.05).map(t=>[cx+a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  const lp=d3.range(-1.5,1.51,.05).map(t=>[cx-a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(rp)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(lp)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // M(1,1)
+  svg.append("circle").attr("cx",cx+1*sc).attr("cy",cy-1*sc).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+1*sc+6).attr("y",cy-1*sc-4).attr("font-size","11px").attr("fill","#c74440").text("M(1,1)");
+  // chord with k=+b^2*x0/(a^2*y0) = 2*1/(4*1) = 1/2
+  const k=0.5;
+  svg.append("line").attr("x1",cx+(1-3)*sc).attr("y1",cy-(1-1.5)*sc).attr("x2",cx+(1+3)*sc).attr("y2",cy-(1+1.5)*sc).attr("stroke","#e67e22").attr("stroke-width",2);
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","12px").attr("fill","#e67e22").text("k = +b\u00b2x\u2080/(a\u00b2y\u2080) = 1/2");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

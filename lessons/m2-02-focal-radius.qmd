@@ -315,6 +315,68 @@ $$x_0 = \frac{2 - 5}{3/5} = -5$$
 
 A. $\dfrac{7}{5}$ 　B. $\dfrac{13}{5}$ 　C. $\dfrac{17}{5}$ 　D. $\dfrac{23}{5}$
 
+```{=html}
+<div class="d3-container" id="gaokao_m2_02_q1"></div>
+<script>
+(function() {
+  const W = 360, H = 200;
+  const svg = d3.select("#gaokao_m2_02_q1").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%");
+  const cx = W / 2, cy = H / 2 + 5;
+
+  // Ellipse: a=5, b=3, c=4. Scale: 1 unit = 16px
+  const sc = 16;
+  const a = 5 * sc, b = 3 * sc, c = 4 * sc;
+
+  // Axes
+  svg.append("line").attr("x1", 15).attr("y1", cy).attr("x2", W - 15).attr("y2", cy)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+  svg.append("line").attr("x1", cx).attr("y1", 8).attr("x2", cx).attr("y2", H - 8)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+
+  // Ellipse
+  const pts = d3.range(0, 2 * Math.PI + 0.05, 0.05).map(t =>
+    [cx + a * Math.cos(t), cy - b * Math.sin(t)]);
+  svg.append("path").attr("d", d3.line()(pts))
+    .attr("fill", "rgba(45,112,179,0.06)").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // Foci
+  svg.append("circle").attr("cx", cx - c).attr("cy", cy).attr("r", 4).attr("fill", "#c74440");
+  svg.append("circle").attr("cx", cx + c).attr("cy", cy).attr("r", 4).attr("fill", "#c74440");
+  svg.append("text").attr("x", cx - c).attr("y", cy + 15).attr("text-anchor", "middle")
+    .attr("font-size", "10px").attr("fill", "#c74440").text("F₁(-4,0)");
+  svg.append("text").attr("x", cx + c).attr("y", cy + 15).attr("text-anchor", "middle")
+    .attr("font-size", "10px").attr("fill", "#c74440").text("F₂(4,0)");
+
+  // Point P at x₀=3, y₀ = 3√(1-9/25) = 3·4/5 = 12/5 = 2.4
+  const px = cx + 3 * sc, py = cy - 2.4 * sc;
+  svg.append("circle").attr("cx", px).attr("cy", py).attr("r", 5).attr("fill", "#388c46");
+  svg.append("text").attr("x", px + 6).attr("y", py - 8)
+    .attr("font-size", "11px").attr("fill", "#388c46").attr("font-weight", "bold").text("P(3, y₀)");
+
+  // Focal radii PF₁ and PF₂
+  svg.append("line").attr("x1", px).attr("y1", py).attr("x2", cx - c).attr("y2", cy)
+    .attr("stroke", "#fa7e19").attr("stroke-width", 1.5).attr("stroke-dasharray", "4,3");
+  svg.append("line").attr("x1", px).attr("y1", py).attr("x2", cx + c).attr("y2", cy)
+    .attr("stroke", "#388c46").attr("stroke-width", 1.5).attr("stroke-dasharray", "4,3");
+
+  // Labels for focal radii
+  const mx1 = (px + cx - c) / 2, my1 = (py + cy) / 2;
+  svg.append("text").attr("x", mx1 - 12).attr("y", my1 - 4)
+    .attr("font-size", "10px").attr("fill", "#fa7e19").attr("font-weight", "bold").text("|PF₁| = ?");
+  const mx2 = (px + cx + c) / 2, my2 = (py + cy) / 2;
+  svg.append("text").attr("x", mx2 + 4).attr("y", my2 + 14)
+    .attr("font-size", "10px").attr("fill", "#388c46").text("|PF₂|");
+
+  // Vertical dashed line at x=3
+  svg.append("line").attr("x1", px).attr("y1", 12).attr("x2", px).attr("y2", H - 12)
+    .attr("stroke", "#999").attr("stroke-width", 0.8).attr("stroke-dasharray", "3,3");
+  svg.append("text").attr("x", px + 3).attr("y", H - 6)
+    .attr("font-size", "9px").attr("fill", "#999").text("x₀=3");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -343,6 +405,67 @@ $a^2=25, b^2=9$，$a=5, c=\sqrt{25-9}=4$，$e=\dfrac{c}{a}=\dfrac{4}{5}$。
 已知抛物线 $C: y^2=8x$，$F$ 为焦点，$P$ 是 $C$ 上的一点，$|PF|=5$，则 $P$ 的横坐标为（　　）
 
 A. $2$ 　B. $3$ 　C. $4$ 　D. $5$
+
+```{=html}
+<div class="d3-container" id="gaokao_m2_02_q2"></div>
+<script>
+(function() {
+  const W = 360, H = 200;
+  const svg = d3.select("#gaokao_m2_02_q2").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%");
+  const ox = 80, cy = H / 2;
+
+  // Parabola: y²=8x → 2p=8, p=4, focus (2,0), directrix x=-2
+  // Scale: 1 unit = 20px
+  const sc = 20;
+
+  // Axes
+  svg.append("line").attr("x1", 20).attr("y1", cy).attr("x2", W - 20).attr("y2", cy)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+  svg.append("line").attr("x1", ox).attr("y1", 8).attr("x2", ox).attr("y2", H - 8)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+
+  // Parabola curve: y²=8x → x=y²/8
+  const parPts = d3.range(-4.2, 4.21, 0.1).map(t => {
+    const x = t * t / 8;
+    return [ox + x * sc, cy - t * sc];
+  });
+  svg.append("path").attr("d", d3.line().curve(d3.curveBasis)(parPts))
+    .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // Directrix x = -2
+  svg.append("line").attr("x1", ox - 2 * sc).attr("y1", 8).attr("x2", ox - 2 * sc).attr("y2", H - 8)
+    .attr("stroke", "#388c46").attr("stroke-width", 1.5).attr("stroke-dasharray", "5,4");
+  svg.append("text").attr("x", ox - 2 * sc - 4).attr("y", 18).attr("text-anchor", "end")
+    .attr("font-size", "9px").attr("fill", "#388c46").text("x=-2");
+
+  // Focus F(2,0)
+  svg.append("circle").attr("cx", ox + 2 * sc).attr("cy", cy).attr("r", 4).attr("fill", "#c74440");
+  svg.append("text").attr("x", ox + 2 * sc).attr("y", cy + 15).attr("text-anchor", "middle")
+    .attr("font-size", "10px").attr("fill", "#c74440").text("F(2,0)");
+
+  // Point P: x₀=3, y²=24 → y=2√6≈4.9, but use upper point
+  const pxVal = 3, pyVal = Math.sqrt(8 * 3);
+  const px = ox + pxVal * sc, py = cy - pyVal * sc;
+  svg.append("circle").attr("cx", px).attr("cy", py).attr("r", 5).attr("fill", "#fa7e19");
+  svg.append("text").attr("x", px + 8).attr("y", py - 4)
+    .attr("font-size", "11px").attr("fill", "#fa7e19").attr("font-weight", "bold").text("P");
+
+  // |PF| = 5
+  svg.append("line").attr("x1", px).attr("y1", py).attr("x2", ox + 2 * sc).attr("y2", cy)
+    .attr("stroke", "#c74440").attr("stroke-width", 1.5).attr("stroke-dasharray", "4,3");
+  const mfx = (px + ox + 2 * sc) / 2, mfy = (py + cy) / 2;
+  svg.append("text").attr("x", mfx + 6).attr("y", mfy)
+    .attr("font-size", "10px").attr("fill", "#c74440").attr("font-weight", "bold").text("|PF|=5");
+
+  // Distance to directrix
+  svg.append("line").attr("x1", px).attr("y1", py).attr("x2", ox - 2 * sc).attr("y2", py)
+    .attr("stroke", "#388c46").attr("stroke-width", 1.2).attr("stroke-dasharray", "3,3");
+  svg.append("text").attr("x", (px + ox - 2 * sc) / 2).attr("y", py - 6).attr("text-anchor", "middle")
+    .attr("font-size", "9px").attr("fill", "#388c46").text("x₀+p/2 = 5");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

@@ -389,6 +389,41 @@ $$k_{CA} \cdot k_{CB} = \left(\frac{b}{a}\right)^2 \cdot (-1) = -\frac{b^2}{a^2}
 
 已知椭圆 $C: \dfrac{x^2}{4}+\dfrac{y^2}{3}=1$，内接三角形 $\triangle PQR$ 的重心恰好在原点 $O$。求 $\triangle PQR$ 面积的最大值。
 
+```{=html}
+<div class="d3-container" id="gaokao_m5_02_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=440,H=200;
+  const svg=d3.select("#gaokao_m5_02_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const sc=35;
+  // Left: unit circle
+  const lcx=110,lcy=H/2,R=sc;
+  svg.append("circle").attr("cx",lcx).attr("cy",lcy).attr("r",R).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  svg.append("text").attr("x",lcx).attr("y",20).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#2d70b3").text("\u5355\u4f4d\u5706");
+  // equilateral triangle in circle
+  const ta=[Math.PI/2,Math.PI/2+2*Math.PI/3,Math.PI/2+4*Math.PI/3];
+  const cp=ta.map(t=>[lcx+R*Math.cos(t),lcy-R*Math.sin(t)]);
+  svg.append("path").attr("d",`M${cp[0][0]},${cp[0][1]}L${cp[1][0]},${cp[1][1]}L${cp[2][0]},${cp[2][1]}Z`).attr("fill","rgba(45,112,179,0.15)").attr("stroke","#2d70b3").attr("stroke-width",1.5);
+  cp.forEach((p,i)=>{svg.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",3).attr("fill","#2d70b3");});
+  svg.append("text").attr("x",lcx).attr("y",lcy+R+16).attr("text-anchor","middle").attr("font-size","10px").attr("fill","#2d70b3").text("S=3\u221a3/4");
+  // Arrow
+  svg.append("text").attr("x",200).attr("y",lcy).attr("text-anchor","middle").attr("font-size","22px").attr("fill","#666").text("\u2192");
+  svg.append("text").attr("x",200).attr("y",lcy+16).attr("text-anchor","middle").attr("font-size","9px").attr("fill","#666").text("x\u2192ax, y\u2192by");
+  // Right: ellipse
+  const rcx=320,rcy=H/2;
+  const a=2,b=Math.sqrt(3);
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[rcx+a*sc*Math.cos(t),rcy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2);
+  svg.append("text").attr("x",rcx).attr("y",20).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("\u692d\u5706 x\u00b2/4+y\u00b2/3=1");
+  // mapped triangle
+  const ep2=ta.map(t=>[rcx+a*sc*Math.cos(t),rcy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",`M${ep2[0][0]},${ep2[0][1]}L${ep2[1][0]},${ep2[1][1]}L${ep2[2][0]},${ep2[2][1]}Z`).attr("fill","rgba(199,68,64,0.12)").attr("stroke","#c74440").attr("stroke-width",1.5);
+  ep2.forEach((p,i)=>{svg.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",3).attr("fill","#c74440");});
+  svg.append("text").attr("x",rcx).attr("y",rcy+b*sc+16).attr("text-anchor","middle").attr("font-size","10px").attr("fill","#c74440").text("S=ab\u00b73\u221a3/4=9/2");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -414,6 +449,39 @@ $$S_{\max}=2\sqrt{3}\cdot\frac{3\sqrt{3}}{4}=\frac{6\cdot 3}{4}=\frac{9}{2}$$
 ## 高考模拟题：2023年 高考模拟 仿射变换求中点轨迹
 
 椭圆 $\dfrac{x^2}{9}+\dfrac{y^2}{4}=1$ 上有一条弦 $AB$，$M$ 为 $AB$ 的中点。若 $|AB|=4$，求 $M$ 的轨迹方程。
+
+```{=html}
+<div class="d3-container" id="gaokao_m5_02_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m5_02_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=22;
+  const a=3,b=2;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // chord |AB|=4 at some angle
+  const th=0.7;
+  const x1=a*Math.cos(th-0.4),y1=b*Math.sin(th-0.4);
+  const x2=a*Math.cos(th+0.5),y2=b*Math.sin(th+0.5);
+  svg.append("line").attr("x1",cx+x1*sc).attr("y1",cy-y1*sc).attr("x2",cx+x2*sc).attr("y2",cy-y2*sc).attr("stroke","#e67e22").attr("stroke-width",2);
+  svg.append("circle").attr("cx",cx+x1*sc).attr("cy",cy-y1*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+x1*sc+5).attr("y",cy-y1*sc-4).attr("font-size","10px").attr("fill","#388c46").text("A");
+  svg.append("circle").attr("cx",cx+x2*sc).attr("cy",cy-y2*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+x2*sc+5).attr("y",cy-y2*sc-4).attr("font-size","10px").attr("fill","#388c46").text("B");
+  // M midpoint
+  const mx=(x1+x2)/2,my=(y1+y2)/2;
+  svg.append("circle").attr("cx",cx+mx*sc).attr("cy",cy-my*sc).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+mx*sc+6).attr("y",cy-my*sc-3).attr("font-size","10px").attr("fill","#c74440").text("M");
+  // |AB|=4 label
+  svg.append("text").attr("x",cx+(x1+x2)/2*sc-15).attr("y",cy-(y1+y2)/2*sc+18).attr("font-size","10px").attr("fill","#e67e22").text("|AB|=4");
+  // note
+  svg.append("text").attr("x",20).attr("y",18).attr("font-size","11px").attr("fill","#333").text("\u4eff\u5c04\u53d8\u6362\u4e0d\u4fdd\u5f26\u957f\u2192\u7528\u70b9\u5dee\u6cd5");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

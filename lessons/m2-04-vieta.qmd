@@ -429,6 +429,64 @@ $$\boxed{|AB| = \frac{8\sqrt{2}}{5}}$$
 
 A. $(-4, 0)$ 　B. $(-2, 0)$ 　C. $(-\dfrac{8}{5}, 0)$ 　D. $(-1, 0)$
 
+```{=html}
+<div class="d3-container" id="gaokao_m2_04_q1"></div>
+<script>
+(function() {
+  const W = 360, H = 200;
+  const svg = d3.select("#gaokao_m2_04_q1").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%");
+  const cx = W / 2, cy = H / 2 + 5;
+  const sc = 40; // 1 unit = 40px
+
+  // Axes
+  svg.append("line").attr("x1", 15).attr("y1", cy).attr("x2", W - 15).attr("y2", cy)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+  svg.append("line").attr("x1", cx).attr("y1", 8).attr("x2", cx).attr("y2", H - 8)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+
+  // Ellipse: x²/4 + y² = 1 → a=2, b=1
+  const a = 2 * sc, b = 1 * sc;
+  const pts = d3.range(0, 2 * Math.PI + 0.05, 0.05).map(t =>
+    [cx + a * Math.cos(t), cy - b * Math.sin(t)]);
+  svg.append("path").attr("d", d3.line()(pts))
+    .attr("fill", "rgba(45,112,179,0.06)").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // Line y = kx + 1 always passes through (0,1)
+  // Show one example: k=1 → intersections: 5x²+8x=0 → x=0, x=-8/5
+  const k = 1;
+  const x1 = 0, y1 = 1, x2 = -8 / 5, y2 = k * x2 + 1;
+  svg.append("line")
+    .attr("x1", cx + (-3) * sc).attr("y1", cy - (k * (-3) + 1) * sc)
+    .attr("x2", cx + 2 * sc).attr("y2", cy - (k * 2 + 1) * sc)
+    .attr("stroke", "#c74440").attr("stroke-width", 1.8);
+
+  // Intersection points
+  svg.append("circle").attr("cx", cx + x1 * sc).attr("cy", cy - y1 * sc).attr("r", 5).attr("fill", "#388c46");
+  svg.append("text").attr("x", cx + x1 * sc + 8).attr("y", cy - y1 * sc - 4)
+    .attr("font-size", "10px").attr("fill", "#388c46").attr("font-weight", "bold").text("A(0, 1)");
+
+  svg.append("circle").attr("cx", cx + x2 * sc).attr("cy", cy - y2 * sc).attr("r", 5).attr("fill", "#388c46");
+  svg.append("text").attr("x", cx + x2 * sc - 8).attr("y", cy - y2 * sc + 16).attr("text-anchor", "end")
+    .attr("font-size", "10px").attr("fill", "#388c46").attr("font-weight", "bold").text("B");
+
+  // Fixed point (0,1) indicator
+  svg.append("circle").attr("cx", cx).attr("cy", cy - sc).attr("r", 3).attr("fill", "#fa7e19");
+  svg.append("text").attr("x", cx + 20).attr("y", cy - sc + 20)
+    .attr("font-size", "9px").attr("fill", "#fa7e19").text("过定点(0,1)");
+
+  // Line label
+  svg.append("text").attr("x", cx + 1.6 * sc).attr("y", cy - (k * 1.6 + 1) * sc - 6)
+    .attr("font-size", "10px").attr("fill", "#c74440").text("y = kx+1");
+
+  // Chord AB
+  svg.append("line").attr("x1", cx + x1 * sc).attr("y1", cy - y1 * sc)
+    .attr("x2", cx + x2 * sc).attr("y2", cy - y2 * sc)
+    .attr("stroke", "#388c46").attr("stroke-width", 2.5).attr("opacity", 0.4);
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -474,6 +532,79 @@ $t(1+4u^2)=-8u$，$4tu^2+8u+t=0$。
 ## 高考真题：2021年 全国甲卷 第20题（第1问）
 
 已知椭圆 $C: \dfrac{x^2}{2}+y^2=1$，直线 $l: y=kx+m$ 与椭圆 $C$ 交于 $A(x_1,y_1), B(x_2,y_2)$ 两点。求 $x_1+x_2$ 和 $x_1 x_2$（用 $k, m$ 表示）。
+
+```{=html}
+<div class="d3-container" id="gaokao_m2_04_q2"></div>
+<script>
+(function() {
+  const W = 360, H = 200;
+  const svg = d3.select("#gaokao_m2_04_q2").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%");
+  const cx = W / 2, cy = H / 2 + 5;
+  const sc = 50; // 1 unit = 50px
+
+  // Axes
+  svg.append("line").attr("x1", 15).attr("y1", cy).attr("x2", W - 15).attr("y2", cy)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+  svg.append("line").attr("x1", cx).attr("y1", 8).attr("x2", cx).attr("y2", H - 8)
+    .attr("stroke", "#ccc").attr("stroke-width", 1);
+
+  // Ellipse: x²/2 + y² = 1 → a=√2≈1.414, b=1
+  const aVal = Math.sqrt(2), bVal = 1;
+  const a = aVal * sc, b = bVal * sc;
+  const pts = d3.range(0, 2 * Math.PI + 0.05, 0.05).map(t =>
+    [cx + a * Math.cos(t), cy - b * Math.sin(t)]);
+  svg.append("path").attr("d", d3.line()(pts))
+    .attr("fill", "rgba(45,112,179,0.06)").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+  svg.append("text").attr("x", cx + a + 4).attr("y", cy - 4)
+    .attr("font-size", "10px").attr("fill", "#2d70b3").text("C");
+
+  // Example line y = x + 0.5 → intersect with x²/2+y²=1
+  // x²/2 + (x+0.5)² = 1 → x²/2 + x² + x + 0.25 = 1 → 1.5x² + x - 0.75 = 0
+  // x = (-1 ± √(1+4.5))/3 = (-1 ± √5.5)/3
+  const kL = 0.8, mL = 0.4;
+  const A = 0.5 + kL * kL, B = 2 * kL * mL, C = mL * mL - 1;
+  const disc = B * B - 4 * A * C;
+  const xA = (-B - Math.sqrt(disc)) / (2 * A);
+  const xB = (-B + Math.sqrt(disc)) / (2 * A);
+  const yA = kL * xA + mL, yB = kL * xB + mL;
+
+  // Line
+  svg.append("line")
+    .attr("x1", cx + (-2) * sc).attr("y1", cy - (kL * (-2) + mL) * sc)
+    .attr("x2", cx + 2 * sc).attr("y2", cy - (kL * 2 + mL) * sc)
+    .attr("stroke", "#c74440").attr("stroke-width", 1.8);
+  svg.append("text").attr("x", cx + 1.5 * sc + 4).attr("y", cy - (kL * 1.5 + mL) * sc - 6)
+    .attr("font-size", "10px").attr("fill", "#c74440").text("l: y=kx+m");
+
+  // Intersection points
+  svg.append("circle").attr("cx", cx + xA * sc).attr("cy", cy - yA * sc).attr("r", 5).attr("fill", "#388c46");
+  svg.append("text").attr("x", cx + xA * sc - 6).attr("y", cy - yA * sc + 16)
+    .attr("font-size", "11px").attr("fill", "#388c46").attr("font-weight", "bold").text("A");
+
+  svg.append("circle").attr("cx", cx + xB * sc).attr("cy", cy - yB * sc).attr("r", 5).attr("fill", "#388c46");
+  svg.append("text").attr("x", cx + xB * sc + 8).attr("y", cy - yB * sc - 4)
+    .attr("font-size", "11px").attr("fill", "#388c46").attr("font-weight", "bold").text("B");
+
+  // Midpoint
+  const mx = (xA + xB) / 2, my = (yA + yB) / 2;
+  svg.append("circle").attr("cx", cx + mx * sc).attr("cy", cy - my * sc).attr("r", 3).attr("fill", "#fa7e19");
+  svg.append("text").attr("x", cx + mx * sc + 8).attr("y", cy - my * sc + 3)
+    .attr("font-size", "9px").attr("fill", "#fa7e19").text("中点");
+
+  // Chord AB highlight
+  svg.append("line").attr("x1", cx + xA * sc).attr("y1", cy - yA * sc)
+    .attr("x2", cx + xB * sc).attr("y2", cy - yB * sc)
+    .attr("stroke", "#388c46").attr("stroke-width", 2.5).attr("opacity", 0.3);
+
+  // Vieta label
+  svg.append("text").attr("x", 10).attr("y", 18)
+    .attr("font-size", "9px").attr("fill", "#555").text("x₁+x₂ = -4km/(1+2k²)");
+  svg.append("text").attr("x", 10).attr("y", 32)
+    .attr("font-size", "9px").attr("fill", "#555").text("x₁x₂ = 2(m²-1)/(1+2k²)");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

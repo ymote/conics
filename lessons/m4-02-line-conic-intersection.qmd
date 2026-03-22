@@ -353,6 +353,32 @@ $x_1 + x_2 > 0$ 结合 $1-2k^2 < 0$，需 $-4k < 0 \Rightarrow k > 0$
 
 直线 $y=kx+1$ 与椭圆 $\dfrac{x^2}{4}+\dfrac{y^2}{2}=1$ 有两个不同交点, 求 $k$ 的取值范围.
 
+```{=html}
+<div class="d3-container" id="gaokao_m4_02_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m4_02_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=40;
+  const a=2,b=Math.sqrt(2);
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // ellipse
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // y=kx+1 family through (0,1)
+  svg.append("circle").attr("cx",cx).attr("cy",cy-1*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+5).attr("y",cy-1*sc-4).attr("font-size","10px").attr("fill","#388c46").text("(0,1)");
+  // several lines
+  [-1,-0.3,0,0.5,1].forEach(k=>{
+    svg.append("line").attr("x1",cx-3*sc).attr("y1",cy-(-3*k+1)*sc).attr("x2",cx+3*sc).attr("y2",cy-(3*k+1)*sc).attr("stroke","#c74440").attr("stroke-width",1).attr("opacity",0.4);
+  });
+  // label: (0,1) inside ellipse
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","12px").attr("fill","#333").text("(0,1)\u5728\u692d\u5706\u5185\u90e8 \u21d2 k\u2208\u211d");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -384,6 +410,43 @@ $$\boxed{k\in(-\infty,\,+\infty), \text{ 即 } k \text{ 为任意实数}}$$
 ## 高考真题：直线与双曲线右支交两点
 
 直线 $y=kx+1$ 与双曲线 $\dfrac{x^2}{2}-y^2=1$ 交于右支两个不同的点, 求 $k$ 的取值范围.
+
+```{=html}
+<div class="d3-container" id="gaokao_m4_02_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m4_02_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=30;
+  const a=Math.sqrt(2),b=1;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // asymptotes
+  const sl=b/a;
+  svg.append("line").attr("x1",cx-4*sc).attr("y1",cy+4*sl*sc).attr("x2",cx+4*sc).attr("y2",cy-4*sl*sc).attr("stroke","#999").attr("stroke-width",1).attr("stroke-dasharray","4,3");
+  svg.append("line").attr("x1",cx-4*sc).attr("y1",cy-4*sl*sc).attr("x2",cx+4*sc).attr("y2",cy+4*sl*sc).attr("stroke","#999").attr("stroke-width",1).attr("stroke-dasharray","4,3");
+  // hyperbola
+  const rp=d3.range(-1.8,1.81,.05).map(t=>[cx+a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  const lp=d3.range(-1.8,1.81,.05).map(t=>[cx-a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(rp)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(lp)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // (0,1) fixed point
+  svg.append("circle").attr("cx",cx).attr("cy",cy-1*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+5).attr("y",cy-1*sc-4).attr("font-size","10px").attr("fill","#388c46").text("(0,1)");
+  // valid line with k=-0.8
+  const k=-0.8;
+  svg.append("line").attr("x1",cx-2*sc).attr("y1",cy-(-2*k+1)*sc).attr("x2",cx+4*sc).attr("y2",cy-(4*k+1)*sc).attr("stroke","#c74440").attr("stroke-width",1.5);
+  // intersection points (approximate)
+  svg.append("circle").attr("cx",cx+2.0*sc).attr("cy",cy-(-0.6)*sc).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",cx+3.2*sc).attr("cy",cy-(-1.56)*sc).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+2.0*sc+5).attr("y",cy-(-0.6)*sc+4).attr("font-size","10px").attr("fill","#c74440").text("A");
+  svg.append("text").attr("x",cx+3.2*sc+5).attr("y",cy-(-1.56)*sc+4).attr("font-size","10px").attr("fill","#c74440").text("B");
+  // range label
+  svg.append("text").attr("x",20).attr("y",18).attr("font-size","12px").attr("fill","#333").text("k\u2208(-1,-\u221a2/2)");
+  svg.append("text").attr("x",W-100).attr("y",H-10).attr("font-size","10px").attr("fill","#999").text("\u6e10\u8fd1\u7ebf k=\u00b1\u221a2/2");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

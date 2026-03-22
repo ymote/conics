@@ -428,6 +428,36 @@ $x_1 x_2 + y_1 y_2 = (t^2+1) \cdot y_1 y_2 + \sqrt{2}t(y_1+y_2) + 2 = 0$
 
 已知椭圆 $C: \dfrac{x^2}{2}+y^2=1$，$F_1, F_2$ 分别为左、右焦点。过 $F_1$ 的直线 $l$ 交椭圆于 $A, B$ 两点。求 $\triangle ABF_2$ 面积的最大值。
 
+```{=html}
+<div class="d3-container" id="gaokao_m4_06_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m4_06_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=50;
+  const a=Math.sqrt(2),b=1,c=1;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // F1, F2
+  svg.append("circle").attr("cx",cx-c*sc).attr("cy",cy).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx-c*sc-5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("F\u2081");
+  svg.append("circle").attr("cx",cx+c*sc).attr("cy",cy).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+c*sc-5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("F\u2082");
+  // vertical chord through F1 (max area case)
+  svg.append("line").attr("x1",cx-c*sc).attr("y1",cy-b*0.7*sc).attr("x2",cx-c*sc).attr("y2",cy+b*0.7*sc).attr("stroke","#388c46").attr("stroke-width",2);
+  svg.append("circle").attr("cx",cx-c*sc).attr("cy",cy-b*0.7*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-c*sc-12).attr("y",cy-b*0.7*sc-4).attr("font-size","10px").attr("fill","#388c46").text("A");
+  svg.append("circle").attr("cx",cx-c*sc).attr("cy",cy+b*0.7*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-c*sc-12).attr("y",cy+b*0.7*sc+12).attr("font-size","10px").attr("fill","#388c46").text("B");
+  // triangle ABF2
+  svg.append("path").attr("d",`M${cx-c*sc},${cy-b*0.7*sc} L${cx-c*sc},${cy+b*0.7*sc} L${cx+c*sc},${cy} Z`).attr("fill","rgba(56,140,70,0.12)").attr("stroke","#388c46").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","12px").attr("fill","#c74440").text("S_max = \u221a2  (l\u22a5x\u8f74\u65f6)");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -475,6 +505,38 @@ $S=\sqrt{2}$，当 $l$ 垂直于 $x$ 轴时取最大值。
 ## 高考真题：2023年 新高考II卷 第21题（参数范围）
 
 已知椭圆 $C: \dfrac{x^2}{4}+y^2=1$，直线 $l: y=kx+m$ 与椭圆 $C$ 交于不同的两点 $A, B$。若线段 $AB$ 的中点的横坐标为 $\dfrac{1}{2}$，求 $k$ 的值。
+
+```{=html}
+<div class="d3-container" id="gaokao_m4_06_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m4_06_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=45;
+  const a=2,b=1;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // midpoint x=1/2 line
+  svg.append("line").attr("x1",cx+0.5*sc).attr("y1",10).attr("x2",cx+0.5*sc).attr("y2",H-10).attr("stroke","#9b59b6").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  svg.append("text").attr("x",cx+0.5*sc+3).attr("y",18).attr("font-size","10px").attr("fill","#9b59b6").text("x=1/2");
+  // chord with midpoint at (1/2, y0)
+  const x0=0.5;
+  const k_chord=-1*x0/(4*0.8);  // approximate
+  svg.append("line").attr("x1",cx-1.2*sc).attr("y1",cy+0.5*sc).attr("x2",cx+2.2*sc).attr("y2",cy-1.2*sc).attr("stroke","#e67e22").attr("stroke-width",2);
+  // midpoint M
+  svg.append("circle").attr("cx",cx+0.5*sc).attr("cy",cy-0.35*sc).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+0.5*sc+6).attr("y",cy-0.35*sc-3).attr("font-size","10px").attr("fill","#c74440").text("M(1/2,y\u2080)");
+  // A,B endpoints
+  svg.append("circle").attr("cx",cx-1*sc).attr("cy",cy+0.4*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-1*sc-10).attr("y",cy+0.4*sc+12).attr("font-size","10px").attr("fill","#388c46").text("A");
+  svg.append("circle").attr("cx",cx+2*sc).attr("cy",cy-1.1*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+2*sc+4).attr("y",cy-1.1*sc-3).attr("font-size","10px").attr("fill","#388c46").text("B");
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","11px").attr("fill","#333").text("\u70b9\u5dee\u6cd5: k=-b\u00b2x\u2080/(a\u00b2y\u2080)");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

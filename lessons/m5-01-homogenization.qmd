@@ -401,6 +401,40 @@ $k_{AM} \cdot k_{AN} = \dfrac{3}{4}$ 为定值，与直线 $l$ 的斜率无关�
 
 已知椭圆 $C: \dfrac{x^2}{4}+y^2=1$，直线 $l$ 过点 $T(1,0)$ 交椭圆于 $A(x_1,y_1), B(x_2,y_2)$ 两点。$O$ 为原点。求 $k_{OA}+k_{OB}$ 是否为定值。
 
+```{=html}
+<div class="d3-container" id="gaokao_m5_01_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m5_01_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=45;
+  const a=2,b=1;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // O
+  svg.append("circle").attr("cx",cx).attr("cy",cy).attr("r",3).attr("fill","#333");
+  svg.append("text").attr("x",cx-12).attr("y",cy+14).attr("font-size","10px").text("O");
+  // T(1,0)
+  svg.append("circle").attr("cx",cx+1*sc).attr("cy",cy).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+1*sc+4).attr("y",cy+14).attr("font-size","10px").attr("fill","#c74440").text("T(1,0)");
+  // line through T
+  svg.append("line").attr("x1",cx+1*sc-1.5*sc).attr("y1",cy+0.8*sc).attr("x2",cx+1*sc+1.5*sc).attr("y2",cy-0.8*sc).attr("stroke","#e67e22").attr("stroke-width",1.5);
+  // A, B on ellipse
+  svg.append("circle").attr("cx",cx-0.3*sc).attr("cy",cy+0.7*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-0.3*sc-12).attr("y",cy+0.7*sc+12).attr("font-size","10px").attr("fill","#388c46").text("A");
+  svg.append("circle").attr("cx",cx+1.9*sc).attr("cy",cy-0.5*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+1.9*sc+4).attr("y",cy-0.5*sc-3).attr("font-size","10px").attr("fill","#388c46").text("B");
+  // OA, OB lines
+  svg.append("line").attr("x1",cx).attr("y1",cy).attr("x2",cx-0.3*sc).attr("y2",cy+0.7*sc).attr("stroke","#388c46").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  svg.append("line").attr("x1",cx).attr("y1",cy).attr("x2",cx+1.9*sc).attr("y2",cy-0.5*sc).attr("stroke","#388c46").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  // label: homogenization technique
+  svg.append("text").attr("x",20).attr("y",18).attr("font-size","11px").attr("fill","#9b59b6").text("\u9f50\u6b21\u5316: 1=x-my \u2192 \u4ee3\u5165\u692d\u5706");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -435,6 +469,41 @@ $$(1-m^2)v^2+2mv-\frac{3}{4}=0$$
 ## 高考真题：2022年 全国甲卷 第21题（齐次化典型应用）
 
 已知椭圆 $\dfrac{x^2}{2}+y^2=1$，$A, B$ 是椭圆上两点，直线 $OA, OB$ 的斜率之积 $k_{OA}\cdot k_{OB}=-\dfrac{1}{2}$。证明直线 $AB$ 过定点。
+
+```{=html}
+<div class="d3-container" id="gaokao_m5_01_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m5_01_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=50;
+  const a=Math.sqrt(2),b=1;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // O
+  svg.append("circle").attr("cx",cx).attr("cy",cy).attr("r",3).attr("fill","#333");
+  svg.append("text").attr("x",cx-12).attr("y",cy+14).attr("font-size","10px").text("O");
+  // A, B on ellipse
+  const t1=0.8,t2=2.8;
+  const ax_=a*Math.cos(t1),ay_=b*Math.sin(t1);
+  const bx_=a*Math.cos(t2),by_=b*Math.sin(t2);
+  svg.append("circle").attr("cx",cx+ax_*sc).attr("cy",cy-ay_*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+ax_*sc+5).attr("y",cy-ay_*sc-5).attr("font-size","11px").attr("fill","#388c46").text("A");
+  svg.append("circle").attr("cx",cx+bx_*sc).attr("cy",cy-by_*sc).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",cx+bx_*sc-12).attr("y",cy-by_*sc+14).attr("font-size","11px").attr("fill","#388c46").text("B");
+  // OA, OB
+  svg.append("line").attr("x1",cx).attr("y1",cy).attr("x2",cx+ax_*sc).attr("y2",cy-ay_*sc).attr("stroke","#388c46").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  svg.append("line").attr("x1",cx).attr("y1",cy).attr("x2",cx+bx_*sc).attr("y2",cy-by_*sc).attr("stroke","#388c46").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  // AB line
+  svg.append("line").attr("x1",cx+ax_*sc).attr("y1",cy-ay_*sc).attr("x2",cx+bx_*sc).attr("y2",cy-by_*sc).attr("stroke","#e67e22").attr("stroke-width",2);
+  // label
+  svg.append("text").attr("x",20).attr("y",18).attr("font-size","11px").attr("fill","#9b59b6").text("k\u2081k\u2082=-1/2=-b\u00b2/a\u00b2 \u21d2 AB\u8fc7\u5b9a\u70b9");
+  svg.append("text").attr("x",20).attr("y",34).attr("font-size","10px").attr("fill","#9b59b6").text("\u9f50\u6b21\u5316\u53cd\u5411\u5e94\u7528: 2n\u00b2=m\u00b2+2");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

@@ -433,6 +433,72 @@ date: 2026-03-22
 
 A. $1$ 　B. $2$ 　C. $3$ 　D. $4$
 
+```{=html}
+<div class="d3-container" id="gaokao_m1_02_q1"></div>
+<script>
+(function() {
+  const W = 700, H = 200, margin = {top: 15, right: 20, bottom: 20, left: 20};
+  const w = W - margin.left - margin.right, h = H - margin.top - margin.bottom;
+  const svg = d3.select("#gaokao_m1_02_q1").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const cx = w/2, cy = h/2;
+  // Ellipse x²/4+y²/3=1: a=2, b=√3, c=1
+  const a = 2, b = Math.sqrt(3), c = 1, s = 60;
+
+  // axes
+  svg.append("line").attr("x1", 0).attr("y1", cy).attr("x2", w).attr("y2", cy)
+    .attr("stroke", "#ddd").attr("stroke-width", 1);
+  svg.append("line").attr("x1", cx).attr("y1", 0).attr("x2", cx).attr("y2", h)
+    .attr("stroke", "#ddd").attr("stroke-width", 1);
+
+  // ellipse
+  const pts = d3.range(0, 2*Math.PI+0.05, 0.04).map(t =>
+    [cx + a*s*Math.cos(t), cy + b*s*Math.sin(t)]);
+  svg.append("path").attr("d", d3.line()(pts)+"Z")
+    .attr("fill", "rgba(45,112,179,0.06)").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // foci F₁(-1,0), F₂(1,0)
+  const f1x = cx - c*s, f2x = cx + c*s;
+  svg.append("circle").attr("cx", f1x).attr("cy", cy).attr("r", 5).attr("fill", "#c74440");
+  svg.append("circle").attr("cx", f2x).attr("cy", cy).attr("r", 5).attr("fill", "#c74440");
+  svg.append("text").attr("x", f1x).attr("y", cy+18).attr("text-anchor", "middle")
+    .attr("font-size", "12px").attr("fill", "#c74440").attr("font-weight", "bold").text("F₁");
+  svg.append("text").attr("x", f2x).attr("y", cy+18).attr("text-anchor", "middle")
+    .attr("font-size", "12px").attr("fill", "#c74440").attr("font-weight", "bold").text("F₂");
+
+  // Point P: |PF₁|=1. Since a=2, c=1, min dist to F₁ is a-c=1 → P is at right vertex (2,0)
+  // Actually |PF₁|=1 means P is near F₁. Let's find: for a general point,
+  // |PF₁|=1 and |PF₁|+|PF₂|=4, so |PF₂|=3
+  // |PF₁|=a+ex=1 → 2+x/2=1 → x=-2? No: |PF₁|=a+ex (for left focus)
+  // Actually for left focus: |PF₁|=a+ex (x can be negative)
+  // a+ex = 1 → 2 + (1/2)x = 1 → x = -2. So P is at left vertex (-2,0), |PF₁|=a-c=1 ✓
+  const px = cx - a*s, py = cy;
+  svg.append("circle").attr("cx", px).attr("cy", py).attr("r", 5).attr("fill", "#2d70b3");
+  svg.append("text").attr("x", px-8).attr("y", py-10).attr("font-size", "12px")
+    .attr("fill", "#2d70b3").attr("font-weight", "bold").text("P");
+
+  // line PF₁
+  svg.append("line").attr("x1", px).attr("y1", py).attr("x2", f1x).attr("y2", cy)
+    .attr("stroke", "#e67e22").attr("stroke-width", 2);
+  svg.append("text").attr("x", (px+f1x)/2).attr("y", cy-10).attr("text-anchor", "middle")
+    .attr("font-size", "11px").attr("fill", "#e67e22").attr("font-weight", "bold").text("|PF₁|=1");
+
+  // line PF₂
+  svg.append("line").attr("x1", px).attr("y1", py).attr("x2", f2x).attr("y2", cy)
+    .attr("stroke", "#27ae60").attr("stroke-width", 2);
+  svg.append("text").attr("x", (px+f2x)/2).attr("y", cy+16).attr("text-anchor", "middle")
+    .attr("font-size", "11px").attr("fill", "#27ae60").attr("font-weight", "bold").text("|PF₂|=?");
+
+  // Sum label
+  svg.append("text").attr("x", w-10).attr("y", 18).attr("text-anchor", "end")
+    .attr("font-size", "12px").attr("fill", "#2d70b3").attr("font-weight", "bold")
+    .text("|PF₁|+|PF₂| = 2a = 4");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -452,6 +518,67 @@ A. $1$ 　B. $2$ 　C. $3$ 　D. $4$
 已知椭圆 $C: \dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$ 的左、右焦点分别为 $F_1, F_2$，$P$ 是椭圆 $C$ 上的一点，$|PF_1|+|PF_2|=12$，且 $\triangle PF_1F_2$ 的周长为 $22$，则椭圆的焦距为（　　）
 
 A. $8$ 　B. $10$ 　C. $12$ 　D. $14$
+
+```{=html}
+<div class="d3-container" id="gaokao_m1_02_q2"></div>
+<script>
+(function() {
+  const W = 700, H = 200, margin = {top: 15, right: 20, bottom: 20, left: 20};
+  const w = W - margin.left - margin.right, h = H - margin.top - margin.bottom;
+  const svg = d3.select("#gaokao_m1_02_q2").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const cx = w/2, cy = h/2;
+  // 2a=12 → a=6, perimeter=22 → 2c=10 → c=5, b=√(36-25)=√11
+  const a = 6, c = 5, b = Math.sqrt(11), s = 13;
+
+  // axes
+  svg.append("line").attr("x1", cx-a*s-20).attr("y1", cy).attr("x2", cx+a*s+20).attr("y2", cy)
+    .attr("stroke", "#ddd").attr("stroke-width", 1);
+
+  // ellipse
+  const pts = d3.range(0, 2*Math.PI+0.05, 0.04).map(t =>
+    [cx + a*s*Math.cos(t), cy + b*s*Math.sin(t)]);
+  svg.append("path").attr("d", d3.line()(pts)+"Z")
+    .attr("fill", "rgba(45,112,179,0.06)").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // foci
+  const f1x = cx - c*s, f2x = cx + c*s;
+  svg.append("circle").attr("cx", f1x).attr("cy", cy).attr("r", 5).attr("fill", "#c74440");
+  svg.append("circle").attr("cx", f2x).attr("cy", cy).attr("r", 5).attr("fill", "#c74440");
+  svg.append("text").attr("x", f1x).attr("y", cy+18).attr("text-anchor", "middle")
+    .attr("font-size", "12px").attr("fill", "#c74440").attr("font-weight", "bold").text("F₁");
+  svg.append("text").attr("x", f2x).attr("y", cy+18).attr("text-anchor", "middle")
+    .attr("font-size", "12px").attr("fill", "#c74440").attr("font-weight", "bold").text("F₂");
+
+  // Point P on ellipse (upper portion)
+  const theta = Math.PI * 0.35;
+  const px = cx + a*s*Math.cos(theta), py = cy - b*s*Math.sin(theta);
+  svg.append("circle").attr("cx", px).attr("cy", py).attr("r", 5).attr("fill", "#2d70b3");
+  svg.append("text").attr("x", px+8).attr("y", py-8).attr("font-size", "13px")
+    .attr("fill", "#2d70b3").attr("font-weight", "bold").text("P");
+
+  // Triangle PF₁F₂
+  svg.append("polygon")
+    .attr("points", `${px},${py} ${f1x},${cy} ${f2x},${cy}`)
+    .attr("fill", "rgba(230,126,34,0.1)").attr("stroke", "#e67e22").attr("stroke-width", 1.5);
+
+  // Labels
+  svg.append("text").attr("x", (px+f1x)/2-12).attr("y", (py+cy)/2-2).attr("font-size", "10px")
+    .attr("fill", "#e67e22").text("|PF₁|");
+  svg.append("text").attr("x", (px+f2x)/2+5).attr("y", (py+cy)/2-2).attr("font-size", "10px")
+    .attr("fill", "#27ae60").text("|PF₂|");
+  svg.append("text").attr("x", cx).attr("y", cy+16).attr("text-anchor", "middle")
+    .attr("font-size", "10px").attr("fill", "#c74440").text("|F₁F₂| = 2c = ?");
+
+  // Info
+  svg.append("text").attr("x", w-5).attr("y", 16).attr("text-anchor", "end")
+    .attr("font-size", "11px").attr("fill", "#2d70b3").attr("font-weight", "bold")
+    .text("周长 = |PF₁|+|PF₂|+|F₁F₂| = 12+2c = 22");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

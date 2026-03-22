@@ -334,6 +334,36 @@ $a^2 = $ ______，$b^2 = $ ______，$c^2 = $ ______
 
 A. $\dfrac{2\sqrt{3}}{3}$ 　B. $\sqrt{3}$ 　C. $2$ 　D. $\sqrt{5}$
 
+```{=html}
+<div class="d3-container" id="gaokao_m3_04_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m3_04_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=30;
+  // axes
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // b/a=sqrt(3), take a=1,b=sqrt(3),c=2
+  const a=1,b=Math.sqrt(3),c_=2;
+  // asymptotes y=+-sqrt(3)x
+  svg.append("line").attr("x1",cx-3*sc).attr("y1",cy+3*Math.sqrt(3)*sc).attr("x2",cx+3*sc).attr("y2",cy-3*Math.sqrt(3)*sc).attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","5,3");
+  svg.append("line").attr("x1",cx-3*sc).attr("y1",cy-3*Math.sqrt(3)*sc).attr("x2",cx+3*sc).attr("y2",cy+3*Math.sqrt(3)*sc).attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","5,3");
+  // hyperbola branches
+  const rp=d3.range(-1.8,1.81,.05).map(t=>[cx+a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  const lp=d3.range(-1.8,1.81,.05).map(t=>[cx-a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(rp)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(lp)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // foci
+  svg.append("circle").attr("cx",cx-c_*sc).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",cx+c_*sc).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  // labels
+  svg.append("text").attr("x",cx+3*sc-25).attr("y",cy-2.8*sc).attr("font-size","11px").attr("fill","#9b59b6").text("y=\u00b1\u221a3 x");
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","12px").attr("fill","#e67e22").text("b/a=\u221a3 \u21d2 c=2a \u21d2 e=2");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -353,6 +383,35 @@ $e=\dfrac{c}{a}=2$。
 双曲线 $C: \dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=1\ (a>0,b>0)$ 的一条渐近线的斜率为 $\dfrac{\sqrt{5}}{2}$，则 $C$ 的离心率为（　　）
 
 A. $\dfrac{3}{2}$ 　B. $\dfrac{\sqrt{5}}{2}$ 　C. $3$ 　D. $\sqrt{5}$
+
+```{=html}
+<div class="d3-container" id="gaokao_m3_04_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=400,H=200;
+  const svg=d3.select("#gaokao_m3_04_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2,cy=H/2,sc=30;
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // b/a=sqrt(5)/2, take a=2,b=sqrt(5),c=3
+  const a=2,b=Math.sqrt(5),c_=3;
+  const slope=b/a;
+  // asymptotes
+  svg.append("line").attr("x1",cx-4*sc).attr("y1",cy+4*slope*sc).attr("x2",cx+4*sc).attr("y2",cy-4*slope*sc).attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","5,3");
+  svg.append("line").attr("x1",cx-4*sc).attr("y1",cy-4*slope*sc).attr("x2",cx+4*sc).attr("y2",cy+4*slope*sc).attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","5,3");
+  // hyperbola
+  const rp=d3.range(-1.5,1.51,.05).map(t=>[cx+a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  const lp=d3.range(-1.5,1.51,.05).map(t=>[cx-a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(rp)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(lp)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // characteristic triangle: O-F-H (a,b,c)
+  svg.append("path").attr("d",`M${cx},${cy} L${cx+c_*sc},${cy} L${cx+a*sc},${cy-b*sc} Z`).attr("fill","rgba(56,140,70,0.12)").attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","3,3");
+  svg.append("text").attr("x",cx+a*sc+3).attr("y",cy-b*sc-3).attr("font-size","10px").attr("fill","#388c46").text("b=\u221a5");
+  svg.append("text").attr("x",cx+(a+c_)*sc/2).attr("y",cy+14).attr("font-size","10px").attr("fill","#388c46").text("a=2");
+  svg.append("text").attr("x",30).attr("y",18).attr("font-size","12px").attr("fill","#e67e22").text("e=c/a=3/2");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

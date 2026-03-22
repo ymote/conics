@@ -534,6 +534,75 @@ date: 2026-03-22
 
 A. $\dfrac{3}{2}$ 　B. $\dfrac{3}{4}$ 　C. $\dfrac{4}{3}$ 　D. $\dfrac{3}{5}$
 
+```{=html}
+<div class="d3-container" id="gaokao_m1_04_q1"></div>
+<script>
+(function() {
+  const W = 700, H = 200, margin = {top: 15, right: 30, bottom: 20, left: 40};
+  const w = W - margin.left - margin.right, h = H - margin.top - margin.bottom;
+  const svg = d3.select("#gaokao_m1_04_q1").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const cy = h/2, ox = 50, s = 30;
+  // y²=4x: 2p=4, p=2, focus F(1,0), directrix x=-1
+  // |AF|=3 → x_A+1=3 → x_A=2, y_A²=8, y_A=±2√2
+  // 1/|AF|+1/|BF|=1 → |BF|=3/2, x_B=1/2, y_B²=2, y_B=∓√2
+
+  // Parabola
+  const pts = d3.range(-4.5, 4.51, 0.1).map(t => {
+    const x = t*t/4, y = t;
+    return [ox + x*s, cy - y*s];
+  }).filter(p => p[0]<w+10 && p[1]>-5 && p[1]<h+5);
+  svg.append("path").attr("d", d3.line().curve(d3.curveBasis)(pts))
+    .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // Directrix
+  const dirX = ox + (-1)*s;
+  svg.append("line").attr("x1", dirX).attr("y1", 0).attr("x2", dirX).attr("y2", h)
+    .attr("stroke", "#9b59b6").attr("stroke-width", 1).attr("stroke-dasharray", "4,3");
+  svg.append("text").attr("x", dirX-3).attr("y", 12).attr("text-anchor", "end")
+    .attr("font-size", "9px").attr("fill", "#9b59b6").text("x=−1");
+
+  // Focus
+  const fx = ox + 1*s, fy = cy;
+  svg.append("circle").attr("cx", fx).attr("cy", fy).attr("r", 4).attr("fill", "#c74440");
+  svg.append("text").attr("x", fx+8).attr("y", fy+14).attr("font-size", "11px")
+    .attr("fill", "#c74440").attr("font-weight", "bold").text("F(1,0)");
+
+  // Point A: x_A=2, y_A=2√2≈2.83
+  const ax = ox + 2*s, ay = cy - 2*Math.sqrt(2)*s;
+  svg.append("circle").attr("cx", ax).attr("cy", ay).attr("r", 4).attr("fill", "#e67e22");
+  svg.append("text").attr("x", ax+8).attr("y", ay-4).attr("font-size", "11px")
+    .attr("fill", "#e67e22").attr("font-weight", "bold").text("A");
+
+  // Point B: x_B=0.5, y_B=-√2≈-1.41
+  const bx = ox + 0.5*s, by = cy + Math.sqrt(2)*s;
+  svg.append("circle").attr("cx", bx).attr("cy", by).attr("r", 4).attr("fill", "#27ae60");
+  svg.append("text").attr("x", bx+8).attr("y", by+12).attr("font-size", "11px")
+    .attr("fill", "#27ae60").attr("font-weight", "bold").text("B");
+
+  // Focal chord line through F, A, B
+  svg.append("line").attr("x1", ax).attr("y1", ay).attr("x2", bx).attr("y2", by)
+    .attr("stroke", "#888").attr("stroke-width", 1.5);
+
+  // Distance labels
+  svg.append("text").attr("x", (ax+fx)/2+10).attr("y", (ay+fy)/2-2).attr("font-size", "10px")
+    .attr("fill", "#e67e22").attr("font-weight", "bold").text("|AF|=3");
+  svg.append("text").attr("x", (bx+fx)/2-25).attr("y", (by+fy)/2+4).attr("font-size", "10px")
+    .attr("fill", "#27ae60").attr("font-weight", "bold").text("|BF|=?");
+
+  // Focal chord property
+  svg.append("text").attr("x", w-5).attr("y", 14).attr("text-anchor", "end")
+    .attr("font-size", "11px").attr("fill", "#2d70b3").attr("font-weight", "bold")
+    .text("焦点弦: 1/|AF| + 1/|BF| = 2/p = 1");
+  svg.append("text").attr("x", w-5).attr("y", 32).attr("text-anchor", "end")
+    .attr("font-size", "11px").attr("fill", "#333")
+    .text("→ 1/|BF| = 1−1/3 = 2/3 → |BF| = 3/2");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -558,6 +627,79 @@ $$\frac{1}{|AF|}+\frac{1}{|BF|}=\frac{2}{p}=\frac{2}{2}=1$$
 已知抛物线 $C: y^2=2px\ (p>0)$ 的准线为 $l$，$A$ 是 $C$ 上的一点，$F$ 为焦点。已知 $A$ 到 $l$ 的距离为 $10$，$|AF|=10$，$|OF|=1$（$O$ 为原点），则 $p=$（　　）
 
 A. $1$ 　B. $2$ 　C. $4$ 　D. $8$
+
+```{=html}
+<div class="d3-container" id="gaokao_m1_04_q2"></div>
+<script>
+(function() {
+  const W = 700, H = 200, margin = {top: 15, right: 30, bottom: 20, left: 50};
+  const w = W - margin.left - margin.right, h = H - margin.top - margin.bottom;
+  const svg = d3.select("#gaokao_m1_04_q2").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const cy = h/2, ox = 70, s = 14;
+  // y²=2px with p=2: y²=4x. Focus F(1,0), directrix x=-1, |OF|=1
+  // A on curve with |AF|=10 → x_A+1=10 → x_A=9, y_A²=36, y_A=±6
+
+  // Parabola
+  const pts = d3.range(-7, 7.01, 0.15).map(t => {
+    const x = t*t/4, y = t;
+    return [ox + x*s, cy - y*s];
+  }).filter(p => p[0]<w+10 && p[1]>-5 && p[1]<h+5);
+  svg.append("path").attr("d", d3.line().curve(d3.curveBasis)(pts))
+    .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+
+  // Directrix x = -p/2 = -1
+  const dirX = ox + (-1)*s;
+  svg.append("line").attr("x1", dirX).attr("y1", 0).attr("x2", dirX).attr("y2", h)
+    .attr("stroke", "#9b59b6").attr("stroke-width", 1.5).attr("stroke-dasharray", "5,3");
+  svg.append("text").attr("x", dirX-4).attr("y", 12).attr("text-anchor", "end")
+    .attr("font-size", "10px").attr("fill", "#9b59b6").text("准线 l");
+
+  // Origin O
+  svg.append("circle").attr("cx", ox).attr("cy", cy).attr("r", 3).attr("fill", "#333");
+  svg.append("text").attr("x", ox).attr("y", cy+14).attr("text-anchor", "middle")
+    .attr("font-size", "10px").attr("fill", "#333").text("O");
+
+  // Focus F(1,0)
+  const fx = ox + 1*s;
+  svg.append("circle").attr("cx", fx).attr("cy", cy).attr("r", 4).attr("fill", "#c74440");
+  svg.append("text").attr("x", fx).attr("y", cy+14).attr("text-anchor", "middle")
+    .attr("font-size", "11px").attr("fill", "#c74440").attr("font-weight", "bold").text("F");
+
+  // |OF| bracket
+  svg.append("line").attr("x1", ox).attr("y1", cy-20).attr("x2", fx).attr("y2", cy-20)
+    .attr("stroke", "#333").attr("stroke-width", 1);
+  svg.append("text").attr("x", (ox+fx)/2).attr("y", cy-24).attr("text-anchor", "middle")
+    .attr("font-size", "9px").attr("fill", "#333").text("|OF|=p/2=1");
+
+  // Point A(9, 6)
+  const ax = ox + 9*s, ay = cy - 6*s;
+  svg.append("circle").attr("cx", ax).attr("cy", ay).attr("r", 4).attr("fill", "#2d70b3");
+  svg.append("text").attr("x", ax+8).attr("y", ay-4).attr("font-size", "11px")
+    .attr("fill", "#2d70b3").attr("font-weight", "bold").text("A");
+
+  // line AF
+  svg.append("line").attr("x1", ax).attr("y1", ay).attr("x2", fx).attr("y2", cy)
+    .attr("stroke", "#e67e22").attr("stroke-width", 1.5);
+  svg.append("text").attr("x", (ax+fx)/2+10).attr("y", (ay+cy)/2).attr("font-size", "10px")
+    .attr("fill", "#e67e22").text("|AF|=10");
+
+  // line A to directrix (horizontal)
+  svg.append("line").attr("x1", ax).attr("y1", ay).attr("x2", dirX).attr("y2", ay)
+    .attr("stroke", "#27ae60").attr("stroke-width", 1.5).attr("stroke-dasharray", "3,2");
+  svg.append("circle").attr("cx", dirX).attr("cy", ay).attr("r", 3).attr("fill", "#27ae60");
+  svg.append("text").attr("x", (ax+dirX)/2).attr("y", ay-6).attr("text-anchor", "middle")
+    .attr("font-size", "10px").attr("fill", "#27ae60").text("到准线距离=10");
+
+  // Property
+  svg.append("text").attr("x", w-5).attr("y", h-4).attr("text-anchor", "end")
+    .attr("font-size", "11px").attr("fill", "#2d70b3").attr("font-weight", "bold")
+    .text("|AF| = 到准线距离 (抛物线定义) → p=2");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

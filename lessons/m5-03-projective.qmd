@@ -370,6 +370,42 @@ $Q(1,0)$ 的极线为 $x = 4$，因此 $G$ 的轨迹在直线 $x = 4$ 上。
 
 已知椭圆 $E:\dfrac{x^2}{9}+y^2=1$，$A(-3,0), B(3,0)$ 为左右顶点。$P$ 在直线 $x=6$ 上，直线 $PA$ 交椭圆于另一点 $C$，直线 $PB$ 交椭圆于另一点 $D$。证明：直线 $CD$ 过定点。
 
+```{=html}
+<div class="d3-container" id="gaokao_m5_03_q1" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=440,H=200;
+  const svg=d3.select("#gaokao_m5_03_q1").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=140,cy=H/2,sc=18;
+  const a=3,b=1;
+  svg.append("line").attr("x1",10).attr("y1",cy).attr("x2",W-10).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  const ep=d3.range(0,2*Math.PI+.05,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(ep)+"Z").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // A, B
+  svg.append("circle").attr("cx",cx-a*sc).attr("cy",cy).attr("r",4).attr("fill","#333");
+  svg.append("text").attr("x",cx-a*sc-3).attr("y",cy+13).attr("font-size","9px").text("A");
+  svg.append("circle").attr("cx",cx+a*sc).attr("cy",cy).attr("r",4).attr("fill","#333");
+  svg.append("text").attr("x",cx+a*sc-3).attr("y",cy+13).attr("font-size","9px").text("B");
+  // x=6 (polar line of (3/2,0))
+  const x6=cx+6*sc;
+  svg.append("line").attr("x1",x6).attr("y1",10).attr("x2",x6).attr("y2",H-10).attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  svg.append("text").attr("x",x6+3).attr("y",16).attr("font-size","9px").attr("fill","#9b59b6").text("x=6 (\u6781\u7ebf)");
+  // P on x=6
+  svg.append("circle").attr("cx",x6).attr("cy",cy-2*sc).attr("r",4).attr("fill","#9b59b6");
+  svg.append("text").attr("x",x6+4).attr("y",cy-2*sc-2).attr("font-size","9px").attr("fill","#9b59b6").text("P");
+  // PA, PB lines
+  svg.append("line").attr("x1",cx-a*sc).attr("y1",cy).attr("x2",x6).attr("y2",cy-2*sc).attr("stroke","#388c46").attr("stroke-width",1).attr("opacity",0.5);
+  svg.append("line").attr("x1",cx+a*sc).attr("y1",cy).attr("x2",x6).attr("y2",cy-2*sc).attr("stroke","#e67e22").attr("stroke-width",1).attr("opacity",0.5);
+  // fixed point (3/2, 0) = pole
+  svg.append("circle").attr("cx",cx+1.5*sc).attr("cy",cy).attr("r",5).attr("fill","#c74440");
+  svg.append("text").attr("x",cx+1.5*sc-3).attr("y",cy+14).attr("font-size","10px").attr("fill","#c74440").attr("font-weight","bold").text("(3/2,0)");
+  svg.append("text").attr("x",20).attr("y",16).attr("font-size","10px").attr("fill","#c74440").text("\u6781\u70b9(3/2,0)\u2194\u6781\u7ebfx=6");
+  svg.append("text").attr("x",20).attr("y",30).attr("font-size","9px").attr("fill","#c74440").text('"\u4ee3\u4e00\u534a": (3/2)\u00b7x/9=1 \u21d2 x=6');
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -393,6 +429,44 @@ $Q(1,0)$ 的极线为 $x = 4$，因此 $G$ 的轨迹在直线 $x = 4$ 上。
 ## 高考真题：2023年 全国卷 第22题（极点极线背景）
 
 已知双曲线 $C$ 的中心在原点，左焦点 $(-2\sqrt{5}, 0)$，离心率 $\sqrt{5}$。$A_1, A_2$ 为左右顶点。过点 $(-4,0)$ 的直线与左支交于 $M, N$。直线 $MA_1$ 与 $NA_2$ 交于 $P$。证明 $P$ 在定直线上。
+
+```{=html}
+<div class="d3-container" id="gaokao_m5_03_q2" style="max-height:200px;"></div>
+<script>
+(function(){
+  const W=440,H=200;
+  const svg=d3.select("#gaokao_m5_03_q2").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+  const cx=W/2+40,cy=H/2,sc=15;
+  const a=2,b=4,c=Math.sqrt(20);
+  svg.append("line").attr("x1",10).attr("y1",cy).attr("x2",W-10).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ccc");
+  // hyperbola x^2/4-y^2/16=1
+  const rp=d3.range(-1.5,1.51,.05).map(t=>[cx+a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  const lp=d3.range(-1.5,1.51,.05).map(t=>[cx-a*sc*Math.cosh(t),cy-b*sc*Math.sinh(t)]);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(rp.filter(p=>p[1]>5&&p[1]<H-5))).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  svg.append("path").attr("d",d3.line().curve(d3.curveBasis)(lp.filter(p=>p[1]>5&&p[1]<H-5))).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // A1(-2,0), A2(2,0)
+  svg.append("circle").attr("cx",cx-a*sc).attr("cy",cy).attr("r",4).attr("fill","#333");
+  svg.append("text").attr("x",cx-a*sc-3).attr("y",cy+13).attr("font-size","9px").text("A\u2081");
+  svg.append("circle").attr("cx",cx+a*sc).attr("cy",cy).attr("r",4).attr("fill","#333");
+  svg.append("text").attr("x",cx+a*sc-3).attr("y",cy+13).attr("font-size","9px").text("A\u2082");
+  // (-4,0) point
+  svg.append("circle").attr("cx",cx-4*sc).attr("cy",cy).attr("r",4).attr("fill","#e67e22");
+  svg.append("text").attr("x",cx-4*sc-3).attr("y",cy+13).attr("font-size","9px").attr("fill","#e67e22").text("(-4,0)");
+  // polar line x=-1
+  svg.append("line").attr("x1",cx-1*sc).attr("y1",10).attr("x2",cx-1*sc).attr("y2",H-10).attr("stroke","#c74440").attr("stroke-width",2).attr("stroke-dasharray","5,3");
+  svg.append("text").attr("x",cx-1*sc+3).attr("y",16).attr("font-size","10px").attr("fill","#c74440").attr("font-weight","bold").text("x=-1");
+  // M, N on left branch
+  svg.append("circle").attr("cx",cx-2.5*sc).attr("cy",cy-2*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-2.5*sc-10).attr("y",cy-2*sc-3).attr("font-size","9px").attr("fill","#388c46").text("M");
+  svg.append("circle").attr("cx",cx-2.8*sc).attr("cy",cy+2.5*sc).attr("r",3).attr("fill","#388c46");
+  svg.append("text").attr("x",cx-2.8*sc-10).attr("y",cy+2.5*sc+10).attr("font-size","9px").attr("fill","#388c46").text("N");
+  // label
+  svg.append("text").attr("x",10).attr("y",16).attr("font-size","10px").attr("fill","#c74440").text("\u6781\u70b9(-4,0)\u2194\u6781\u7ebf x=-1");
+  svg.append("text").attr("x",10).attr("y",30).attr("font-size","9px").attr("fill","#c74440").text('"\u4ee3\u4e00\u534a": -4x/4=1\u21d2x=-1');
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
