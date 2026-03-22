@@ -823,8 +823,23 @@ $$|PF_1| + |PF_2| = |PT_1| + |PT_2|$$
 3Blue1Brown的Grant Sanderson制作了一期精彩的Dandelin球可视化讲解，强烈推荐观看：
 
 ```{=html}
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/pQa_tWZmlGs" title="3Blue1Brown: Why slicing a cone gives an ellipse" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe>
+<div class="video-switch">
+  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-youtube').classList.add('active')">YouTube原版</button>
+  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github2').classList.add('active')">GitHub镜像</button>
+</div>
+<div class="video-panel">
+  <div class="video-source vs-youtube active">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/pQa_tWZmlGs" title="3Blue1Brown: Why slicing a cone gives an ellipse" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe>
+    </div>
+  </div>
+  <div class="video-source vs-github2">
+    <div class="video-container">
+      <video controls preload="metadata" style="width:100%;height:100%;position:absolute;top:0;left:0;">
+        <source src="https://github.com/ymote/conics/releases/download/v1.0/3b1b_dandelin.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
 </div>
 ```
 
