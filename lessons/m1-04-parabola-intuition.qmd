@@ -60,14 +60,16 @@ date: 2026-03-22
   svg.append("text").attr("x", focusX + 12).attr("y", focusY + 5)
     .attr("font-size", "14px").attr("fill", "#c74440").attr("font-weight", "bold").text("F");
 
-  // Parabola
-  const parabolaCenter = (focusX + directrixX) / 2;
-  const scale = p / 2;
-  const paraPts = d3.range(-2.8, 2.81, 0.04).map(t => {
-    const yOff = t * scale;
-    const xOff = t * t * scale / 2;
-    return [parabolaCenter + xOff, focusY + yOff];
-  });
+  // Parabola: y² = 4f·x where f = p/2 = distance from vertex to focus
+  // In pixel coords: vertex at (vertexX, focusY), focus at (focusX, focusY)
+  // So f = p/2 = 50 pixels. For a point P on the parabola at vertical offset yOff:
+  // xOff = yOff² / (4·f) = yOff² / (2·p)
+  const vertexX = (focusX + directrixX) / 2;
+  const f = p / 2; // vertex-to-focus distance in pixels
+  const paraPts = d3.range(-220, 221, 2).map(yOff => {
+    const xOff = (yOff * yOff) / (4 * f);
+    return [vertexX + xOff, focusY + yOff];
+  }).filter(d => d[0] < w + 20 && d[1] > -20 && d[1] < h + 20);
   svg.append("path").attr("d", d3.line().curve(d3.curveBasis)(paraPts))
     .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2.5);
 
@@ -93,17 +95,11 @@ date: 2026-03-22
     .attr("font-weight", "bold").text("P");
 
   function updateP(px, py) {
-    // Snap to parabola: given py, find px
-    const yOff = py - focusY;
-    const t = yOff / scale;
-    const xOff = t * t * scale / 2;
-    const ex = parabolaCenter + xOff;
-    const ey = py;
-
-    // Clamp
-    const eyC = Math.max(30, Math.min(h - 30, ey));
-    const tC = (eyC - focusY) / scale;
-    const exC = parabolaCenter + tC * tC * scale / 2;
+    // Snap to parabola: given py, compute px using y² = 4f·x
+    const eyC = Math.max(30, Math.min(h - 30, py));
+    const yOff = eyC - focusY;
+    const xOff = (yOff * yOff) / (4 * f);
+    const exC = vertexX + xOff;
 
     pointP.attr("cx", exC).attr("cy", eyC);
     pointLabel.attr("x", exC + 15).attr("y", eyC - 10);
@@ -118,20 +114,23 @@ date: 2026-03-22
     const dF = Math.sqrt((exC - focusX) ** 2 + (eyC - focusY) ** 2);
     const dD = exC - directrixX;
 
+    const unit = f; // normalize distances by focal distance
     distFLabel.attr("x", (focusX + exC) / 2 + 10).attr("y", (focusY + eyC) / 2 - 8)
-      .text(`${(dF / 50).toFixed(2)}`);
+      .text(`${(dF / unit).toFixed(2)}`);
     distDLabel.attr("x", (exC + directrixX) / 2).attr("y", eyC - 10)
-      .text(`${(dD / 50).toFixed(2)}`);
+      .text(`${(dD / unit).toFixed(2)}`);
 
-    equalDisplay.text(`|PF| = ${(dF / 50).toFixed(2)},  |Pl| = ${(dD / 50).toFixed(2)}`);
-    equalNote.text("始终相等！");
+    const equal = Math.abs(dF - dD) < 0.5;
+    equalDisplay.text(`|PF| = ${(dF / unit).toFixed(2)},  |Pl| = ${(dD / unit).toFixed(2)}`);
+    equalNote.text(equal ? "始终相等！✓" : "始终相等！✓");
 
     document.getElementById("m1_para_equidist_info").textContent =
-      `|PF| = ${(dF/50).toFixed(2)}, 到准线距离 = ${(dD/50).toFixed(2)}`;
+      `|PF| = ${(dF / unit).toFixed(2)}, 到准线距离 = ${(dD / unit).toFixed(2)}` +
+      (equal ? " ✓ 相等" : "");
   }
 
   pointP.call(d3.drag().on("drag", function(event) { updateP(event.x, event.y); }));
-  updateP(parabolaCenter + 0.5 * scale, focusY + scale);
+  updateP(vertexX + f, focusY + 2 * f);
 })();
 </script>
 ```
