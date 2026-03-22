@@ -18,6 +18,8 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
+    include-after-body:
+      file: video-toggle.html
     include-in-header:
       text: |
         <script src="https://d3js.org/d3.v7.min.js"></script>
