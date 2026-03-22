@@ -78,19 +78,43 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   dirLight.position.set(5, 8, 5);
   scene.add(dirLight);
 
-  // --- Double cone (hourglass) ---
+  // --- Double cone (hourglass) built from parametric geometry ---
+  // Cone surface: x² + z² = (y·tan(α))², apex at origin
   const coneHalfAngle = Math.PI / 6; // 30 degrees
   const coneHeight = 3.0;
-  const coneRadius = coneHeight * Math.tan(coneHalfAngle);
+  const tanA = Math.tan(coneHalfAngle);
   const coneSegs = 64;
+  const coneRings = 32;
 
-  // Upper cone (apex at origin, opens upward)
-  const upperGeo = new THREE.ConeGeometry(coneRadius, coneHeight, coneSegs, 1, true);
-  upperGeo.translate(0, coneHeight / 2, 0);
-  // Lower cone (apex at origin, opens downward)
-  const lowerGeo = new THREE.ConeGeometry(coneRadius, coneHeight, coneSegs, 1, true);
-  lowerGeo.rotateX(Math.PI);
-  lowerGeo.translate(0, -coneHeight / 2, 0);
+  function buildConeGeo(yMin, yMax) {
+    const geo = new THREE.BufferGeometry();
+    const verts = [], indices = [];
+    for (let j = 0; j <= coneRings; j++) {
+      const t = j / coneRings;
+      const y = yMin + t * (yMax - yMin);
+      const r = Math.abs(y) * tanA;
+      for (let i = 0; i <= coneSegs; i++) {
+        const phi = (i / coneSegs) * Math.PI * 2;
+        verts.push(r * Math.cos(phi), y, r * Math.sin(phi));
+      }
+    }
+    for (let j = 0; j < coneRings; j++) {
+      for (let i = 0; i < coneSegs; i++) {
+        const a = j * (coneSegs + 1) + i;
+        const b = a + 1;
+        const c = a + coneSegs + 1;
+        const d = c + 1;
+        indices.push(a, c, b, b, c, d);
+      }
+    }
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+    geo.setIndex(indices);
+    geo.computeVertexNormals();
+    return geo;
+  }
+
+  const upperGeo = buildConeGeo(0.001, coneHeight);
+  const lowerGeo = buildConeGeo(-coneHeight, -0.001);
 
   const coneMat = new THREE.MeshPhongMaterial({
     color: 0xc8a87c,
@@ -99,10 +123,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     side: THREE.DoubleSide,
     depthWrite: false
   });
-  const upperCone = new THREE.Mesh(upperGeo, coneMat);
-  const lowerCone = new THREE.Mesh(lowerGeo, coneMat);
-  scene.add(upperCone);
-  scene.add(lowerCone);
+  scene.add(new THREE.Mesh(upperGeo, coneMat));
+  scene.add(new THREE.Mesh(lowerGeo, coneMat));
 
   // Wireframe overlay
   const wireMat = new THREE.MeshBasicMaterial({ color: 0x8b7355, wireframe: true, transparent: true, opacity: 0.15 });
