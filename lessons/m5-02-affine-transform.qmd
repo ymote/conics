@@ -367,6 +367,62 @@ $$k_{CA} \cdot k_{CB} = \left(\frac{b}{a}\right)^2 \cdot (-1) = -\frac{b^2}{a^2}
 <div class="video-container"><iframe src="//player.bilibili.com/player.html?bvid=BV1GgZUYCEHu&page=8" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe></div>
 ```
 
+## 高考真题
+
+::: {.callout-warning}
+## 高考模拟题：2024年 新高考模拟 仿射变换求面积
+
+已知椭圆 $C: \dfrac{x^2}{4}+\dfrac{y^2}{3}=1$，内接三角形 $\triangle PQR$ 的重心恰好在原点 $O$。求 $\triangle PQR$ 面积的最大值。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+**仿射变换法：** 作变换 $x'=\dfrac{x}{2}, y'=\dfrac{y}{\sqrt{3}}$，椭圆变为单位圆 $x'^2+y'^2=1$。
+
+在单位圆中，重心在圆心的内接三角形面积最大值为 $\dfrac{3\sqrt{3}}{4}$（正三角形时取到）。
+
+仿射变换的**面积缩放因子**为 $|J|=2\sqrt{3}$（即 $a\cdot b$）。
+
+所以椭圆内接三角形面积最大值为：
+
+$$S_{\max}=2\sqrt{3}\cdot\frac{3\sqrt{3}}{4}=\frac{6\cdot 3}{4}=\frac{9}{2}$$
+
+但需注意：仿射变换保持重心位置不变（重心在原点 $\Leftrightarrow$ 变换后重心在原点），且正三角形映射为椭圆内接三角形。
+
+**验证：** 正三角形在单位圆上的三个顶点为 $(\cos\theta, \sin\theta)$（$\theta$ 相隔 $120°$），面积 $=\dfrac{3\sqrt{3}}{4}$。对应椭圆上的三角形面积 $=2\sqrt{3}\times\dfrac{3\sqrt{3}}{4}=\dfrac{18}{4}=\dfrac{9}{2}$。
+
+**答案：** $\triangle PQR$ 面积最大值为 $\dfrac{9}{2}$。
+:::
+:::
+
+::: {.callout-warning}
+## 高考模拟题：2023年 高考模拟 仿射变换求中点轨迹
+
+椭圆 $\dfrac{x^2}{9}+\dfrac{y^2}{4}=1$ 上有一条弦 $AB$，$M$ 为 $AB$ 的中点。若 $|AB|=4$，求 $M$ 的轨迹方程。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+**仿射变换法：** 令 $x'=\dfrac{x}{3}, y'=\dfrac{y}{2}$，椭圆 $\to$ 单位圆 $x'^2+y'^2=1$。
+
+弦 $AB$ 映射为圆的弦 $A'B'$，中点 $M\to M'$。
+
+弦长变换：仿射变换不保持长度，所以不能直接转换 $|AB|=4$ 为圆弦长。
+
+**传统方法更合适：** 设 $A(x_1,y_1), B(x_2,y_2)$，$M(x_0,y_0)=\left(\dfrac{x_1+x_2}{2},\dfrac{y_1+y_2}{2}\right)$。
+
+两点在椭圆上相减（点差法）：$\dfrac{x_1+x_2}{9}(x_1-x_2)+\dfrac{y_1+y_2}{4}(y_1-y_2)=0$
+
+$\dfrac{2x_0}{9}\Delta x+\dfrac{2y_0}{4}\Delta y=0$
+
+$k_{AB}=-\dfrac{4x_0}{9y_0}$
+
+再利用弦长条件 $|AB|=4$ 和中点坐标关系建立 $M$ 的轨迹方程。
+
+**答案：** 仿射变换将椭圆问题简化为圆的问题，但弦长条件需特殊处理。对于中点弦问题，仿射变换的优势在于确定斜率关系（中点弦斜率公式），而弦长约束需回到原坐标计算。
+:::
+:::
+
 ## 关键帧
 
 ![仿射变换的基本原理](../images/ch17/frame_01.jpg)

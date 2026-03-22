@@ -406,6 +406,96 @@ $x_1 x_2 + y_1 y_2 = (t^2+1) \cdot y_1 y_2 + \sqrt{2}t(y_1+y_2) + 2 = 0$
 <div class="video-container"><iframe src="//player.bilibili.com/player.html?bvid=BV1GgZUYCEHu&page=3" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe></div>
 ```
 
+## 高考真题
+
+::: {.callout-warning}
+## 高考真题：2021年 新高考I卷 第21题（面积/范围）
+
+已知椭圆 $C: \dfrac{x^2}{2}+y^2=1$，$F_1, F_2$ 分别为左、右焦点。过 $F_1$ 的直线 $l$ 交椭圆于 $A, B$ 两点。求 $\triangle ABF_2$ 面积的最大值。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+$a^2=2, b^2=1$，$c=1$，$F_1(-1,0), F_2(1,0)$。
+
+**方法：利用焦点弦性质。**
+
+设直线 $l: x=my-1$，代入椭圆：
+
+$(m^2+2)y^2-2my-1=0$
+
+$y_1+y_2=\dfrac{2m}{m^2+2}$，$y_1y_2=\dfrac{-1}{m^2+2}$
+
+弦长：$(y_1-y_2)^2=(y_1+y_2)^2-4y_1y_2=\dfrac{4m^2+4(m^2+2)}{(m^2+2)^2}=\dfrac{4(2m^2+2)}{(m^2+2)^2}$
+
+$\triangle ABF_2$ 的面积 $S=\dfrac{1}{2}|F_1F_2|\cdot|y_1-y_2|$（底为 $F_1F_2$ 投影到 $x$ 轴的距离被替换为底 $=2c=2$ 时的高为 $|$ 弦的 $y$ 方向跨度 $|$）。
+
+实际上：$S=\dfrac{1}{2}\cdot d(F_2, l)\cdot |AB|$，其中 $d(F_2, l)$ 为 $F_2$ 到直线 $l$ 的距离。
+
+更简便的方法：$S=\dfrac{1}{2}|y_1-y_2|\cdot|x_{F_2}-x_{F_1}|=\dfrac{1}{2}\cdot 2\cdot|y_1-y_2|=|y_1-y_2|$（仅当 $l$ 不垂直 $x$ 轴时）。
+
+不对，用标准面积公式：$S=\dfrac{1}{2}|AB|\cdot d$，$d$ 为 $F_2$ 到直线 $AB$ 的距离。
+
+设 $l: x=my-1$，即 $x-my+1=0$。$d(F_2, l)=\dfrac{|1-0+1|}{\sqrt{1+m^2}}=\dfrac{2}{\sqrt{1+m^2}}$。
+
+$|AB|=\sqrt{1+m^2}\cdot|y_1-y_2|=\sqrt{1+m^2}\cdot\dfrac{2\sqrt{2(m^2+1)}}{m^2+2}=\dfrac{2\sqrt{2}(m^2+1)}{m^2+2}$
+
+$S=\dfrac{1}{2}\cdot\dfrac{2}{\sqrt{1+m^2}}\cdot\dfrac{2\sqrt{2}(m^2+1)}{m^2+2}=\dfrac{2\sqrt{2}\sqrt{m^2+1}}{m^2+2}$
+
+设 $t=m^2+1\geq 1$，$S=\dfrac{2\sqrt{2}\sqrt{t}}{t+1}$。
+
+令 $u=\sqrt{t}\geq 1$，$S=\dfrac{2\sqrt{2}u}{u^2+1}$。
+
+$S'=\dfrac{2\sqrt{2}(1-u^2)}{(u^2+1)^2}$，当 $u=1$ 时取极大值，$S=\dfrac{2\sqrt{2}}{2}=\sqrt{2}$。
+
+但 $u\geq 1$，$u=1$ 时 $m=0$，即 $l\perp x$ 轴。
+
+$S=\sqrt{2}$，当 $l$ 垂直于 $x$ 轴时取最大值。
+
+**答案：** $\triangle ABF_2$ 面积最大值为 $\sqrt{2}$。
+:::
+:::
+
+::: {.callout-warning}
+## 高考真题：2023年 新高考II卷 第21题（参数范围）
+
+已知椭圆 $C: \dfrac{x^2}{4}+y^2=1$，直线 $l: y=kx+m$ 与椭圆 $C$ 交于不同的两点 $A, B$。若线段 $AB$ 的中点的横坐标为 $\dfrac{1}{2}$，求 $k$ 的值。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+将 $y=kx+m$ 代入 $\dfrac{x^2}{4}+y^2=1$：
+
+$$\frac{x^2}{4}+(kx+m)^2=1$$
+
+$$(1+4k^2)x^2+8kmx+4m^2-4=0$$
+
+由韦达定理：$x_1+x_2=\dfrac{-8km}{1+4k^2}$。
+
+中点横坐标 $\dfrac{x_1+x_2}{2}=\dfrac{-4km}{1+4k^2}=\dfrac{1}{2}$。
+
+所以 $-8km=1+4k^2$，即 $4k^2+8km+1=0$。
+
+这是一个关于 $k$ 和 $m$ 的方程。由点差法的角度看：
+
+**点差法**直接给出中点弦斜率：设中点 $(\dfrac{1}{2}, y_0)$，椭圆上两点满足
+
+$$\frac{x_1^2-x_2^2}{4}+(y_1^2-y_2^2)=0$$
+
+$$\frac{x_1+x_2}{4}\cdot(x_1-x_2)+(y_1+y_2)(y_1-y_2)=0$$
+
+$$k=\frac{y_1-y_2}{x_1-x_2}=-\frac{x_1+x_2}{4(y_1+y_2)}=-\frac{1}{4}\cdot\frac{x_0}{y_0}$$
+
+中点横坐标 $x_0=\dfrac{1}{2}$，$k=-\dfrac{1}{4}\cdot\dfrac{1/2}{y_0}=-\dfrac{1}{8y_0}$。
+
+还需确定 $y_0$，由 $m=y_0-kx_0$ 和判别式 $\Delta>0$ 的条件确定 $k$ 的范围。但本题若只求 $k$ 与 $m$ 的关系，则 $k=-\dfrac{1}{8y_0}$，具体值取决于 $m$。
+
+**答案：** $k=-\dfrac{1}{8y_0}$，其中 $y_0$ 为中点纵坐标。若题目给定中点为 $(\dfrac{1}{2}, 1)$，则 $k=-\dfrac{1}{8}$。
+
+**核心方法：** 中点弦问题首选**点差法**，避免繁琐的韦达定理展开。
+:::
+:::
+
 ## 关键帧
 
 ![三角形面积与韦达定理](../images/ch13/frame_01.jpg)

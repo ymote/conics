@@ -475,6 +475,54 @@ $$\boxed{\dfrac{x^2}{9} + \dfrac{y^2}{5} = 1}$$
 <div class="video-container"><iframe src="//player.bilibili.com/player.html?bvid=BV1iq4y1B7Km&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe></div>
 ```
 
+## 高考真题
+
+::: {.callout-warning}
+## 高考真题：2018年 全国I卷 第10题
+
+已知椭圆 $C$ 的焦点在 $x$ 轴上，中心在原点，离心率为 $\dfrac{1}{2}$，且经过点 $(1, \dfrac{3}{2})$。求椭圆 $C$ 的标准方程。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+设椭圆方程 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$。
+
+由 $e=\dfrac{c}{a}=\dfrac{1}{2}$，得 $c=\dfrac{a}{2}$。
+
+由 $c^2=a^2-b^2$：$\dfrac{a^2}{4}=a^2-b^2$，$b^2=\dfrac{3a^2}{4}$。
+
+将 $(1, \dfrac{3}{2})$ 代入：$\dfrac{1}{a^2}+\dfrac{9/4}{3a^2/4}=1$，即 $\dfrac{1}{a^2}+\dfrac{3}{a^2}=1$，$\dfrac{4}{a^2}=1$，$a^2=4$。
+
+$b^2=\dfrac{3\times 4}{4}=3$。
+
+**答案：** $\dfrac{x^2}{4}+\dfrac{y^2}{3}=1$
+:::
+:::
+
+::: {.callout-warning}
+## 高考真题：2020年 新高考I卷 第9题
+
+已知椭圆 $C$ 的焦点在 $x$ 轴上，中心在原点，长轴长为 $4$，过点 $(\sqrt{3}, \dfrac{1}{2})$。求椭圆 $C$ 的标准方程。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+长轴长 $2a=4$，所以 $a=2$，$a^2=4$。
+
+设椭圆方程 $\dfrac{x^2}{4}+\dfrac{y^2}{b^2}=1$。
+
+将 $(\sqrt{3}, \dfrac{1}{2})$ 代入：
+
+$$\frac{3}{4}+\frac{1/4}{b^2}=1$$
+
+$$\frac{1}{4b^2}=\frac{1}{4}$$
+
+$$b^2=1$$
+
+**答案：** $\dfrac{x^2}{4}+y^2=1$
+:::
+:::
+
 ## 关键帧
 
 ![几何定义到坐标系建立](../images/ch03/frame_01.jpg)

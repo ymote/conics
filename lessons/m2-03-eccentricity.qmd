@@ -310,6 +310,92 @@ $$\boxed{e = \frac{\sqrt{7}}{4}}$$
 <div class="video-container"><iframe src="//player.bilibili.com/player.html?bvid=BV1BZhEz5Esd&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe></div>
 ```
 
+## 高考真题
+
+::: {.callout-warning}
+## 高考真题：2023年 全国卷 第5题
+
+设椭圆 $C_1:\dfrac{x^2}{a^2}+y^2=1\ (a>1)$，$C_2:\dfrac{x^2}{4}+y^2=1$ 的离心率分别为 $e_1, e_2$。若 $e_2=\sqrt{3}e_1$，则 $a=$（　　）
+
+A. $\dfrac{2\sqrt{3}}{3}$ 　B. $\sqrt{2}$ 　C. $\sqrt{3}$ 　D. $\sqrt{6}$
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+$C_2$：$a_2=2, b_2=1$，$c_2=\sqrt{4-1}=\sqrt{3}$，$e_2=\dfrac{\sqrt{3}}{2}$。
+
+$C_1$：$a_1=a, b_1=1$，$c_1=\sqrt{a^2-1}$，$e_1=\dfrac{\sqrt{a^2-1}}{a}$。
+
+由 $e_2=\sqrt{3}e_1$：
+
+$$\frac{\sqrt{3}}{2}=\sqrt{3}\cdot\frac{\sqrt{a^2-1}}{a}$$
+
+$$\frac{1}{2}=\frac{\sqrt{a^2-1}}{a}$$
+
+两边平方：$\dfrac{1}{4}=\dfrac{a^2-1}{a^2}=1-\dfrac{1}{a^2}$
+
+$\dfrac{1}{a^2}=\dfrac{3}{4}$，$a^2=\dfrac{4}{3}$，$a=\dfrac{2\sqrt{3}}{3}$。
+
+**答案：A**
+:::
+:::
+
+::: {.callout-warning}
+## 高考真题：2023年 全国卷 第15题（填空题）
+
+已知双曲线 $C:\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=1\ (a>0,b>0)$ 的左、右焦点分别为 $F_1,F_2$。点 $A$ 在 $C$ 上，点 $B$ 在 $y$ 轴上，$\overrightarrow{F_1A}\perp\overrightarrow{F_1B}$，$\overrightarrow{F_2A}=-\dfrac{2}{3}\overrightarrow{F_2B}$，则 $C$ 的离心率为____。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+设 $F_1(-c,0), F_2(c,0)$，$A(x_A, y_A)$，$B(0, y_B)$。
+
+由 $\overrightarrow{F_2A}=-\dfrac{2}{3}\overrightarrow{F_2B}$：
+
+$(x_A-c, y_A) = -\dfrac{2}{3}(-c, y_B)=(\dfrac{2c}{3}, -\dfrac{2y_B}{3})$
+
+所以 $x_A=c+\dfrac{2c}{3}=\dfrac{5c}{3}$，$y_A=-\dfrac{2y_B}{3}$，即 $y_B=-\dfrac{3y_A}{2}$。
+
+由 $\overrightarrow{F_1A}\perp\overrightarrow{F_1B}$：
+
+$\overrightarrow{F_1A}=(x_A+c, y_A)=(\dfrac{5c}{3}+c, y_A)=(\dfrac{8c}{3}, y_A)$
+
+$\overrightarrow{F_1B}=(c, y_B)=(c, -\dfrac{3y_A}{2})$
+
+点积为零：$\dfrac{8c}{3}\cdot c + y_A\cdot(-\dfrac{3y_A}{2})=0$
+
+$\dfrac{8c^2}{3}=\dfrac{3y_A^2}{2}$，$y_A^2=\dfrac{16c^2}{9}$。
+
+$A$ 在双曲线上：$\dfrac{x_A^2}{a^2}-\dfrac{y_A^2}{b^2}=1$
+
+$\dfrac{25c^2/9}{a^2}-\dfrac{16c^2/9}{b^2}=1$
+
+$\dfrac{25c^2}{9a^2}-\dfrac{16c^2}{9b^2}=1$
+
+设 $e=c/a$，$b^2=c^2-a^2=a^2(e^2-1)$：
+
+$\dfrac{25e^2}{9}-\dfrac{16e^2}{9(e^2-1)}=1$
+
+$25e^2(e^2-1)-16e^2=9(e^2-1)$
+
+$e^2[25(e^2-1)-16]=9(e^2-1)$
+
+$e^2(25e^2-41)=9e^2-9$
+
+$25e^4-41e^2-9e^2+9=0$
+
+$25e^4-50e^2+9=0$
+
+由求根公式：$e^2=\dfrac{50\pm\sqrt{2500-900}}{50}=\dfrac{50\pm 40}{50}$
+
+$e^2=\dfrac{9}{5}$ 或 $e^2=\dfrac{1}{5}$（舍去，因为双曲线 $e>1$）。
+
+$e=\dfrac{3}{\sqrt{5}}=\dfrac{3\sqrt{5}}{5}$。
+
+**答案：** $\dfrac{3\sqrt{5}}{5}$
+:::
+:::
+
 ## 关键帧
 
 ![离心率的定义与几何意义](../images/ch05/frame_01.jpg)

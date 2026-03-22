@@ -352,6 +352,60 @@ $k_{OM} = \dfrac{1-0}{1-0} = $ ______
 <div class="video-container"><iframe src="//player.bilibili.com/player.html?bvid=BV1qH4y1B7dm&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe></div>
 ```
 
+## 高考真题
+
+::: {.callout-warning}
+## 高考真题：2022年 新高考II卷 第14题（填空题）
+
+已知椭圆 $C: \dfrac{x^2}{4}+\dfrac{y^2}{3}=1$，$A_1, A_2$ 分别是椭圆的左、右顶点，$P$ 是椭圆上异于 $A_1, A_2$ 的一点，记直线 $PA_1, PA_2$ 的斜率分别为 $k_1, k_2$，则 $k_1\cdot k_2=$____。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+这是椭圆的**第三定义**（焦点弦斜率积公式）的直接应用。
+
+$A_1(-2,0), A_2(2,0)$，设 $P(x_0, y_0)$ 在椭圆上。
+
+$$k_1=\frac{y_0}{x_0+2},\quad k_2=\frac{y_0}{x_0-2}$$
+
+$$k_1\cdot k_2=\frac{y_0^2}{x_0^2-4}$$
+
+由 $\dfrac{x_0^2}{4}+\dfrac{y_0^2}{3}=1$，得 $y_0^2=3\left(1-\dfrac{x_0^2}{4}\right)=\dfrac{3(4-x_0^2)}{4}$。
+
+$$k_1\cdot k_2=\frac{3(4-x_0^2)/4}{x_0^2-4}=\frac{3}{4}\cdot\frac{-(x_0^2-4)}{x_0^2-4}=-\frac{3}{4}=-\frac{b^2}{a^2}$$
+
+**答案：** $-\dfrac{3}{4}$
+
+**结论：** 椭圆 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1$ 上任意一点与两顶点连线斜率之积恒为 $-\dfrac{b^2}{a^2}$。
+:::
+:::
+
+::: {.callout-warning}
+## 高考模拟题：2024年 新高考模拟 椭圆焦点弦
+
+已知椭圆 $\dfrac{x^2}{9}+\dfrac{y^2}{5}=1$ 的左焦点为 $F_1$，过 $F_1$ 的直线交椭圆于 $A, B$ 两点。若 $|AF_1|=2$，求 $|BF_1|$。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+$a^2=9, b^2=5$，$a=3, c=2, b=\sqrt{5}$。
+
+利用焦点弦的**通径公式**（二级结论）：
+
+过焦点的弦（焦点弦）满足 $\dfrac{1}{|AF_1|}+\dfrac{1}{|BF_1|}=\dfrac{2a}{b^2}$。
+
+代入数据：$\dfrac{1}{2}+\dfrac{1}{|BF_1|}=\dfrac{2\times 3}{5}=\dfrac{6}{5}$
+
+$\dfrac{1}{|BF_1|}=\dfrac{6}{5}-\dfrac{1}{2}=\dfrac{7}{10}$
+
+$|BF_1|=\dfrac{10}{7}$。
+
+验证：$|AF_1|+|BF_1|$ 不需要等于某特定值（它们不在同一焦点弦上的两端加起来不等于通径），但焦点弦公式 $\dfrac{1}{r_1}+\dfrac{1}{r_2}=\dfrac{2a}{b^2}$ 是焦点弦的性质。
+
+**答案：** $|BF_1|=\dfrac{10}{7}$
+:::
+:::
+
 ## 关键帧
 
 ![二级结论分类总览](../images/ch02/frame_01.jpg)

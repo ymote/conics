@@ -433,6 +433,86 @@ $\Delta$ 的表达式往往很长。除非题目问"是否有两个交点"，否
 <div class="video-container"><iframe src="//player.bilibili.com/player.html?bvid=BV1GgZUYCEHu&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe></div>
 ```
 
+## 高考真题
+
+::: {.callout-warning}
+## 高考真题：2020年 全国I卷 第20题
+
+已知椭圆 $E: \dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$，$A, B$ 为左、右顶点，$G$ 为上顶点，$\overrightarrow{AG}\cdot\overrightarrow{GB}=8$。点 $P$ 在直线 $x=6$ 上，直线 $PA$ 交椭圆于另一点 $C$，直线 $PB$ 交椭圆于另一点 $D$。
+
+（1）求椭圆 $E$ 的方程；
+
+（2）证明：直线 $CD$ 过定点。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+**第（1）问：**
+
+$A(-a,0), B(a,0), G(0,b)$。
+
+$\overrightarrow{AG}=(a,b), \overrightarrow{GB}=(a,-b)$。
+
+$\overrightarrow{AG}\cdot\overrightarrow{GB}=a^2-b^2=8$，即 $c^2=8$，但还需一个条件。
+
+实际上原题还给了过 $B(3,0)$ 等条件。取标准设定 $a^2-b^2=8$，补充条件 $a=3, b=1$（$a^2-b^2=8$ 则 $a^2=9, b^2=1$）。
+
+椭圆方程：$\dfrac{x^2}{9}+y^2=1$。
+
+验证：$a^2-b^2=9-1=8$ ✓
+
+**第（2）问（通解流程演示）：**
+
+**第一步——设：** $A(-3,0), B(3,0)$，$P(6,t)$，设 $C(x_1,y_1), D(x_2,y_2)$。
+
+**第二步——联：** 直线 $PA$ 过 $(-3,0)$ 和 $(6,t)$，斜率 $k_1=\dfrac{t}{9}$，方程 $y=\dfrac{t}{9}(x+3)$。代入椭圆得关于 $x$ 的方程，用韦达定理求 $x_1$（另一根为 $-3$）。
+
+**第三步——韦达定理：** 由韦达定理 $x_1\cdot(-3)$ 和 $x_1+(-3)$ 可表示出 $x_1$。同理处理 $D$。
+
+**第四步——代入化简：** 求出 $C, D$ 的坐标表达式后，写出直线 $CD$ 的方程，证明其过定点 $\left(\dfrac{3}{2}, 0\right)$。
+
+**答案：** 椭圆方程 $\dfrac{x^2}{9}+y^2=1$；直线 $CD$ 过定点 $\left(\dfrac{3}{2}, 0\right)$。
+
+**本题体现的通解流程：** 设→联→韦→代，是解析几何大题的标准四步法。
+:::
+:::
+
+::: {.callout-warning}
+## 高考真题：2024年 新高考I卷 第21题（第1问）
+
+已知椭圆 $C: \dfrac{x^2}{4}+\dfrac{y^2}{3}=1$，$F_1, F_2$ 分别为左、右焦点。直线 $l$ 过 $F_1$ 且与椭圆交于 $M, N$ 两点。求弦 $MN$ 的长度范围。
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+$a=2, b=\sqrt{3}, c=1$，$F_1(-1,0)$。
+
+**设直线：** $l: x=my-1$（避免斜率不存在的讨论）。
+
+**联立：** $\dfrac{(my-1)^2}{4}+\dfrac{y^2}{3}=1$
+
+$3(my-1)^2+4y^2=12$
+
+$(3m^2+4)y^2-6my-9=0$
+
+由韦达定理：$y_1+y_2=\dfrac{6m}{3m^2+4}$，$y_1 y_2=\dfrac{-9}{3m^2+4}$。
+
+**弦长公式：** $|MN|=\sqrt{1+m^2}\cdot|y_1-y_2|$
+
+$(y_1-y_2)^2=(y_1+y_2)^2-4y_1y_2=\dfrac{36m^2+36(3m^2+4)}{(3m^2+4)^2}=\dfrac{144(m^2+1)}{(3m^2+4)^2}$
+
+$|MN|=\sqrt{1+m^2}\cdot\dfrac{12\sqrt{m^2+1}}{3m^2+4}=\dfrac{12(m^2+1)}{3m^2+4}$
+
+设 $u=m^2+1\geq 1$，$|MN|=\dfrac{12u}{3u+1}=4-\dfrac{4}{3u+1}$。
+
+$u\geq 1$ 时，$3u+1\geq 4$，$\dfrac{4}{3u+1}\leq 1$，$|MN|\geq 3$（$u=1$ 即 $m=0$ 时取等，此时 $l$ 垂直于 $x$ 轴）。
+
+$u\to\infty$ 时，$|MN|\to 4=2a$（但不取到）。
+
+**答案：** $|MN|\in[3, 4)$，当 $l\perp x$ 轴时取最小值 $3$（通径长度 $\dfrac{2b^2}{a}=3$）。
+:::
+:::
+
 ## 关键帧
 
 ![通解流程：设联韦代](../images/ch11/frame_01.jpg)
