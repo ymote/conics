@@ -389,21 +389,22 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   const readoutEl = document.getElementById('dandelin_readout');
 
   // --- Renderer ---
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setClearColor(0x1a1a2e);
+  renderer.sortObjects = true;
   container.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
-  camera.position.set(5, 3, 5);
-  camera.lookAt(0, 1.5, 0);
+  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+  camera.position.set(6, 4, 6);
+  camera.lookAt(0, 2.0, 0);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
-  controls.target.set(0, 1.5, 0);
+  controls.target.set(0, 2.0, 0);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.4));
   const dl = new THREE.DirectionalLight(0xffffff, 0.7);
@@ -441,17 +442,21 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   const dandelinConeGeo = buildDandelinCone(0.01, coneH);
   const coneMat = new THREE.MeshPhongMaterial({
-    color: 0xc8a87c, transparent: true, opacity: 0.2, side: THREE.DoubleSide, depthWrite: false
+    color: 0xc8a87c, transparent: true, opacity: 0.15, side: THREE.DoubleSide, depthWrite: false
   });
-  scene.add(new THREE.Mesh(dandelinConeGeo, coneMat));
-  scene.add(new THREE.Mesh(dandelinConeGeo.clone(), new THREE.MeshBasicMaterial({
-    color: 0x8b7355, wireframe: true, transparent: true, opacity: 0.1
-  })));
+  const coneMesh = new THREE.Mesh(dandelinConeGeo, coneMat);
+  coneMesh.renderOrder = 0;
+  scene.add(coneMesh);
+  const wireM = new THREE.Mesh(dandelinConeGeo.clone(), new THREE.MeshBasicMaterial({
+    color: 0x8b7355, wireframe: true, transparent: true, opacity: 0.12
+  }));
+  wireM.renderOrder = 0;
+  scene.add(wireM);
 
   // --- Slicing plane for ellipse ---
-  // Plane tilt: choose theta so we get a nice ellipse
-  const theta = alpha * 0.6; // tilt angle of plane normal from y-axis
-  const planeD = 2.0; // plane offset
+  // Plane tilt: choose theta for a clearly elongated ellipse
+  const theta = alpha * 0.75; // tilt angle of plane normal from y-axis (~22.5°)
+  const planeD = 1.5; // plane offset (smaller to keep spheres inside cone)
   const tanA = Math.tan(alpha);
   const sinT = Math.sin(theta);
   const cosT = Math.cos(theta);
@@ -512,19 +517,36 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   const r1 = yc1 * sinA;
   const r2 = yc2 * sinA;
 
-  // Sphere 1 (upper/smaller)
+  // Sphere 1 (smaller, closer to apex)
   const sphere1Geo = new THREE.SphereGeometry(r1, 32, 32);
-  const sphereMat1 = new THREE.MeshPhongMaterial({ color: 0xff6644, transparent: true, opacity: 0.5 });
+  const sphereMat1 = new THREE.MeshPhongMaterial({
+    color: 0xff4422, transparent: true, opacity: 0.65,
+    side: THREE.FrontSide, depthWrite: true
+  });
   const sphere1 = new THREE.Mesh(sphere1Geo, sphereMat1);
   sphere1.position.set(0, yc1, 0);
+  sphere1.renderOrder = 1;
   scene.add(sphere1);
 
-  // Sphere 2 (lower/larger)
+  // Sphere 2 (larger, farther from apex)
   const sphere2Geo = new THREE.SphereGeometry(r2, 32, 32);
-  const sphereMat2 = new THREE.MeshPhongMaterial({ color: 0xff6644, transparent: true, opacity: 0.5 });
+  const sphereMat2 = new THREE.MeshPhongMaterial({
+    color: 0xff4422, transparent: true, opacity: 0.65,
+    side: THREE.FrontSide, depthWrite: true
+  });
   const sphere2 = new THREE.Mesh(sphere2Geo, sphereMat2);
   sphere2.position.set(0, yc2, 0);
+  sphere2.renderOrder = 1;
   scene.add(sphere2);
+
+  // Sphere wireframe outlines for visibility
+  const sphereWire = new THREE.MeshBasicMaterial({ color: 0xff6644, wireframe: true, transparent: true, opacity: 0.3 });
+  const sw1 = new THREE.Mesh(new THREE.SphereGeometry(r1, 16, 16), sphereWire);
+  sw1.position.set(0, yc1, 0);
+  scene.add(sw1);
+  const sw2 = new THREE.Mesh(new THREE.SphereGeometry(r2, 16, 16), sphereWire);
+  sw2.position.set(0, yc2, 0);
+  scene.add(sw2);
 
   // --- Foci: where spheres touch the plane ---
   // The tangent point is where the line from the sphere center perpendicular to the plane hits the plane.
@@ -544,15 +566,24 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   const sd2 = yc2 * cosT - planeD;
   const f2Pos = new THREE.Vector3(-sd2 * sinT, yc2 - sd2 * cosT, 0);
 
-  // Focus dots
+  // Focus dots (large, bright, always visible)
   const focusMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  const focusGeo = new THREE.SphereGeometry(0.07, 16, 16);
+  const focusGeo = new THREE.SphereGeometry(0.12, 16, 16);
   const f1Mesh = new THREE.Mesh(focusGeo, focusMat);
   f1Mesh.position.copy(f1Pos);
+  f1Mesh.renderOrder = 2;
   scene.add(f1Mesh);
-  const f2Mesh = new THREE.Mesh(focusGeo, focusMat);
+  const f2Mesh = new THREE.Mesh(focusGeo.clone(), focusMat);
   f2Mesh.position.copy(f2Pos);
+  f2Mesh.renderOrder = 2;
   scene.add(f2Mesh);
+
+  // Lines from sphere centers to foci (show tangency)
+  const tangentLineMat = new THREE.LineBasicMaterial({ color: 0xff6644 });
+  const tl1Geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, yc1, 0), f1Pos]);
+  scene.add(new THREE.Line(tl1Geo, tangentLineMat));
+  const tl2Geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, yc2, 0), f2Pos]);
+  scene.add(new THREE.Line(tl2Geo, tangentLineMat));
 
   // Focus labels
   function makeLabel(text, position) {
