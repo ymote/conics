@@ -234,20 +234,24 @@ date: 2026-03-22
 - **超音速飞行**：飞机超音速飞行时产生的锥形冲击波，与地面相交形成双曲线
 :::
 
-### 3D演示：GPS定位 — 双曲线的距离差
+### 3D演示：GPS定位 — 圆（球面）的交集
 
-GPS定位的原理：手机同时接收多个卫星的信号。两颗卫星信号到达的**时间差**恒定，意味着手机到两颗卫星的**距离差**恒定——这正是双曲线（在3D中是双曲面）的定义。多个双曲面的交线就确定了你的位置。
+GPS定位的原理：
+
+1. **1颗卫星** → 你在以该卫星为圆心、信号传播距离为半径的**球面**上（投影到地面是一个圆）
+2. **2颗卫星** → 两个球面（圆）相交，你在**两个交点**之一
+3. **3颗卫星** → 三个圆的公共交点 = **你的精确位置**
 
 ```{=html}
 <div class="three-container" id="three_gps">
-  <div class="three-info" id="three_gps_info">🛰️ 卫星 | 📱 手机 | 曲面 = 距离差恒定</div>
+  <div class="three-info" id="three_gps_info">🛰️ 卫星 | 📱 手机 | ⭕ 圆 = 等距离面与地面的交线</div>
 </div>
 <div class="d3-controls">
-  <button id="gps3d_play">播放信号波</button>
+  <button id="gps3d_step">逐步定位 ▶</button>
   <button id="gps3d_reset">重置</button>
-  <label>手机位置X：</label>
+  <label>手机X：</label>
   <input type="range" id="gps3d_x" min="-3" max="3" value="1" step="0.1">
-  <label>Y：</label>
+  <label>Z：</label>
   <input type="range" id="gps3d_y" min="-3" max="3" value="1.5" step="0.1">
   <span class="value-display" id="gps3d_readout"></span>
 </div>
@@ -257,7 +261,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 (function() {
   const container = document.getElementById('three_gps');
-  const infoEl = document.getElementById('three_gps_info');
   const readout = document.getElementById('gps3d_readout');
   const sliderX = document.getElementById('gps3d_x');
   const sliderY = document.getElementById('gps3d_y');
@@ -270,7 +273,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 200);
-  camera.position.set(8, 10, 8);
+  camera.position.set(10, 12, 10);
   camera.lookAt(0, 0, 0);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -282,123 +285,111 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   dl.position.set(5, 15, 5);
   scene.add(dl);
 
-  // Ground plane (earth surface)
-  const groundGeo = new THREE.PlaneGeometry(12, 12);
-  const groundMat = new THREE.MeshPhongMaterial({ color: 0x1a5f2a, transparent: true, opacity: 0.4, side: THREE.DoubleSide });
-  const ground = new THREE.Mesh(groundGeo, groundMat);
+  // Ground
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(14, 14),
+    new THREE.MeshPhongMaterial({ color: 0x1a5f2a, transparent: true, opacity: 0.35, side: THREE.DoubleSide })
+  );
   ground.rotation.x = -Math.PI / 2;
   scene.add(ground);
-
-  // Grid on ground
-  const grid = new THREE.GridHelper(12, 12, 0x2a8f4a, 0x1a5f2a);
-  grid.material.transparent = true;
-  grid.material.opacity = 0.3;
+  const grid = new THREE.GridHelper(14, 14, 0x2a8f4a, 0x1a5f2a);
+  grid.material.transparent = true; grid.material.opacity = 0.25;
   scene.add(grid);
 
-  // 3 Satellites in the sky
+  // 3 Satellites
   const sats = [
     { x: -3, y: 7, z: -2, color: 0xe74c3c, label: '卫星A' },
     { x: 3, y: 8, z: -1, color: 0x2ecc71, label: '卫星B' },
-    { x: 0, y: 6, z: 3, color: 0x3498db, label: '卫星C' }
+    { x: 0, y: 6, z: 3,  color: 0x3498db, label: '卫星C' }
   ];
-
   const satMeshes = [];
+
   sats.forEach(s => {
-    // Satellite body
-    const group = new THREE.Group();
-    const body = new THREE.Mesh(
-      new THREE.BoxGeometry(0.3, 0.15, 0.15),
-      new THREE.MeshPhongMaterial({ color: s.color })
-    );
-    group.add(body);
-    // Solar panels
-    const panel = new THREE.Mesh(
-      new THREE.BoxGeometry(0.05, 0.5, 0.3),
-      new THREE.MeshPhongMaterial({ color: 0x4488cc })
-    );
-    const p1 = panel.clone(); p1.position.x = 0.3;
-    const p2 = panel.clone(); p2.position.x = -0.3;
-    group.add(p1, p2);
-    group.position.set(s.x, s.y, s.z);
-    scene.add(group);
-    satMeshes.push(group);
+    const g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.15, 0.15), new THREE.MeshPhongMaterial({ color: s.color })));
+    const pan = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.5, 0.3), new THREE.MeshPhongMaterial({ color: 0x4488cc }));
+    const p1 = pan.clone(); p1.position.x = 0.3;
+    const p2 = pan.clone(); p2.position.x = -0.3;
+    g.add(p1, p2);
+    g.position.set(s.x, s.y, s.z);
+    scene.add(g);
+    satMeshes.push(g);
 
     // Label
-    const canvas = document.createElement('canvas');
-    canvas.width = 256; canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#' + s.color.toString(16).padStart(6, '0');
-    ctx.font = 'bold 36px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('🛰️ ' + s.label, 128, 45);
-    const tex = new THREE.CanvasTexture(canvas);
-    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true }));
-    sprite.position.set(s.x, s.y + 0.8, s.z);
-    sprite.scale.set(2, 0.5, 1);
-    scene.add(sprite);
+    const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64;
+    const cx = cv.getContext('2d');
+    cx.fillStyle = '#' + s.color.toString(16).padStart(6, '0');
+    cx.font = 'bold 36px sans-serif'; cx.textAlign = 'center';
+    cx.fillText('🛰️ ' + s.label, 128, 45);
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), transparent: true }));
+    sp.position.set(s.x, s.y + 0.8, s.z); sp.scale.set(2, 0.5, 1);
+    scene.add(sp);
   });
 
-  // Phone on ground
-  const phoneMat = new THREE.MeshPhongMaterial({ color: 0xf39c12 });
-  const phone = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), phoneMat);
-  phone.position.set(1, 0.2, 1.5);
+  // Phone
+  const phone = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), new THREE.MeshPhongMaterial({ color: 0xf39c12 }));
   scene.add(phone);
-
-  // Phone label
-  const phoneCanvas = document.createElement('canvas');
-  phoneCanvas.width = 128; phoneCanvas.height = 64;
-  const pctx = phoneCanvas.getContext('2d');
-  pctx.font = '40px sans-serif';
-  pctx.textAlign = 'center';
-  pctx.fillText('📱', 64, 45);
-  const phoneTex = new THREE.CanvasTexture(phoneCanvas);
-  const phoneSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: phoneTex, transparent: true }));
+  const pcv = document.createElement('canvas'); pcv.width = 128; pcv.height = 64;
+  const pc = pcv.getContext('2d'); pc.font = '40px sans-serif'; pc.textAlign = 'center'; pc.fillText('📱', 64, 45);
+  const phoneSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(pcv), transparent: true }));
   phoneSprite.scale.set(0.8, 0.4, 1);
   scene.add(phoneSprite);
 
-  // Distance lines from phone to satellites
+  // Distance lines
   const distLines = [];
-  const distColors = [0xe74c3c, 0x2ecc71, 0x3498db];
-  for (let i = 0; i < 3; i++) {
+  [0xe74c3c, 0x2ecc71, 0x3498db].forEach(c => {
     const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
-    const line = new THREE.Line(geo, new THREE.LineDashedMaterial({
-      color: distColors[i], dashSize: 0.2, gapSize: 0.1
-    }));
-    line.computeLineDistances();
-    scene.add(line);
-    distLines.push(line);
+    const ln = new THREE.Line(geo, new THREE.LineDashedMaterial({ color: c, dashSize: 0.2, gapSize: 0.1 }));
+    scene.add(ln); distLines.push(ln);
+  });
+
+  // Circle groups (one per satellite, drawn on ground y=0.05)
+  const circleGroup = new THREE.Group();
+  scene.add(circleGroup);
+
+  // Sphere wireframes (showing the 3D spheres from each satellite)
+  const sphereGroup = new THREE.Group();
+  scene.add(sphereGroup);
+
+  // Intersection points
+  const intersectionGroup = new THREE.Group();
+  scene.add(intersectionGroup);
+
+  let visibleStep = 0; // 0=none, 1=circle A, 2=A+B, 3=A+B+C
+
+  function drawCircleOnGround(cx, cz, radius, color) {
+    const pts = [];
+    for (let i = 0; i <= 128; i++) {
+      const a = (i / 128) * Math.PI * 2;
+      pts.push(new THREE.Vector3(cx + radius * Math.cos(a), 0.05, cz + radius * Math.sin(a)));
+    }
+    if (pts.length > 3) {
+      const curve = new THREE.CatmullRomCurve3(pts, true);
+      const tube = new THREE.TubeGeometry(curve, 100, 0.04, 6, true);
+      circleGroup.add(new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color })));
+    }
   }
 
-  // Hyperbola curves on the ground (2D projection)
-  const hyperGroup = new THREE.Group();
-  scene.add(hyperGroup);
+  function drawSphereWire(sx, sy, sz, radius, color) {
+    const geo = new THREE.SphereGeometry(radius, 24, 16);
+    const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.08, wireframe: true, side: THREE.DoubleSide });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(sx, sy, sz);
+    sphereGroup.add(mesh);
+  }
 
-  // Signal wave spheres
-  const waveGroup = new THREE.Group();
-  scene.add(waveGroup);
-
-  function computeHyperbola2D(f1x, f1z, f2x, f2z, diff) {
-    const cx = (f1x + f2x) / 2, cz = (f1z + f2z) / 2;
-    const dist = Math.sqrt((f2x - f1x) ** 2 + (f2z - f1z) ** 2);
-    const c = dist / 2;
-    const a = Math.abs(diff) / 2;
-    if (a >= c || a < 0.05) return [];
-    const b = Math.sqrt(c * c - a * a);
-    const angle = Math.atan2(f2z - f1z, f2x - f1x);
-    const cos = Math.cos(angle), sin = Math.sin(angle);
-    const pts = [];
-    for (let branch = -1; branch <= 1; branch += 2) {
-      const branchPts = [];
-      for (let t = -2; t <= 2; t += 0.03) {
-        const xh = branch * a * Math.cosh(t);
-        const zh = b * Math.sinh(t);
-        const x = cx + xh * cos - zh * sin;
-        const z = cz + xh * sin + zh * cos;
-        if (Math.abs(x) < 7 && Math.abs(z) < 7) branchPts.push(new THREE.Vector3(x, 0.05, z));
-      }
-      if (branchPts.length > 2) pts.push(branchPts);
-    }
-    return pts;
+  // Find intersection of two circles on ground (y=0 plane)
+  function circleIntersections(x1, z1, r1, x2, z2, r2) {
+    const dx = x2 - x1, dz = z2 - z1;
+    const d = Math.sqrt(dx*dx + dz*dz);
+    if (d > r1 + r2 || d < Math.abs(r1 - r2) || d < 0.001) return [];
+    const a = (r1*r1 - r2*r2 + d*d) / (2*d);
+    const h = Math.sqrt(Math.max(0, r1*r1 - a*a));
+    const mx = x1 + a*dx/d, mz = z1 + a*dz/d;
+    return [
+      { x: mx + h*dz/d, z: mz - h*dx/d },
+      { x: mx - h*dz/d, z: mz + h*dx/d }
+    ];
   }
 
   function update() {
@@ -406,77 +397,85 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     phone.position.set(px, 0.2, pz);
     phoneSprite.position.set(px, 0.8, pz);
 
-    const dists = sats.map(s => Math.sqrt((px - s.x) ** 2 + (0 - s.y) ** 2 + (pz - s.z) ** 2));
+    const dists = sats.map(s => Math.sqrt((px - s.x)**2 + s.y**2 + (pz - s.z)**2));
+    // Ground-projected radii: intersection of sphere with y=0 plane
+    const groundRadii = sats.map((s, i) => {
+      const r = dists[i];
+      const h = s.y;
+      return r > h ? Math.sqrt(r*r - h*h) : 0;
+    });
 
-    // Update distance lines
+    // Distance lines
     for (let i = 0; i < 3; i++) {
       const pos = distLines[i].geometry.attributes.position;
-      pos.setXYZ(0, px, 0.2, pz);
-      pos.setXYZ(1, sats[i].x, sats[i].y, sats[i].z);
-      pos.needsUpdate = true;
-      distLines[i].computeLineDistances();
+      pos.setXYZ(0, px, 0.2, pz); pos.setXYZ(1, sats[i].x, sats[i].y, sats[i].z);
+      pos.needsUpdate = true; distLines[i].computeLineDistances();
     }
 
-    // Draw hyperbolas on ground
-    hyperGroup.clear();
-    const diffAB = dists[0] - dists[1];
-    const diffAC = dists[0] - dists[2];
+    // Clear and redraw circles based on visibleStep
+    circleGroup.clear();
+    sphereGroup.clear();
+    intersectionGroup.clear();
 
-    // Project satellite positions to ground for hyperbola
-    const branches1 = computeHyperbola2D(sats[0].x, sats[0].z, sats[1].x, sats[1].z, diffAB);
-    const branches2 = computeHyperbola2D(sats[0].x, sats[0].z, sats[2].x, sats[2].z, diffAC);
-
-    branches1.forEach(pts => {
-      if (pts.length > 2) {
-        const curve = new THREE.CatmullRomCurve3(pts, false);
-        const tube = new THREE.TubeGeometry(curve, 60, 0.03, 6, false);
-        hyperGroup.add(new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color: 0xe67e22 })));
+    const colors = [0xe74c3c, 0x2ecc71, 0x3498db];
+    for (let i = 0; i < Math.min(visibleStep, 3); i++) {
+      const gr = groundRadii[i];
+      if (gr > 0.1) {
+        drawCircleOnGround(sats[i].x, sats[i].z, gr, colors[i]);
+        drawSphereWire(sats[i].x, sats[i].y, sats[i].z, dists[i], colors[i]);
       }
-    });
-    branches2.forEach(pts => {
-      if (pts.length > 2) {
-        const curve = new THREE.CatmullRomCurve3(pts, false);
-        const tube = new THREE.TubeGeometry(curve, 60, 0.03, 6, false);
-        hyperGroup.add(new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color: 0x9b59b6 })));
-      }
-    });
+    }
 
-    readout.textContent =
-      `dA=${dists[0].toFixed(1)} dB=${dists[1].toFixed(1)} dC=${dists[2].toFixed(1)} | ` +
-      `dA-dB=${diffAB.toFixed(2)} dA-dC=${diffAC.toFixed(2)}`;
+    // Show intersection points
+    if (visibleStep >= 2 && groundRadii[0] > 0.1 && groundRadii[1] > 0.1) {
+      const pts = circleIntersections(sats[0].x, sats[0].z, groundRadii[0], sats[1].x, sats[1].z, groundRadii[1]);
+      pts.forEach(p => {
+        const dot = new THREE.Mesh(new THREE.SphereGeometry(0.15, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffff00 }));
+        dot.position.set(p.x, 0.15, p.z);
+        intersectionGroup.add(dot);
+      });
+    }
+
+    if (visibleStep >= 3 && groundRadii[0] > 0.1 && groundRadii[2] > 0.1) {
+      const pts = circleIntersections(sats[0].x, sats[0].z, groundRadii[0], sats[2].x, sats[2].z, groundRadii[2]);
+      // Find the point closest to phone
+      let best = null, bestD = Infinity;
+      pts.forEach(p => {
+        const d = Math.sqrt((p.x - px)**2 + (p.z - pz)**2);
+        if (d < bestD) { bestD = d; best = p; }
+      });
+      if (best) {
+        const marker = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), new THREE.MeshBasicMaterial({ color: 0xff00ff }));
+        marker.position.set(best.x, 0.25, best.z);
+        intersectionGroup.add(marker);
+        // Label
+        const lc = document.createElement('canvas'); lc.width = 256; lc.height = 64;
+        const lx = lc.getContext('2d');
+        lx.fillStyle = '#ff00ff'; lx.font = 'bold 32px sans-serif'; lx.textAlign = 'center';
+        lx.fillText('✓ 定位成功', 128, 45);
+        const ls = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(lc), transparent: true }));
+        ls.position.set(best.x, 0.8, best.z); ls.scale.set(2, 0.5, 1);
+        intersectionGroup.add(ls);
+      }
+    }
+
+    const stepLabels = ['点击"逐步定位"开始', '1颗卫星 → 1个圆（无数可能位置）', '2颗卫星 → 2个交点', '3颗卫星 → 精确定位 ✓'];
+    readout.textContent = stepLabels[visibleStep] + (visibleStep > 0 ?
+      ` | d₁=${dists[0].toFixed(1)} d₂=${dists[1].toFixed(1)} d₃=${dists[2].toFixed(1)}` : '');
   }
 
   sliderX.addEventListener('input', update);
   sliderY.addEventListener('input', update);
 
-  // Signal wave animation
-  let waveTimer = null;
-  document.getElementById('gps3d_play').addEventListener('click', function() {
-    if (waveTimer) return;
-    let step = 0;
-    waveTimer = setInterval(() => {
-      step++;
-      waveGroup.clear();
-      sats.forEach(s => {
-        for (let r = 0; r < 3; r++) {
-          const radius = ((step * 0.15 + r * 1.5) % 5);
-          const waveGeo = new THREE.SphereGeometry(radius, 16, 8);
-          const waveMat = new THREE.MeshBasicMaterial({
-            color: s.color, transparent: true, opacity: Math.max(0, 0.15 - radius * 0.03),
-            wireframe: true, side: THREE.DoubleSide
-          });
-          const wave = new THREE.Mesh(waveGeo, waveMat);
-          wave.position.set(s.x, s.y, s.z);
-          waveGroup.add(wave);
-        }
-      });
-      if (step > 200) { clearInterval(waveTimer); waveTimer = null; waveGroup.clear(); }
-    }, 50);
+  document.getElementById('gps3d_step').addEventListener('click', function() {
+    visibleStep = Math.min(visibleStep + 1, 3);
+    update();
+    if (visibleStep >= 3) this.textContent = '定位完成 ✓';
   });
 
   document.getElementById('gps3d_reset').addEventListener('click', function() {
-    if (waveTimer) { clearInterval(waveTimer); waveTimer = null; }
-    waveGroup.clear();
+    visibleStep = 0;
+    document.getElementById('gps3d_step').textContent = '逐步定位 ▶';
     sliderX.value = 1; sliderY.value = 1.5;
     update();
   });
@@ -485,7 +484,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   function animate() {
     requestAnimationFrame(animate);
-    // Gentle satellite rotation
     satMeshes.forEach((m, i) => { m.rotation.y += 0.005 + i * 0.002; });
     controls.update();
     renderer.render(scene, camera);
@@ -495,22 +493,20 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   const ro = new ResizeObserver(() => {
     const w = container.clientWidth, h = container.clientHeight;
     if (w === 0 || h === 0) return;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
+    camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h);
   });
   ro.observe(container);
 })();
 </script>
 ```
 
-用鼠标拖拽旋转3D场景。拖动滑块改变手机📱在地面上的位置。点击"播放信号波"观察卫星发射的信号波。
+点击 **"逐步定位"** 按钮，逐步添加卫星信号：
 
-- 🛰️ 三颗卫星在高空中，📱 手机在地面上
-- 🟠 橙色双曲线：地面上所有满足 $|d_A - d_B|$ = 常数的点
-- 🟣 紫色双曲线：地面上所有满足 $|d_A - d_C|$ = 常数的点
-- 手机的位置就在两条双曲线的**交点**上
-- 虚线表示手机到每颗卫星的距离
+1. **1颗卫星** → 🔴 红色圆：你在这个圆上的某处（无数可能）
+2. **2颗卫星** → 🔴+🟢 两个圆相交 = 🟡 两个候选点
+3. **3颗卫星** → 🔴+🟢+🔵 三个圆的公共交点 = 🟣 精确定位
+
+用鼠标拖拽旋转3D场景。半透明球面显示每颗卫星的信号覆盖范围（球面与地面的交线就是圆）。
 
 ## Desmos探索
 

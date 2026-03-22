@@ -1,37 +1,57 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Video toggle
   document.querySelectorAll('.video-switch').forEach(function(switchEl) {
-    const panel = switchEl.nextElementSibling;
+    var panel = switchEl.nextElementSibling;
     if (!panel || !panel.classList.contains('video-panel')) return;
-    const buttons = switchEl.querySelectorAll('button');
-    const sources = panel.querySelectorAll('.video-source');
-
+    var buttons = switchEl.querySelectorAll('button');
+    var sources = panel.querySelectorAll('.video-source');
     buttons.forEach(function(btn, i) {
       btn.addEventListener('click', function() {
         buttons.forEach(function(b) { b.classList.remove('active'); });
         sources.forEach(function(s) { s.classList.remove('active'); });
         btn.classList.add('active');
         if (sources[i]) sources[i].classList.add('active');
-        // Pause any playing videos when switching
-        sources.forEach(function(s, j) {
-          if (j !== i) {
-            var v = s.querySelector('video');
-            if (v) v.pause();
-            var iframe = s.querySelector('iframe');
-            if (iframe) {
-              var src = iframe.getAttribute('data-src') || iframe.src;
-              iframe.src = '';
-              iframe.setAttribute('data-src', src);
-            }
-          }
-        });
-        // Restore iframe src for active source
-        var activeIframe = sources[i] && sources[i].querySelector('iframe');
-        if (activeIframe && !activeIframe.src && activeIframe.getAttribute('data-src')) {
-          activeIframe.src = activeIframe.getAttribute('data-src');
-        }
       });
     });
+  });
+
+  // Fullscreen buttons for all animation containers
+  document.querySelectorAll('.d3-container, .three-container').forEach(function(el) {
+    var btn = document.createElement('button');
+    btn.className = 'fullscreen-btn';
+    btn.textContent = '⛶';
+    btn.title = '全屏 / Fullscreen';
+    btn.addEventListener('click', function() {
+      var wrapper = el.closest('.d3-container, .three-container');
+      // Include controls in fullscreen by wrapping
+      var parent = wrapper.parentElement;
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        // Try to fullscreen the parent that includes controls
+        var controlsSibling = wrapper.nextElementSibling;
+        if (controlsSibling && controlsSibling.classList.contains('d3-controls')) {
+          // Create a temporary wrapper
+          if (!wrapper.dataset.fsWrapped) {
+            var fsWrap = document.createElement('div');
+            fsWrap.style.background = '#fafafa';
+            wrapper.parentNode.insertBefore(fsWrap, wrapper);
+            fsWrap.appendChild(wrapper);
+            fsWrap.appendChild(controlsSibling);
+            wrapper.dataset.fsWrapped = '1';
+            wrapper.dataset.fsWrap = '';
+            fsWrap.requestFullscreen();
+          } else {
+            wrapper.parentElement.requestFullscreen();
+          }
+        } else {
+          wrapper.requestFullscreen();
+        }
+      }
+    });
+    el.style.position = 'relative';
+    el.appendChild(btn);
   });
 });
 </script>
