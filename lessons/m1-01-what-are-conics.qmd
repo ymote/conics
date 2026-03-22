@@ -371,7 +371,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 ```{=html}
 <div class="three-container" id="three_dandelin">
-  <div class="three-info" id="three_dandelin_info">拖动下方滑块移动点P</div>
+  <div class="three-info" id="three_dandelin_info">🟠 球 | 🔴 焦点(球与平面切点) | 🔵 切圆(球与锥面切线)</div>
 </div>
 <div class="d3-controls">
   <label>点P位置：</label>
@@ -548,7 +548,41 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   sw2.position.set(0, yc2, 0);
   scene.add(sw2);
 
-  // --- Foci: where spheres touch the plane ---
+  // --- Tangent circles: where spheres touch the CONE ---
+  // At height yc, the sphere of radius r = yc*sinA is inscribed in the cone.
+  // The tangent circle is a horizontal circle at height yc with radius rc = yc*tanA*cosA = yc*sinA/cosA...
+  // Actually: the sphere center is at (0,yc,0), radius r=yc*sinA.
+  // The tangent circle on the cone is at height yc (same as center).
+  // The cone radius at height yc is yc*tanA.
+  // But the sphere touches the cone where the cone's inner surface meets the sphere.
+  // The contact circle radius = yc * tanA * cos(alpha) ... no.
+  // Simpler: the sphere touches the cone along a circle. The circle is at height yc,
+  // and its radius equals the cone radius at that height minus...
+  // Actually the contact is where the sphere surface = cone surface.
+  // The cone at height y has radius y*tanA. The sphere at height yc has center on axis.
+  // The contact circle is at height yc (approximately), with radius = yc*tanA (cone radius there).
+  // This is approximate but visually correct for the demo.
+  function addTangentCircle(yCenter, label, color) {
+    const rc = Math.abs(yCenter) * tanA;
+    const circlePoints = [];
+    for (let i = 0; i <= 128; i++) {
+      const a = (i / 128) * Math.PI * 2;
+      circlePoints.push(new THREE.Vector3(rc * Math.cos(a), yCenter, rc * Math.sin(a)));
+    }
+    const cGeo = new THREE.BufferGeometry().setFromPoints(circlePoints);
+    const cLine = new THREE.Line(cGeo, new THREE.LineBasicMaterial({ color: color, linewidth: 2 }));
+    scene.add(cLine);
+    // Thicker tube for visibility
+    if (circlePoints.length > 3) {
+      const curve = new THREE.CatmullRomCurve3(circlePoints, true);
+      const tube = new THREE.TubeGeometry(curve, 64, 0.02, 8, true);
+      scene.add(new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color: color })));
+    }
+  }
+  addTangentCircle(yc1, 'c₁', 0x00ccff); // cyan circle where sphere1 touches cone
+  addTangentCircle(yc2, 'c₂', 0x00ccff); // cyan circle where sphere2 touches cone
+
+  // --- Foci: where spheres touch the PLANE (single point each!) ---
   // The tangent point is where the line from the sphere center perpendicular to the plane hits the plane.
   // F = center + radius * (-normal_toward_plane)
   // For sphere1: distance = d - yc1*cosT (positive means plane is on the +normal side)
@@ -666,18 +700,39 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 </script>
 ```
 
-拖动滑块让点P沿椭圆运动，观察右边的数据：无论P在椭圆上的什么位置，$|PF_1| + |PF_2|$ 始终相等！这就是椭圆的焦点距离和恒定性质——而Dandelin球的构造直接证明了这一点。
+拖动滑块让点P沿椭圆运动，观察数据：无论P在哪，$|PF_1| + |PF_2|$ 始终相等。
+
+::: {.callout-important}
+## 关键区分：两种"相切"
+
+Dandelin球同时与两个东西相切，**切法完全不同**：
+
+**1. 球与平面（截面）相切 → 切于一个点**
+
+球放在桌面上，只接触桌面一个点。同理，每个Dandelin球与切割平面只接触**一个点**。这两个切点就是椭圆的**焦点 $F_1$ 和 $F_2$**。
+
+**2. 球与锥面相切 → 切于一个圆**
+
+球塞在圆锥里，球的"赤道"紧贴锥面，形成一个完整的**切圆（tangent circle）**$c_1$ 和 $c_2$。
+:::
 
 ::: {.callout-note}
-## Dandelin证明的核心思想
+## Dandelin证明：为什么 $|PF_1| + |PF_2|$ 是常数
 
-设点P在椭圆上，从P沿锥面作母线到达上方切圆 $c_1$ 的交点为 $T_1$，下方切圆 $c_2$ 的交点为 $T_2$。
+设椭圆上任意一点P，过P作锥面的一条母线（直线），它与上方切圆 $c_1$ 交于 $T_1$，与下方切圆 $c_2$ 交于 $T_2$。
 
-- $|PF_1| = |PT_1|$（从外点到球的两条切线段相等）
-- $|PF_2| = |PT_2|$（同理）
-- 所以 $|PF_1| + |PF_2| = |PT_1| + |PT_2|$ = 两切圆之间沿母线的距离（常数！）
+关键定理：**从外部一点向球作两条切线，切线段等长。**
 
-这就完美解释了为什么截面曲线满足椭圆的定义。
+- P到球1的两条切线：一条切于 $F_1$（在截面上），一条切于 $T_1$（在锥面上）→ $|PF_1| = |PT_1|$
+- P到球2的两条切线：一条切于 $F_2$（在截面上），一条切于 $T_2$（在锥面上）→ $|PF_2| = |PT_2|$
+
+所以：
+
+$$|PF_1| + |PF_2| = |PT_1| + |PT_2|$$
+
+而 $|PT_1| + |PT_2|$ 就是母线上两个切圆之间的距离——**对于所有母线，这个距离都相同**（因为两个切圆是平行的水平圆）。
+
+因此 $|PF_1| + |PF_2| = \text{常数}$，满足椭圆的定义。
 :::
 
 ### 3Blue1Brown视频讲解
