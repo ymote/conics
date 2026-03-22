@@ -549,38 +549,34 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   scene.add(sw2);
 
   // --- Tangent circles: where spheres touch the CONE ---
-  // At height yc, the sphere of radius r = yc*sinA is inscribed in the cone.
-  // The tangent circle is a horizontal circle at height yc with radius rc = yc*tanA*cosA = yc*sinA/cosA...
-  // Actually: the sphere center is at (0,yc,0), radius r=yc*sinA.
-  // The tangent circle on the cone is at height yc (same as center).
-  // The cone radius at height yc is yc*tanA.
-  // But the sphere touches the cone where the cone's inner surface meets the sphere.
-  // The contact circle radius = yc * tanA * cos(alpha) ... no.
-  // Simpler: the sphere touches the cone along a circle. The circle is at height yc,
-  // and its radius equals the cone radius at that height minus...
-  // Actually the contact is where the sphere surface = cone surface.
-  // The cone at height y has radius y*tanA. The sphere at height yc has center on axis.
-  // The contact circle is at height yc (approximately), with radius = yc*tanA (cone radius there).
-  // This is approximate but visually correct for the demo.
-  function addTangentCircle(yCenter, label, color) {
-    const rc = Math.abs(yCenter) * tanA;
+  // Sphere center at (0, h, 0), radius r = h*sin(α), inscribed in cone.
+  // In 2D cross-section, the cone generator is the line x*cos(α) - y*sin(α) = 0.
+  // The foot of perpendicular from (0, h) to this line gives the tangent point:
+  //   y_tangent = h * cos²(α)
+  //   r_tangent = h * sin(α) * cos(α)
+  // This equals the cone radius at y_tangent: y_tangent * tan(α) = h*cos²(α)*tan(α) = h*cos(α)*sin(α). ✓
+  const cosA = Math.cos(alpha);
+  const yt1 = yc1 * cosA * cosA; // tangent circle 1 height
+  const yt2 = yc2 * cosA * cosA; // tangent circle 2 height
+  const rt1 = yc1 * sinA * cosA; // tangent circle 1 radius
+  const rt2 = yc2 * sinA * cosA; // tangent circle 2 radius
+
+  function addTangentCircle(yHeight, radius, color) {
     const circlePoints = [];
     for (let i = 0; i <= 128; i++) {
       const a = (i / 128) * Math.PI * 2;
-      circlePoints.push(new THREE.Vector3(rc * Math.cos(a), yCenter, rc * Math.sin(a)));
+      circlePoints.push(new THREE.Vector3(radius * Math.cos(a), yHeight, radius * Math.sin(a)));
     }
     const cGeo = new THREE.BufferGeometry().setFromPoints(circlePoints);
-    const cLine = new THREE.Line(cGeo, new THREE.LineBasicMaterial({ color: color, linewidth: 2 }));
-    scene.add(cLine);
-    // Thicker tube for visibility
+    scene.add(new THREE.Line(cGeo, new THREE.LineBasicMaterial({ color: color })));
     if (circlePoints.length > 3) {
       const curve = new THREE.CatmullRomCurve3(circlePoints, true);
-      const tube = new THREE.TubeGeometry(curve, 64, 0.02, 8, true);
+      const tube = new THREE.TubeGeometry(curve, 64, 0.025, 8, true);
       scene.add(new THREE.Mesh(tube, new THREE.MeshBasicMaterial({ color: color })));
     }
   }
-  addTangentCircle(yc1, 'c₁', 0x00ccff); // cyan circle where sphere1 touches cone
-  addTangentCircle(yc2, 'c₂', 0x00ccff); // cyan circle where sphere2 touches cone
+  addTangentCircle(yt1, rt1, 0x00ccff); // c₁: sphere1 touches cone
+  addTangentCircle(yt2, rt2, 0x00ccff); // c₂: sphere2 touches cone
 
   // --- Foci: where spheres touch the PLANE (single point each!) ---
   // The tangent point is where the line from the sphere center perpendicular to the plane hits the plane.
@@ -712,13 +708,13 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     // Direction from apex to P: normalize P (since apex is origin)
     const dir = p.clone().normalize();
 
-    // T₁: where generator meets height yc1
-    // Along the ray from origin in direction dir, at height y: t = yc1 / dir.y
-    const t1Param = yc1 / dir.y;
+    // T₁: where generator meets tangent circle c₁ at height yt1 (NOT yc1!)
+    // Along ray from origin, parameter t: point = dir*t, height = dir.y*t = yt1
+    const t1Param = yt1 / dir.y;
     const t1Pos = dir.clone().multiplyScalar(t1Param);
 
-    // T₂: where generator meets height yc2
-    const t2Param = yc2 / dir.y;
+    // T₂: where generator meets tangent circle c₂ at height yt2
+    const t2Param = yt2 / dir.y;
     const t2Pos = dir.clone().multiplyScalar(t2Param);
 
     // Update T₁, T₂ positions
