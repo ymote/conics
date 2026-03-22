@@ -314,8 +314,8 @@ $|F_1F_2| = 2c = $ ______ → $c = $ ______
 
 ```{=html}
 <div class="video-switch">
-  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">B站原版</button>
-  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">GitHub镜像</button>
+  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">📺 B站原版</button>
+  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">💾 GitHub镜像</button>
 </div>
 <div class="video-panel">
   <div class="video-source vs-bilibili active">
@@ -348,6 +348,44 @@ $|F_1F_2| = 2c = $ ______ → $c = $ ______
 
 已知椭圆 $\dfrac{x^2}{4}+\dfrac{y^2}{3}=1$, $F_1,F_2$ 为左、右焦点, $P$ 为椭圆上一点, 且 $|PF_1|=1$. 求 $|PF_2|$.
 
+```{=html}
+<div id="gaokao_m3_03_q1" style="margin:8px 0;"></div>
+<script>
+(function(){
+  const W=420, H=250, cx=210, cy=125, sc=80;
+  const svg=d3.select("#gaokao_m3_03_q1").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("style","max-width:420px");
+  const a=2, b=Math.sqrt(3), c=1;
+  // Ellipse
+  const pts=d3.range(0,2*Math.PI+.1,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts)+"Z")
+    .attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // Axes
+  svg.append("line").attr("x1",30).attr("y1",cy).attr("x2",W-30).attr("y2",cy).attr("stroke","#ddd");
+  // Foci
+  const f1x=cx-c*sc, f2x=cx+c*sc;
+  svg.append("circle").attr("cx",f1x).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",f2x).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",f1x).attr("y",cy+16).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("F₁");
+  svg.append("text").attr("x",f2x).attr("y",cy+16).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("F₂");
+  // P at left vertex (-2,0) where |PF1|=1, |PF2|=3
+  const px=cx-a*sc, py=cy;
+  svg.append("circle").attr("cx",px).attr("cy",py).attr("r",5).attr("fill","#388c46");
+  svg.append("text").attr("x",px-5).attr("y",py-10).attr("font-size","12px").attr("fill","#388c46").text("P(−2, 0)");
+  // Lines PF1, PF2
+  svg.append("line").attr("x1",px).attr("y1",py).attr("x2",f1x).attr("y2",cy)
+    .attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  svg.append("line").attr("x1",px).attr("y1",py).attr("x2",f2x).attr("y2",cy)
+    .attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  // Distance labels
+  svg.append("text").attr("x",(px+f1x)/2).attr("y",cy-8).attr("text-anchor","middle")
+    .attr("font-size","11px").attr("fill","#e67e22").attr("font-weight","bold").text("|PF₁|=1");
+  svg.append("text").attr("x",(px+f2x)/2).attr("y",cy-8).attr("text-anchor","middle")
+    .attr("font-size","11px").attr("fill","#e67e22").attr("font-weight","bold").text("|PF₂|=?");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -368,6 +406,57 @@ $$|PF_2|=4-|PF_1|=4-1=\boxed{3}$$
 
 已知椭圆 $\dfrac{x^2}{4}+\dfrac{y^2}{3}=1$, $F_1,F_2$ 为左、右焦点. 过 $F_1$ 作直线交椭圆于 $A,B$ 两点. 求 $\triangle ABF_2$ 的周长.
 
+```{=html}
+<div id="gaokao_m3_03_q2" style="margin:8px 0;"></div>
+<script>
+(function(){
+  const W=420, H=250, cx=210, cy=125, sc=80;
+  const svg=d3.select("#gaokao_m3_03_q2").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("style","max-width:420px");
+  const a=2, bv=Math.sqrt(3), c=1;
+  // Ellipse
+  const pts=d3.range(0,2*Math.PI+.1,.05).map(t=>[cx+a*sc*Math.cos(t),cy-bv*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts)+"Z")
+    .attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  svg.append("line").attr("x1",30).attr("y1",cy).attr("x2",W-30).attr("y2",cy).attr("stroke","#ddd");
+  // Foci
+  const f1x=cx-c*sc, f2x=cx+c*sc;
+  svg.append("circle").attr("cx",f1x).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",f2x).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",f1x).attr("y",cy+16).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("F₁");
+  svg.append("text").attr("x",f2x).attr("y",cy+16).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("F₂");
+  // Chord AB through F1 (use angle ~60deg)
+  const ang=Math.PI/3;
+  // Intersect line through F1 with ellipse: parametric approach
+  // Line: x=-1+t*cos(ang), y=t*sin(ang) => substitute into ellipse
+  const ca=Math.cos(ang), sa=Math.sin(ang);
+  const A_coeff=ca*ca/4+sa*sa/3;
+  const B_coeff=-2*c*ca/4;
+  const C_coeff=c*c/4-1;
+  const disc=B_coeff*B_coeff-4*A_coeff*C_coeff;
+  const t1=(-B_coeff+Math.sqrt(disc))/(2*A_coeff);
+  const t2=(-B_coeff-Math.sqrt(disc))/(2*A_coeff);
+  const ax=-c+t1*ca, ay=t1*sa;
+  const bx=-c+t2*ca, by=t2*sa;
+  // Points A, B on ellipse
+  const Apx=cx+ax*sc, Apy=cy-ay*sc;
+  const Bpx=cx+bx*sc, Bpy=cy-by*sc;
+  svg.append("circle").attr("cx",Apx).attr("cy",Apy).attr("r",4).attr("fill","#388c46");
+  svg.append("circle").attr("cx",Bpx).attr("cy",Bpy).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",Apx+8).attr("y",Apy-5).attr("font-size","11px").attr("fill","#388c46").text("A");
+  svg.append("text").attr("x",Bpx+8).attr("y",Bpy+14).attr("font-size","11px").attr("fill","#388c46").text("B");
+  // Chord AB (through F1)
+  svg.append("line").attr("x1",Apx).attr("y1",Apy).attr("x2",Bpx).attr("y2",Bpy)
+    .attr("stroke","#388c46").attr("stroke-width",2);
+  // Triangle ABF2
+  svg.append("path").attr("d",`M${Apx},${Apy}L${Bpx},${Bpy}L${f2x},${cy}Z`)
+    .attr("fill","rgba(56,140,70,0.08)").attr("stroke","#e67e22").attr("stroke-width",1.5).attr("stroke-dasharray","5,3");
+  // Label
+  svg.append("text").attr("x",15).attr("y",18).attr("font-size","11px").attr("fill","#666").text("△ABF₂ 周长 = 4a = 8");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -387,6 +476,58 @@ $$\text{周长}=(|AF_1|+|AF_2|)+(|BF_1|+|BF_2|)=2a+2a=4a=\boxed{8}$$
 ## 高考真题：焦点三角形角度求距离
 
 已知椭圆 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$ 的焦距为 $4$, $P$ 为椭圆上一点, $\angle PF_1F_2=120°$, $|PF_1|=1$. 求 $|PF_2|$.
+
+```{=html}
+<div id="gaokao_m3_03_q3" style="margin:8px 0;"></div>
+<script>
+(function(){
+  const W=420, H=250, cx=210, cy=140, sc=40;
+  const svg=d3.select("#gaokao_m3_03_q3").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("style","max-width:420px");
+  // 2c=4 => c=2, |PF1|=1, angle PF1F2=120°, |PF2|=√21
+  // a=(1+√21)/2≈2.79, b²=a²-c²
+  const c=2, pf1=1, pf2=Math.sqrt(21);
+  const a2=(1+pf2)/2, b2=Math.sqrt(a2*a2-c*c);
+  // Ellipse
+  const pts=d3.range(0,2*Math.PI+.1,.05).map(t=>[cx+a2*sc*Math.cos(t),cy-b2*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts)+"Z")
+    .attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  svg.append("line").attr("x1",30).attr("y1",cy).attr("x2",W-30).attr("y2",cy).attr("stroke","#ddd");
+  // Foci
+  const f1x=cx-c*sc, f2x=cx+c*sc;
+  svg.append("circle").attr("cx",f1x).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",f2x).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",f1x).attr("y",cy+16).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("F₁");
+  svg.append("text").attr("x",f2x).attr("y",cy+16).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("F₂");
+  // P: from F1, angle 120° from F1F2 direction (which is rightward), distance 1
+  // angle PF1F2=120° means angle at F1 between PF1 and F1F2
+  // F1F2 direction is to the right (0°). So P is at 120° from that direction.
+  const angP=120*Math.PI/180;
+  const px_real=-c+pf1*Math.cos(angP), py_real=pf1*Math.sin(angP);
+  const ppx=cx+px_real*sc, ppy=cy-py_real*sc;
+  svg.append("circle").attr("cx",ppx).attr("cy",ppy).attr("r",5).attr("fill","#388c46");
+  svg.append("text").attr("x",ppx-15).attr("y",ppy-8).attr("font-size","12px").attr("fill","#388c46").text("P");
+  // Lines
+  svg.append("line").attr("x1",ppx).attr("y1",ppy).attr("x2",f1x).attr("y2",cy)
+    .attr("stroke","#388c46").attr("stroke-width",1.5);
+  svg.append("line").attr("x1",ppx).attr("y1",ppy).attr("x2",f2x).attr("y2",cy)
+    .attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  // Angle arc at F1 (120°)
+  const r=18;
+  svg.append("path")
+    .attr("d",d3.arc()({innerRadius:r,outerRadius:r,startAngle:Math.PI/2-angP,endAngle:Math.PI/2}))
+    .attr("transform",`translate(${f1x},${cy})`)
+    .attr("fill","none").attr("stroke","#e67e22").attr("stroke-width",2);
+  svg.append("text").attr("x",f1x+10).attr("y",cy-22)
+    .attr("font-size","10px").attr("fill","#e67e22").text("120°");
+  // Distance labels
+  svg.append("text").attr("x",(ppx+f1x)/2-15).attr("y",(ppy+cy)/2-2)
+    .attr("font-size","10px").attr("fill","#333").text("|PF₁|=1");
+  svg.append("text").attr("x",(ppx+f2x)/2+5).attr("y",(ppy+cy)/2+5)
+    .attr("font-size","10px").attr("fill","#333").text("|PF₂|=?");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

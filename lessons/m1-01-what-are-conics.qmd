@@ -824,8 +824,8 @@ $$|PF_1| + |PF_2| = |PT_1| + |PT_2|$$
 
 ```{=html}
 <div class="video-switch">
-  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-youtube').classList.add('active')">YouTube原版</button>
-  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github2').classList.add('active')">GitHub镜像</button>
+  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-youtube').classList.add('active')">▶️ YouTube原版</button>
+  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github2').classList.add('active')">💾 GitHub镜像</button>
 </div>
 <div class="video-panel">
   <div class="video-source vs-youtube active">
@@ -1197,8 +1197,8 @@ GPS定位的数学原理与双曲线密切相关。接收器测量来自不同�
 
 ```{=html}
 <div class="video-switch">
-  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">B站原版</button>
-  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">GitHub镜像</button>
+  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">📺 B站原版</button>
+  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">💾 GitHub镜像</button>
 </div>
 <div class="video-panel">
   <div class="video-source vs-bilibili active">

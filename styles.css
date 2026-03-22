@@ -127,31 +127,33 @@ body {
 
 .video-switch {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   margin: 1.5em 0 0 0;
   padding: 0;
 }
 
 .video-switch button {
-  padding: 0.6em 1.5em;
-  border: 2px solid #2d70b3;
+  padding: 0.7em 2em;
+  border: 3px solid #2d70b3;
   background: #fff;
   color: #2d70b3;
   cursor: pointer;
   font-family: 'Manrope', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
-  border-radius: 8px 8px 0 0;
+  border-radius: 10px 10px 0 0;
   transition: background 0.2s, color 0.2s;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
 }
 
 .video-switch button.active {
   background: #2d70b3;
   color: #fff;
+  border-bottom-color: #2d70b3;
 }
 
 .video-switch button:hover:not(.active) {
-  background: #e8f0fe;
+  background: #dbeafe;
 }
 
 .video-panel {

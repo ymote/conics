@@ -350,8 +350,8 @@ $k_{OM} = \dfrac{1-0}{1-0} = $ ______
 
 ```{=html}
 <div class="video-switch">
-  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">B站原版</button>
-  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">GitHub镜像</button>
+  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">📺 B站原版</button>
+  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">💾 GitHub镜像</button>
 </div>
 <div class="video-panel">
   <div class="video-source vs-bilibili active">

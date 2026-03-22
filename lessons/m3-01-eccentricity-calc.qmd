@@ -327,8 +327,8 @@ $$a^2 - c^2 \leqslant$$ ______
 
 ```{=html}
 <div class="video-switch">
-  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">B站原版</button>
-  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">GitHub镜像</button>
+  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">📺 B站原版</button>
+  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">💾 GitHub镜像</button>
 </div>
 <div class="video-panel">
   <div class="video-source vs-bilibili active">
@@ -363,6 +363,40 @@ $$a^2 - c^2 \leqslant$$ ______
 
 A. $\dfrac{2\sqrt{3}}{3}$ &emsp; B. $\sqrt{2}$ &emsp; C. $\sqrt{3}$ &emsp; D. $\sqrt{6}$
 
+```{=html}
+<div id="gaokao_m3_01_q1" style="margin:8px 0;"></div>
+<script>
+(function(){
+  const W=420, H=250, mx=210, my=125, sc=70;
+  const svg=d3.select("#gaokao_m3_01_q1").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("style","max-width:420px");
+  // C2: x²/4+y²=1, a2=2,b2=1,c2=√3,e2=√3/2
+  const a2=2, b2s=1, c2=Math.sqrt(3);
+  // C1: a1=2√3/3≈1.155, b1=1, c1=√(a1²-1)
+  const a1=2*Math.sqrt(3)/3, b1s=1, c1=Math.sqrt(a1*a1-1);
+  // Draw C2 (larger ellipse)
+  const pts2=d3.range(0,2*Math.PI+.1,.05).map(t=>[mx+a2*sc*Math.cos(t),my-b2s*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts2)+"Z")
+    .attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // Draw C1 (smaller ellipse)
+  const pts1=d3.range(0,2*Math.PI+.1,.05).map(t=>[mx+a1*sc*Math.cos(t),my-b1s*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts1)+"Z")
+    .attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2);
+  // Axes
+  svg.append("line").attr("x1",30).attr("y1",my).attr("x2",W-30).attr("y2",my).attr("stroke","#ccc");
+  svg.append("line").attr("x1",mx).attr("y1",15).attr("x2",mx).attr("y2",H-15).attr("stroke","#ccc");
+  // Labels
+  svg.append("text").attr("x",mx+a2*sc+5).attr("y",my-10).attr("font-size","12px").attr("fill","#2d70b3").text("C₂");
+  svg.append("text").attr("x",mx+a1*sc+5).attr("y",my+18).attr("font-size","12px").attr("fill","#c74440").text("C₁");
+  // Eccentricity labels
+  const e2=Math.sqrt(3)/2, e1=c1/a1;
+  svg.append("text").attr("x",15).attr("y",22).attr("font-size","11px").attr("fill","#2d70b3").text("e₂ = √3/2 ≈ "+e2.toFixed(3));
+  svg.append("text").attr("x",15).attr("y",38).attr("font-size","11px").attr("fill","#c74440").text("e₁ = "+e1.toFixed(3));
+  svg.append("text").attr("x",15).attr("y",54).attr("font-size","11px").attr("fill","#666").text("e₂ = √3 · e₁");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -386,6 +420,48 @@ $$\frac{1}{2} = \frac{\sqrt{a^2-1}}{a} \implies \frac{a^2}{4} = a^2 - 1 \implies
 ## 高考真题：椭圆焦点三角形角度求离心率范围
 
 已知椭圆 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$ 的左、右焦点为 $F_1,F_2$, 椭圆上存在点 $P$ 使得 $\angle F_1PF_2=120°$. 求离心率 $e$ 的取值范围.
+
+```{=html}
+<div id="gaokao_m3_01_q2" style="margin:8px 0;"></div>
+<script>
+(function(){
+  const W=420, H=250, cx=210, cy=130, sc=80;
+  const svg=d3.select("#gaokao_m3_01_q2").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("style","max-width:420px");
+  // Example ellipse with e=√3/2 (boundary case)
+  const e=Math.sqrt(3)/2, a=1, c=e, b=Math.sqrt(1-e*e);
+  // Ellipse
+  const pts=d3.range(0,2*Math.PI+.1,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts)+"Z")
+    .attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // Axes
+  svg.append("line").attr("x1",40).attr("y1",cy).attr("x2",W-40).attr("y2",cy).attr("stroke","#ccc");
+  // Foci
+  const f1x=cx-c*sc, f2x=cx+c*sc;
+  svg.append("circle").attr("cx",f1x).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",f2x).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",f1x).attr("y",cy+16).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("F₁");
+  svg.append("text").attr("x",f2x).attr("y",cy+16).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440").text("F₂");
+  // P at top of ellipse (short axis endpoint, where angle is max)
+  const px=cx, py=cy-b*sc;
+  svg.append("circle").attr("cx",px).attr("cy",py).attr("r",5).attr("fill","#388c46");
+  svg.append("text").attr("x",px+8).attr("y",py-5).attr("font-size","12px").attr("fill","#388c46").text("P");
+  // Lines PF1, PF2
+  svg.append("line").attr("x1",px).attr("y1",py).attr("x2",f1x).attr("y2",cy)
+    .attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  svg.append("line").attr("x1",px).attr("y1",py).attr("x2",f2x).attr("y2",cy)
+    .attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  // Angle arc at P
+  const angStart=Math.atan2(cy-py,f1x-px), angEnd=Math.atan2(cy-py,f2x-px);
+  const r=20;
+  const arcPath=d3.arc()({innerRadius:r,outerRadius:r,startAngle:-angEnd+Math.PI/2,endAngle:-angStart+Math.PI/2});
+  svg.append("path").attr("d",arcPath).attr("transform",`translate(${px},${py})`)
+    .attr("fill","none").attr("stroke","#e67e22").attr("stroke-width",2);
+  svg.append("text").attr("x",px).attr("y",py+35).attr("text-anchor","middle")
+    .attr("font-size","11px").attr("fill","#e67e22").text("120°");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
@@ -414,6 +490,55 @@ $$\boxed{e\in\left[\frac{\sqrt{3}}{2},\,1\right)}$$
 ## 高考真题：圆与直线相切求离心率
 
 已知椭圆 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$, 以长轴 $A_1A_2$ 为直径的圆与直线 $bx-ay+2ab=0$ 相切. 求离心率 $e$.
+
+```{=html}
+<div id="gaokao_m3_01_q3" style="margin:8px 0;"></div>
+<script>
+(function(){
+  const W=420, H=250, cx=210, cy=125, sc=55;
+  const svg=d3.select("#gaokao_m3_01_q3").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("style","max-width:420px");
+  // Use e=√6/3, so e²=2/3, a=√3, b=1, c=√2 (scaled)
+  const a=Math.sqrt(3), b=1, c=Math.sqrt(2);
+  // Ellipse
+  const pts=d3.range(0,2*Math.PI+.1,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts)+"Z")
+    .attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // Circle with diameter A1A2 (center=origin, radius=a)
+  svg.append("circle").attr("cx",cx).attr("cy",cy).attr("r",a*sc)
+    .attr("fill","none").attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","5,4");
+  // A1, A2
+  svg.append("circle").attr("cx",cx-a*sc).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",cx+a*sc).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",cx-a*sc-5).attr("y",cy+16).attr("text-anchor","end").attr("font-size","11px").attr("fill","#c74440").text("A₁");
+  svg.append("text").attr("x",cx+a*sc+5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("A₂");
+  // Tangent line bx - ay + 2ab = 0 => y = (b/a)x + 2b
+  // At x range
+  const lineY=x=>(b/a)*x+2*b;
+  const x1=-3.5, x2=3.5;
+  svg.append("line")
+    .attr("x1",cx+x1*sc).attr("y1",cy-lineY(x1)*sc)
+    .attr("x2",cx+x2*sc).attr("y2",cy-lineY(x2)*sc)
+    .attr("stroke","#e67e22").attr("stroke-width",2);
+  // Distance line from origin to tangent line (perpendicular)
+  // d = 2ab/√(a²+b²) = a (tangent condition)
+  // Foot of perpendicular from origin to line bx-ay+2ab=0
+  // foot: (b·2ab/(a²+b²), -a·(-2ab)/(a²+b²)) hmm let me compute properly
+  // Line: bx - ay + 2ab = 0. Normal direction (b,-a).
+  // Foot from (0,0): (0,0) + t(b,-a) on line: b(tb)-a(-ta)+2ab=0 => t(b²+a²)+2ab=0 => t=-2ab/(a²+b²)
+  const denom=a*a+b*b;
+  const fx=-2*a*b*b/denom, fy=2*a*a*b/denom;
+  svg.append("line").attr("x1",cx).attr("y1",cy).attr("x2",cx+fx*sc).attr("y2",cy-fy*sc)
+    .attr("stroke","#9b59b6").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  svg.append("text").attr("x",cx+fx*sc/2-12).attr("y",cy-fy*sc/2)
+    .attr("font-size","10px").attr("fill","#9b59b6").text("d = a");
+  // Labels
+  svg.append("text").attr("x",cx+x2*sc-15).attr("y",cy-lineY(x2)*sc-5)
+    .attr("font-size","10px").attr("fill","#e67e22").text("bx−ay+2ab=0");
+  svg.append("text").attr("x",15).attr("y",18).attr("font-size","11px").attr("fill","#666").text("紫色圆：以A₁A₂为直径");
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案

@@ -331,6 +331,93 @@ $k_{AM} = \dfrac{y_1}{ty_1+3}$，$k_{BN} = \dfrac{y_2}{ty_2-1}$。
 
 (2) 证明: 直线 $CD$ 过定点.
 
+```{=html}
+<div id="gaokao_m4_03_q1" style="margin:8px 0;"></div>
+<script>
+(function(){
+  const W=440, H=250, cx=180, cy=125, sc=28;
+  const svg=d3.select("#gaokao_m4_03_q1").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("style","max-width:440px");
+  // Ellipse x²/9+y²=1, a=3, b=1
+  const a=3, b=1;
+  const pts=d3.range(0,2*Math.PI+.1,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts)+"Z")
+    .attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // Axes
+  svg.append("line").attr("x1",10).attr("y1",cy).attr("x2",W-10).attr("y2",cy).attr("stroke","#ddd");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ddd");
+  // Vertices A(-3,0), B(3,0), G(0,1)
+  const Ax=cx-a*sc, Bx=cx+a*sc, Gy=cy-b*sc;
+  svg.append("circle").attr("cx",Ax).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",Bx).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",cx).attr("cy",Gy).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",Ax-5).attr("y",cy+15).attr("text-anchor","end").attr("font-size","11px").attr("fill","#c74440").text("A(−3,0)");
+  svg.append("text").attr("x",Bx+5).attr("y",cy+15).attr("font-size","11px").attr("fill","#c74440").text("B(3,0)");
+  svg.append("text").attr("x",cx+8).attr("y",Gy-3).attr("font-size","11px").attr("fill","#c74440").text("G(0,1)");
+  // Line x=6
+  const x6=cx+6*sc;
+  svg.append("line").attr("x1",x6).attr("y1",15).attr("x2",x6).attr("y2",H-15)
+    .attr("stroke","#999").attr("stroke-width",1.5).attr("stroke-dasharray","5,4");
+  svg.append("text").attr("x",x6+4).attr("y",20).attr("font-size","10px").attr("fill","#999").text("x=6");
+  // P on x=6
+  const Pt=1.2;
+  const Ppx=x6, Ppy=cy-Pt*sc;
+  svg.append("circle").attr("cx",Ppx).attr("cy",Ppy).attr("r",5).attr("fill","#e67e22");
+  svg.append("text").attr("x",Ppx+8).attr("y",Ppy+4).attr("font-size","11px").attr("fill","#e67e22").text("P");
+  // Lines PA→C and PB→D (schematic)
+  // C is second intersection of PA with ellipse
+  // PA direction: from P to A
+  const dxPA=(-3-6), dyPA=(0-Pt);
+  // Intersect with ellipse: parametric from A: x=-3+s*(6-(-3)), y=0+s*(Pt-0) hmm
+  // Use line from P(6,Pt) through A(-3,0): param x=6+t*(-9), y=Pt+t*(-Pt) => x=6-9t, y=Pt(1-t)
+  // Sub into x²/9+y²=1: (6-9t)²/9+Pt²(1-t)²=1
+  // (2-3t)²·4+ ... let me just pick approximate C,D points
+  // For t=0 => P, for some t => on ellipse. t=1 => A(-3,0). Find other root.
+  // (6-9t)²/9+Pt²(1-t)²=1 => (6-9t)²+9Pt²(1-t)²=9
+  // 36-108t+81t²+9*1.44*(1-2t+t²)=9 => 36-108t+81t²+12.96-25.92t+12.96t²=9
+  // 93.96t²-133.92t+39.96=0 => t=(133.92±√(133.92²-4·93.96·39.96))/(2·93.96)
+  const AA=81+9*Pt*Pt, BB=-108-18*Pt*Pt, CC=36+9*Pt*Pt-9;
+  const disc=BB*BB-4*AA*CC;
+  const t1_v=(-BB+Math.sqrt(disc))/(2*AA), t2_v=(-BB-Math.sqrt(disc))/(2*AA);
+  // t=1 is A, other root is C
+  const tC=Math.abs(t1_v-1)>0.01?t1_v:t2_v;
+  const Cx_r=6-9*tC, Cy_r=Pt*(1-tC);
+  const Cpx=cx+Cx_r*sc, Cpy=cy-Cy_r*sc;
+  // PB→D: from P(6,Pt) through B(3,0)
+  // param x=6+t*(-3), y=Pt+t*(-Pt) => x=6-3t, y=Pt(1-t)
+  // (6-3t)²/9+Pt²(1-t)²=1 => (6-3t)²+9Pt²(1-t)²=9
+  const AA2=(9+9*Pt*Pt), BB2=(-36-18*Pt*Pt), CC2=(36+9*Pt*Pt-9);
+  const disc2=BB2*BB2-4*AA2*CC2;
+  const t1_d=(-BB2+Math.sqrt(disc2))/(2*AA2), t2_d=(-BB2-Math.sqrt(disc2))/(2*AA2);
+  const tD=Math.abs(t1_d-1)>0.01?t1_d:t2_d;
+  const Dx_r=6-3*tD, Dy_r=Pt*(1-tD);
+  const Dpx=cx+Dx_r*sc, Dpy=cy-Dy_r*sc;
+  // Draw lines PA, PB
+  svg.append("line").attr("x1",Ppx).attr("y1",Ppy).attr("x2",Cpx).attr("y2",Cpy)
+    .attr("stroke","#388c46").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  svg.append("line").attr("x1",Ppx).attr("y1",Ppy).attr("x2",Dpx).attr("y2",Dpy)
+    .attr("stroke","#388c46").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  // C and D
+  svg.append("circle").attr("cx",Cpx).attr("cy",Cpy).attr("r",4).attr("fill","#388c46");
+  svg.append("circle").attr("cx",Dpx).attr("cy",Dpy).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",Cpx-12).attr("y",Cpy-6).attr("font-size","11px").attr("fill","#388c46").text("C");
+  svg.append("text").attr("x",Dpx+6).attr("y",Dpy-6).attr("font-size","11px").attr("fill","#388c46").text("D");
+  // Line CD (highlighted)
+  const ext=2;
+  const dxCD=Dx_r-Cx_r, dyCD=Dy_r-Cy_r;
+  svg.append("line")
+    .attr("x1",cx+(Cx_r-dxCD*ext)*sc).attr("y1",cy-(Cy_r-dyCD*ext)*sc)
+    .attr("x2",cx+(Dx_r+dxCD*ext)*sc).attr("y2",cy-(Dy_r+dyCD*ext)*sc)
+    .attr("stroke","#e67e22").attr("stroke-width",2.5);
+  // Fixed point (3/2, 0)
+  const fpx=cx+1.5*sc;
+  svg.append("circle").attr("cx",fpx).attr("cy",cy).attr("r",5).attr("fill","#e67e22").attr("opacity",0.7);
+  svg.append("text").attr("x",fpx).attr("y",cy-10).attr("text-anchor","middle")
+    .attr("font-size","10px").attr("fill","#e67e22").attr("font-weight","bold").text("定点(3/2, 0)");
+})();
+</script>
+```
+
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
 
@@ -364,6 +451,64 @@ $$\boxed{\text{定点为}\left(\frac{3}{2},\,0\right)}$$
 (1) 求椭圆方程;
 
 (2) 证明 $k_1+k_2$ 为定值.
+
+```{=html}
+<div id="gaokao_m4_03_q2" style="margin:8px 0;"></div>
+<script>
+(function(){
+  const W=440, H=250, cx=200, cy=125, sc=55;
+  const svg=d3.select("#gaokao_m4_03_q2").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("style","max-width:440px");
+  // Ellipse x²/4+y²/(16/9)=1, a=2, b=4/3
+  const a=2, b=4/3;
+  const pts=d3.range(0,2*Math.PI+.1,.05).map(t=>[cx+a*sc*Math.cos(t),cy-b*sc*Math.sin(t)]);
+  svg.append("path").attr("d",d3.line()(pts)+"Z")
+    .attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // Axes
+  svg.append("line").attr("x1",20).attr("y1",cy).attr("x2",W-20).attr("y2",cy).attr("stroke","#ddd");
+  svg.append("line").attr("x1",cx).attr("y1",10).attr("x2",cx).attr("y2",H-10).attr("stroke","#ddd");
+  // A(-2,0) and B(1,0)
+  const Apx=cx-2*sc, Bpx=cx+1*sc;
+  svg.append("circle").attr("cx",Apx).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("circle").attr("cx",Bpx).attr("cy",cy).attr("r",4).attr("fill","#c74440");
+  svg.append("text").attr("x",Apx-5).attr("y",cy+16).attr("text-anchor","end").attr("font-size","11px").attr("fill","#c74440").text("A(−2,0)");
+  svg.append("text").attr("x",Bpx+5).attr("y",cy+16).attr("font-size","11px").attr("fill","#c74440").text("B(1,0)");
+  // Line PQ through B(1,0) with some slope
+  const k=1.5;
+  // Intersect x=my+1 with ellipse: x²/4+9y²/16=1
+  // (my+1)²/4+9y²/16=1 => 4(my+1)²+9y²=16
+  // (4m²+9)y²+8my-12=0
+  const m=1/k;
+  const AA=4*m*m+9, BB_c=8*m, CC=-12;
+  const disc=BB_c*BB_c-4*AA*CC;
+  const y1=(-BB_c+Math.sqrt(disc))/(2*AA), y2=(-BB_c-Math.sqrt(disc))/(2*AA);
+  const x1=m*y1+1, x2=m*y2+1;
+  // P and Q on ellipse
+  const Ppx=cx+x1*sc, Ppy=cy-y1*sc;
+  const Qpx=cx+x2*sc, Qpy=cy-y2*sc;
+  svg.append("circle").attr("cx",Ppx).attr("cy",Ppy).attr("r",4).attr("fill","#388c46");
+  svg.append("circle").attr("cx",Qpx).attr("cy",Qpy).attr("r",4).attr("fill","#388c46");
+  svg.append("text").attr("x",Ppx+8).attr("y",Ppy-5).attr("font-size","11px").attr("fill","#388c46").text("P");
+  svg.append("text").attr("x",Qpx+8).attr("y",Qpy+14).attr("font-size","11px").attr("fill","#388c46").text("Q");
+  // Line PQ through B
+  svg.append("line").attr("x1",Ppx).attr("y1",Ppy).attr("x2",Qpx).attr("y2",Qpy)
+    .attr("stroke","#388c46").attr("stroke-width",1.5);
+  // Lines AP, AQ
+  svg.append("line").attr("x1",Apx).attr("y1",cy).attr("x2",Ppx).attr("y2",Ppy)
+    .attr("stroke","#e67e22").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  svg.append("line").attr("x1",Apx).attr("y1",cy).attr("x2",Qpx).attr("y2",Qpy)
+    .attr("stroke","#e67e22").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  // k1, k2 labels
+  const k1_v=y1/(x1+2), k2_v=y2/(x2+2);
+  svg.append("text").attr("x",15).attr("y",18).attr("font-size","11px").attr("fill","#e67e22")
+    .text("k₁ = "+k1_v.toFixed(3));
+  svg.append("text").attr("x",15).attr("y",34).attr("font-size","11px").attr("fill","#e67e22")
+    .text("k₂ = "+k2_v.toFixed(3));
+  svg.append("text").attr("x",15).attr("y",50).attr("font-size","11px").attr("fill","#333").attr("font-weight","bold")
+    .text("k₁+k₂ = "+(k1_v+k2_v).toFixed(3));
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## 解题思路与答案
@@ -412,8 +557,8 @@ $$\boxed{k_1+k_2=0}$$
 
 ```{=html}
 <div class="video-switch">
-  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">B站原版</button>
-  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">GitHub镜像</button>
+  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">📺 B站原版</button>
+  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">💾 GitHub镜像</button>
 </div>
 <div class="video-panel">
   <div class="video-source vs-bilibili active">

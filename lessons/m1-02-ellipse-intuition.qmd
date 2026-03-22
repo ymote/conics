@@ -216,6 +216,161 @@ date: 2026-03-22
 - **鸡蛋的形状**近似椭圆（严格来说是卵形线）
 :::
 
+### 耳语廊效应（Whispering Gallery）
+
+```{=html}
+<div class="d3-container" id="m1_whisper"></div>
+<div class="d3-controls">
+  <button id="m1_whisper_play">播放声波 ▶</button>
+  <span class="value-display" id="m1_whisper_info">从 F₁ 发出声波，经椭圆壁反射后汇聚到 F₂</span>
+</div>
+<script>
+(function() {
+  const W = 700, H = 380, margin = {top: 20, right: 20, bottom: 20, left: 20};
+  const w = W - margin.left - margin.right, h = H - margin.top - margin.bottom;
+  const cx = w / 2, cy = h / 2;
+
+  const svg = d3.select("#m1_whisper").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const a = 260, b = 150;
+  const c = Math.sqrt(a * a - b * b);
+  const f1 = {x: cx - c, y: cy};
+  const f2 = {x: cx + c, y: cy};
+
+  // Elliptical room — filled wall
+  const numPts = 200;
+  const ellipsePoints = d3.range(0, numPts + 1).map(i => {
+    const t = (i / numPts) * 2 * Math.PI;
+    return [cx + a * Math.cos(t), cy + b * Math.sin(t)];
+  });
+  svg.append("path").attr("d", d3.line()(ellipsePoints) + "Z")
+    .attr("fill", "rgba(45,112,179,0.04)")
+    .attr("stroke", "#5a4e3c").attr("stroke-width", 5);
+
+  // Room interior floor pattern
+  svg.append("ellipse").attr("cx", cx).attr("cy", cy).attr("rx", a - 10).attr("ry", b - 10)
+    .attr("fill", "none").attr("stroke", "#ddd").attr("stroke-width", 1).attr("stroke-dasharray", "3,6");
+
+  // Foci markers
+  [{p: f1, label: "F₁ 说话者", color: "#c74440"},
+   {p: f2, label: "F₂ 听者", color: "#2d70b3"}].forEach(d => {
+    svg.append("circle").attr("cx", d.p.x).attr("cy", d.p.y).attr("r", 8)
+      .attr("fill", d.color).attr("stroke", "white").attr("stroke-width", 2);
+    svg.append("text").attr("x", d.p.x).attr("y", d.p.y + 26)
+      .attr("text-anchor", "middle").attr("font-size", "13px")
+      .attr("fill", d.color).attr("font-weight", "bold").text(d.label);
+  });
+
+  // Precompute ray-ellipse intersection for a ray from f1 at angle theta
+  function rayHitEllipse(angle) {
+    // Parametric ray: (f1.x + t*cos(angle), f1.y + t*sin(angle))
+    // On ellipse: ((x-cx)/a)^2 + ((y-cy)/b)^2 = 1
+    const dx = Math.cos(angle), dy = Math.sin(angle);
+    const ox = f1.x - cx, oy = f1.y - cy;
+    const A = (dx * dx) / (a * a) + (dy * dy) / (b * b);
+    const B = 2 * ((ox * dx) / (a * a) + (oy * dy) / (b * b));
+    const C = (ox * ox) / (a * a) + (oy * oy) / (b * b) - 1;
+    const disc = B * B - 4 * A * C;
+    if (disc < 0) return null;
+    const t = (-B + Math.sqrt(disc)) / (2 * A);
+    if (t < 5) return null;
+    return {x: f1.x + t * dx, y: f1.y + t * dy};
+  }
+
+  // Choose ray angles — fan out from F1
+  const rayAngles = [-65, -45, -30, -15, 0, 15, 30, 45, 65].map(d => d * Math.PI / 180);
+  const rayData = rayAngles.map(angle => {
+    const hit = rayHitEllipse(angle);
+    return hit ? {angle, hit} : null;
+  }).filter(Boolean);
+
+  const animGroup = svg.append("g");
+
+  // Expanding wavefront circle (clipped to ellipse)
+  const clipId = "m1_whisper_clip";
+  svg.append("defs").append("clipPath").attr("id", clipId)
+    .append("path").attr("d", d3.line()(ellipsePoints) + "Z");
+
+  let playing = false;
+
+  function playAnimation() {
+    if (playing) return;
+    playing = true;
+    animGroup.selectAll("*").remove();
+
+    // Phase 1: Expanding wavefront from F1
+    const wavefront = animGroup.append("circle")
+      .attr("cx", f1.x).attr("cy", f1.y).attr("r", 0)
+      .attr("fill", "none").attr("stroke", "#c74440").attr("stroke-width", 2)
+      .attr("opacity", 0.6).attr("clip-path", `url(#${clipId})`);
+
+    const maxR = Math.sqrt((f2.x - f1.x) ** 2 + (a + b) ** 2);
+    wavefront.transition().duration(1200).ease(d3.easeLinear)
+      .attr("r", maxR).attr("opacity", 0.15);
+
+    // Phase 2: Show reflection rays from wall to F2
+    rayData.forEach((rd, i) => {
+      // Ray from F1 to wall
+      const ray1 = animGroup.append("line")
+        .attr("x1", f1.x).attr("y1", f1.y)
+        .attr("x2", f1.x).attr("y2", f1.y)
+        .attr("stroke", "#e67e22").attr("stroke-width", 1.5).attr("opacity", 0.7);
+
+      ray1.transition().delay(200 + i * 60).duration(600).ease(d3.easeLinear)
+        .attr("x2", rd.hit.x).attr("y2", rd.hit.y);
+
+      // Bounce point
+      animGroup.append("circle")
+        .attr("cx", rd.hit.x).attr("cy", rd.hit.y).attr("r", 0)
+        .attr("fill", "#e67e22")
+        .transition().delay(800 + i * 60).duration(150).attr("r", 4)
+        .transition().duration(1500).attr("r", 2).attr("opacity", 0.5);
+
+      // Ray from wall to F2
+      const ray2 = animGroup.append("line")
+        .attr("x1", rd.hit.x).attr("y1", rd.hit.y)
+        .attr("x2", rd.hit.x).attr("y2", rd.hit.y)
+        .attr("stroke", "#27ae60").attr("stroke-width", 1.5).attr("opacity", 0.7);
+
+      ray2.transition().delay(900 + i * 60).duration(600).ease(d3.easeLinear)
+        .attr("x2", f2.x).attr("y2", f2.y);
+    });
+
+    // Phase 3: Converging wavefront at F2
+    const convergeFront = animGroup.append("circle")
+      .attr("cx", f2.x).attr("cy", f2.y).attr("r", 80)
+      .attr("fill", "none").attr("stroke", "#2d70b3").attr("stroke-width", 2.5)
+      .attr("opacity", 0).attr("clip-path", `url(#${clipId})`);
+
+    convergeFront.transition().delay(1500).duration(200).attr("opacity", 0.6)
+      .transition().duration(800).ease(d3.easeCubicIn)
+      .attr("r", 0).attr("opacity", 0.9);
+
+    // Pulse at F2
+    animGroup.append("circle")
+      .attr("cx", f2.x).attr("cy", f2.y).attr("r", 0)
+      .attr("fill", "#2d70b3").attr("opacity", 0)
+      .transition().delay(2500).duration(100).attr("opacity", 0.7).attr("r", 5)
+      .transition().duration(600).attr("r", 30).attr("opacity", 0);
+
+    // Info update
+    setTimeout(() => {
+      document.getElementById("m1_whisper_info").textContent =
+        "声波从 F₁ 出发 → 经椭圆壁反射 → 全部汇聚到 F₂！";
+    }, 1600);
+
+    setTimeout(() => { playing = false; }, 3200);
+  }
+
+  document.getElementById("m1_whisper_play").addEventListener("click", playAnimation);
+})();
+</script>
+```
+
+从一个焦点 $F_1$ 发出的声波，碰到椭圆形墙壁后反射，**全部汇聚到另一个焦点** $F_2$。这就是世界各地"耳语廊"的秘密——伦敦圣保罗大教堂、北京天坛回音壁都利用了类似的原理。
+
 ## Desmos探索
 
 ```{=html}
@@ -242,8 +397,8 @@ date: 2026-03-22
 
 ```{=html}
 <div class="video-switch">
-  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">B站原版</button>
-  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">GitHub镜像</button>
+  <button class="active" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-bilibili').classList.add('active')">📺 B站原版</button>
+  <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');this.parentElement.nextElementSibling.querySelectorAll('.video-source').forEach(s=>s.classList.remove('active'));this.parentElement.nextElementSibling.querySelector('.vs-github').classList.add('active')">💾 GitHub镜像</button>
 </div>
 <div class="video-panel">
   <div class="video-source vs-bilibili active">
