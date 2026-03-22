@@ -127,42 +127,39 @@ body {
 
 .video-switch {
   display: flex;
-  gap: 0;
-  margin-bottom: -1px;
-  position: relative;
-  z-index: 1;
+  gap: 4px;
+  margin: 1.5em 0 0 0;
+  padding: 0;
 }
 
 .video-switch button {
-  padding: 0.5em 1.2em;
-  border: 1px solid #ddd;
-  border-bottom: none;
-  background: #f0f0f0;
-  color: #666;
+  padding: 0.6em 1.5em;
+  border: 2px solid #2d70b3;
+  background: #fff;
+  color: #2d70b3;
   cursor: pointer;
   font-family: 'Manrope', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 6px 6px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px 8px 0 0;
   transition: background 0.2s, color 0.2s;
 }
 
 .video-switch button.active {
-  background: #fff;
-  color: #2d70b3;
-  border-color: #ddd;
-  border-bottom: 1px solid #fff;
+  background: #2d70b3;
+  color: #fff;
 }
 
 .video-switch button:hover:not(.active) {
-  background: #e8e8e8;
+  background: #e8f0fe;
 }
 
 .video-panel {
-  border: 1px solid #ddd;
+  border: 2px solid #2d70b3;
   border-radius: 0 8px 8px 8px;
   overflow: hidden;
   background: #000;
+  margin-bottom: 1.5em;
 }
 
 .video-panel .video-source {
