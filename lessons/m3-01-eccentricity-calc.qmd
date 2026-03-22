@@ -339,6 +339,86 @@ $$a^2 - c^2 \leqslant$$ ______
 
 ![设一法快速求值](../images/ch05/frame_04.jpg)
 
+## 高考真题演练
+
+::: {.callout-warning}
+## 高考真题：2023年 全国卷 第5题
+
+设椭圆 $C_1:\dfrac{x^2}{a^2}+y^2=1\ (a>1)$, $C_2:\dfrac{x^2}{4}+y^2=1$ 的离心率分别为 $e_1,e_2$. 若 $e_2=\sqrt{3}\,e_1$, 则 $a=$
+
+A. $\dfrac{2\sqrt{3}}{3}$ &emsp; B. $\sqrt{2}$ &emsp; C. $\sqrt{3}$ &emsp; D. $\sqrt{6}$
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+**第一步：** 分别写出离心率。
+
+$C_2$: $a_2=2$, $b_2=1$, $c_2=\sqrt{4-1}=\sqrt{3}$, 所以 $e_2=\dfrac{\sqrt{3}}{2}$.
+
+$C_1$: $a_1=a$, $b_1=1$, $c_1=\sqrt{a^2-1}$, 所以 $e_1=\dfrac{\sqrt{a^2-1}}{a}$.
+
+**第二步：** 代入 $e_2=\sqrt{3}\,e_1$：
+
+$$\frac{\sqrt{3}}{2} = \sqrt{3}\cdot\frac{\sqrt{a^2-1}}{a}$$
+
+$$\frac{1}{2} = \frac{\sqrt{a^2-1}}{a} \implies \frac{a^2}{4} = a^2 - 1 \implies a^2 = \frac{4}{3} \implies a = \frac{2\sqrt{3}}{3}$$
+
+答案选 **A**。
+:::
+:::
+
+::: {.callout-warning}
+## 高考真题：椭圆焦点三角形角度求离心率范围
+
+已知椭圆 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$ 的左、右焦点为 $F_1,F_2$, 椭圆上存在点 $P$ 使得 $\angle F_1PF_2=120°$. 求离心率 $e$ 的取值范围.
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+**第一步：** 设 $|PF_1|=m$, $|PF_2|=n$, 由定义 $m+n=2a$.
+
+由余弦定理：$(2c)^2=m^2+n^2-2mn\cos120°=m^2+n^2+mn$.
+
+**第二步：** 利用 $m^2+n^2=(m+n)^2-2mn=4a^2-2mn$, 代入得：
+
+$$4c^2=4a^2-2mn+mn=4a^2-mn \implies mn=4a^2-4c^2=4b^2$$
+
+**第三步：** 由均值不等式 $mn\leqslant\left(\dfrac{m+n}{2}\right)^2=a^2$, 又需 $mn>0$：
+
+$$4b^2 \leqslant a^2 \implies 4(a^2-c^2)\leqslant a^2 \implies 3a^2\leqslant 4c^2 \implies e\geqslant\frac{\sqrt{3}}{2}$$
+
+又 $\angle F_1PF_2=120°<180°$, 且 $P$ 不在 $x$ 轴上, 所以 $e<1$.
+
+$$\boxed{e\in\left[\frac{\sqrt{3}}{2},\,1\right)}$$
+
+注意：$e=\dfrac{\sqrt{3}}{2}$ 时 $m=n$, 即 $P$ 在短轴端点, 可以取到等号.
+:::
+:::
+
+::: {.callout-warning}
+## 高考真题：圆与直线相切求离心率
+
+已知椭圆 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\ (a>b>0)$, 以长轴 $A_1A_2$ 为直径的圆与直线 $bx-ay+2ab=0$ 相切. 求离心率 $e$.
+
+::: {.callout-tip collapse="true"}
+## 解题思路与答案
+
+**第一步：** 以 $A_1A_2$ 为直径的圆: 圆心为原点, 半径为 $a$.
+
+**第二步：** 圆心 $(0,0)$ 到直线 $bx-ay+2ab=0$ 的距离等于 $a$：
+
+$$d=\frac{|b\cdot0-a\cdot0+2ab|}{\sqrt{b^2+a^2}}=\frac{2ab}{\sqrt{a^2+b^2}}=a$$
+
+**第三步：** 化简：
+
+$$2b=\sqrt{a^2+b^2} \implies 4b^2=a^2+b^2 \implies 3b^2=a^2$$
+
+用 $b^2=a^2-c^2$：$3(a^2-c^2)=a^2 \implies 2a^2=3c^2$
+
+$$e^2=\frac{c^2}{a^2}=\frac{2}{3} \implies \boxed{e=\frac{\sqrt{6}}{3}}$$
+:::
+:::
+
 ## 速查表 + ⚠️易错点
 
 ::: {.callout-important}
